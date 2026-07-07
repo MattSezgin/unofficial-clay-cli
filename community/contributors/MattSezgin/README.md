@@ -6,7 +6,7 @@
 
 ## Workflows (1)
 
-- [Work Email Waterfall](../../templates/work-email-waterfall/) - `enrichment` - 0 votes
+- [Work Email Waterfall](../../templates/work-email-waterfall/) - `enrichment` - [0 votes](https://github.com/MattSezgin/unofficial-clay-cli/discussions/1)
 
 ---
 *This page is generated from `profile.yaml` - edit that file, not this one.*

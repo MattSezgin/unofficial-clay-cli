@@ -22,7 +22,7 @@
 <!-- LEADERBOARD:START -->
 | # | Workflow | Category | Author | Votes |
 |---|----------|----------|--------|-------|
-| 1 | [Work Email Waterfall](community/templates/work-email-waterfall/) | `enrichment` | [Matt Sezgin](community/contributors/MattSezgin/) | 0 votes |
+| 1 | [Work Email Waterfall](community/templates/work-email-waterfall/) | `enrichment` | [Matt Sezgin](community/contributors/MattSezgin/) | [0 votes](https://github.com/MattSezgin/unofficial-clay-cli/discussions/1) |
 
 *Vote with a thumbs-up on a workflow's discussion thread. Updated automatically.*
 <!-- LEADERBOARD:END -->
