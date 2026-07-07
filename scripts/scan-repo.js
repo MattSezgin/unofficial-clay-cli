@@ -40,7 +40,7 @@ const RULES = [
 // Files whose PURPOSE is containing fake secret-shaped values (they test the
 // redaction engine). Secret-format/webhook/entropy rules are skipped for them,
 // but the clay-real-id rule still applies - a real ID has no business even here.
-const REDACTION_FIXTURES = new Set(['test-redaction.js', path.join('test', 'redaction-input.json'), 'test-proof-packet.js']);
+const REDACTION_FIXTURES = new Set([path.join('tests', 'test-redaction.js'), path.join('tests', 'fixtures', 'redaction-input.json'), path.join('tests', 'test-proof-packet.js')]);
 // npm lockfiles are all integrity hashes - entropy scanning them is pure noise
 // (gitleaks still covers them with lockfile-aware rules).
 const ENTROPY_EXEMPT = new Set(['package-lock.json']);

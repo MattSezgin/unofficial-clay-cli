@@ -145,7 +145,7 @@ npm run test:plan
 Route a user request before planning:
 
 ```bash
-node intake-request.js \
+node lib/intake-request.js \
   --request "Find people at these companies by job title" \
   --out runs/YYYY-MM-DD/people-from-companies-intake.json
 ```
@@ -155,7 +155,7 @@ The intake artifact should identify the selected playbook, alternatives, ambigui
 Generate an offline plan:
 
 ```bash
-node plan-playbook.js playbooks/outbound-personalization.yaml \
+node lib/plan-playbook.js playbooks/outbound-personalization.yaml \
   --inputs examples/outbound-personalization-input.example.yaml \
   --spec specs/templates/outbound-personalization.yaml \
   --json
@@ -173,7 +173,7 @@ The generated plan includes a `generatedSpecPlan` section with:
 To write one selected template execution plan:
 
 ```bash
-node plan-playbook.js playbooks/people-from-companies.yaml \
+node lib/plan-playbook.js playbooks/people-from-companies.yaml \
   --inputs examples/people-from-companies-input.example.yaml \
   --template-plan people-from-companies-company-stage.yaml \
   --out runs/YYYY-MM-DD/people-from-companies-company-stage-plan.json
@@ -184,7 +184,7 @@ node plan-playbook.js playbooks/people-from-companies.yaml \
 To write a confirmation-ready sample-run packet:
 
 ```bash
-node plan-playbook.js playbooks/outbound-personalization.yaml \
+node lib/plan-playbook.js playbooks/outbound-personalization.yaml \
   --inputs examples/outbound-personalization-input.example.yaml \
   --sample-run outbound-personalization.yaml \
   --out runs/YYYY-MM-DD/outbound-personalization-sample-run.json
@@ -206,7 +206,7 @@ The sample-run packet is still offline. It separates:
 Preflight a packet:
 
 ```bash
-node preflight-sample-run.js runs/YYYY-MM-DD/outbound-personalization-sample-run.json \
+node lib/preflight-sample-run.js runs/YYYY-MM-DD/outbound-personalization-sample-run.json \
   --workspace TEST_WS \
   --folder <sandbox-folder-id> \
   --workbook <sandbox-workbook-id> \
@@ -218,7 +218,7 @@ node preflight-sample-run.js runs/YYYY-MM-DD/outbound-personalization-sample-run
 After `apply-spec` returns table/view IDs, hydrate the packet:
 
 ```bash
-node hydrate-sample-run.js runs/YYYY-MM-DD/outbound-personalization-sample-run.json \
+node lib/hydrate-sample-run.js runs/YYYY-MM-DD/outbound-personalization-sample-run.json \
   --apply-result runs/YYYY-MM-DD/outbound-personalization-apply-result.json \
   --out runs/YYYY-MM-DD/outbound-personalization-hydrated-sample-run.json
 ```
@@ -228,7 +228,7 @@ node hydrate-sample-run.js runs/YYYY-MM-DD/outbound-personalization-sample-run.j
 Fill a quality report from ignored evidence:
 
 ```bash
-node collect-evidence.js \
+node lib/collect-evidence.js \
   --apply runs/YYYY-MM-DD/outbound-personalization-apply-result.json \
   --preflight runs/YYYY-MM-DD/outbound-personalization-preflight.json \
   --hydrated-preflight runs/YYYY-MM-DD/outbound-personalization-hydrated-preflight.json \
@@ -236,7 +236,7 @@ node collect-evidence.js \
   --manifest runs/YYYY-MM-DD/outbound-personalization-manifest-redacted.json \
   --out runs/YYYY-MM-DD/outbound-personalization-evidence.json
 
-node quality-report.js runs/YYYY-MM-DD/outbound-personalization-plan.json \
+node lib/quality-report.js runs/YYYY-MM-DD/outbound-personalization-plan.json \
   --evidence runs/YYYY-MM-DD/outbound-personalization-evidence.json \
   --out runs/YYYY-MM-DD/outbound-personalization-quality-report.md
 ```

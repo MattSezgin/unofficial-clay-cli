@@ -70,7 +70,7 @@ function loadTemplates(votes) {
   return listDirs(TEMPLATES_DIR).map(slug => {
     const t = loadYaml(path.join(TEMPLATES_DIR, slug, 'template.yaml'));
     const vote = votes.get(slug) || { count: 0, url: null };
-    return { slug, title: t.title, author: t.author, category: t.category, votes: vote.count, discussionUrl: vote.url };
+    return { slug, title: t.title, author: t.author, category: t.category, votes: vote.count, discussionUrl: vote.url, spec: t };
   }).sort((a, b) => b.votes - a.votes || a.title.localeCompare(b.title));
 }
 
@@ -114,19 +114,74 @@ function renderProfile(handle, profile, templates) {
   const mine = templates.filter(t => t.author === handle);
   const name = [profile.first_name, profile.last_name].filter(Boolean).join(' ');
   const who = [profile.role, profile.company].filter(Boolean).join(' at ');
+  const totalVotes = mine.reduce((sum, t) => sum + t.votes, 0);
+  const links = [
+    profile.linkedin ? `[**LinkedIn**](${profile.linkedin})` : null,
+    `[**GitHub**](https://github.com/${handle})`,
+  ].filter(Boolean).join(' &nbsp;·&nbsp; ');
+
   const lines = [
+    '<div align="center">',
+    '',
+    `<img src="https://github.com/${handle}.png" width="110" alt="${name}">`,
+    '',
     `# ${name}`,
     '',
-    [who || null, profile.linkedin ? `[LinkedIn](${profile.linkedin})` : null, `[GitHub](https://github.com/${handle})`].filter(Boolean).join(' · '),
   ];
-  if (profile.tagline) lines.push('', `> ${profile.tagline}`);
-  lines.push('', `## Workflows (${mine.length})`, '');
-  if (!mine.length) lines.push('*Nothing shared yet.*');
-  for (const t of mine) {
-    const voteText = t.discussionUrl ? `[${t.votes} votes](${t.discussionUrl})` : `${t.votes} votes`;
-    lines.push(`- [${t.title}](../../templates/${t.slug}/) - \`${t.category}\` - ${voteText}`);
+  if (who) lines.push(`**${who}**`, '');
+  lines.push(
+    links,
+    '',
+    `![workflows](https://img.shields.io/badge/workflows-${mine.length}-8b5cf6) ![total votes](https://img.shields.io/badge/total_votes-${totalVotes}-0ea5e9)`,
+    ''
+  );
+  if (profile.tagline) lines.push(`> *${profile.tagline}*`, '');
+  lines.push('</div>', '', '## Workflows', '');
+
+  if (!mine.length) {
+    lines.push('*Nothing shared yet - [the wizard makes it a 5-minute job](../../../CONTRIBUTING.md).*');
+  } else {
+    lines.push('| Workflow | Category | Votes |', '|----------|----------|-------|');
+    for (const t of mine) {
+      const voteText = t.discussionUrl ? `[${t.votes}](${t.discussionUrl})` : `${t.votes}`;
+      lines.push(`| [**${t.title}**](../../templates/${t.slug}/) | \`${t.category}\` | ${voteText} |`);
+    }
   }
-  lines.push('', '---', '*This page is generated from `profile.yaml` - edit that file, not this one.*', '');
+  lines.push('', '---', '', '*Generated from `profile.yaml` - edit that file, not this page. Want your own profile? [Share a workflow](../../../CONTRIBUTING.md).*', '');
+  return lines.join('\n');
+}
+
+function renderTemplatePage(t, profiles) {
+  const spec = t.spec;
+  const voteText = t.discussionUrl ? `[**${t.votes} votes**](${t.discussionUrl}) - add yours with a thumbs-up` : 'Voting thread appears after merge';
+  const lines = [
+    '<div align="center">',
+    '',
+    `# ${t.title}`,
+    '',
+    `\`${t.category}\` &nbsp;·&nbsp; by ${authorLabel(t.author, profiles).replace('community/contributors/', '../../contributors/')} &nbsp;·&nbsp; ${voteText}`,
+    '',
+    '</div>',
+    '',
+    `> ${String(spec.description || '').trim()}`,
+    '',
+  ];
+  if (spec.credits_note) lines.push(`**Cost:** ${spec.credits_note}`, '');
+  lines.push('## What your table needs', '', '| Input column | Type | Required | Example |', '|--------------|------|----------|---------|');
+  for (const input of spec.inputs || []) {
+    lines.push(`| \`${input.name}\` | ${input.type} | ${input.required ? 'yes' : 'no'} | ${input.example ? `\`${input.example}\`` : ''} |`);
+  }
+  lines.push('', '## The steps', '', '| # | Column | Kind | Notes |', '|---|--------|------|-------|');
+  (spec.steps || []).forEach((step, i) => {
+    const kind = step.kind === 'action' && step.action_key ? `\`${step.action_key}\`` : `\`${step.kind}\``;
+    const notes = [step.run_condition_note, step.notes].filter(Boolean).join(' ');
+    lines.push(`| ${i + 1} | **${step.field}** | ${kind} | ${notes} |`);
+  });
+  if (spec.first_run) {
+    lines.push('', '## Before you scale', '', `Run **${spec.first_run.sample_rows || 10} rows first** and check:`, '');
+    for (const check of spec.first_run.quality_checks || []) lines.push(`- ${check}`);
+  }
+  lines.push('', '---', '', '*The machine-readable version is [`template.yaml`](template.yaml) - this page is generated from it. Build something better? [Share it](../../../CONTRIBUTING.md).*', '');
   return lines.join('\n');
 }
 
@@ -149,7 +204,10 @@ async function main() {
   for (const [handle, profile] of profiles) {
     fs.writeFileSync(path.join(CONTRIBUTORS_DIR, handle, 'README.md'), renderProfile(handle, profile, templates));
   }
-  console.log(`[OK] ${profiles.size} profile page(s) regenerated, ${templates.length} template(s) ranked`);
+  for (const t of templates) {
+    fs.writeFileSync(path.join(TEMPLATES_DIR, t.slug, 'README.md'), renderTemplatePage(t, profiles));
+  }
+  console.log(`[OK] ${profiles.size} profile page(s) + ${templates.length} template page(s) regenerated`);
 }
 
 main().catch(err => { console.error(`[FAIL] ${err.message}`); process.exit(1); });

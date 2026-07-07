@@ -32,8 +32,8 @@ Use this runbook to map a user request to a safe Clay CLI playbook.
 Use `prompt-library.js` to inspect reusable public-safe prompt contracts before configuring AI fields:
 
 ```bash
-node prompt-library.js --list --json
-node prompt-library.js --playbook <playbook-id> --json
+node lib/prompt-library.js --list --json
+node lib/prompt-library.js --playbook <playbook-id> --json
 ```
 
 Prompt contracts live in `prompts/`. They contain guardrails, task instructions, output schemas, and QA checks only; runtime row values and client-specific prompt edits stay in ignored local artifacts.
@@ -42,7 +42,7 @@ Prompt contracts live in `prompts/`. They contain guardrails, task instructions,
 
 0. Optional: exercise the full offline control plane with simulated IDs:
    ```bash
-   node simulate-full-loop.js \
+   node lib/simulate-full-loop.js \
      --request "Build a campaign personalization table" \
      --inputs examples/outbound-personalization-input.example.yaml \
      --config config.example.yaml \
@@ -56,13 +56,13 @@ Prompt contracts live in `prompts/`. They contain guardrails, task instructions,
    This creates fake apply/verify/manifest evidence and a fake scale gate. Use it only to test the control plane; it does not prove Clay worked.
    Run the read-only completion audit after simulation if you need to prove the goal is still incomplete:
    ```bash
-   node completion-audit.js \
+   node lib/completion-audit.js \
      --simulation runs/<date>/<playbook-id>-simulation/<playbook-id>-full-loop-simulation.json \
      --json
    ```
 1. Prepare the offline sample-run bundle:
    ```bash
-   node prepare-sample-run.js \
+   node lib/prepare-sample-run.js \
      --request "Build a campaign personalization table" \
      --inputs examples/outbound-personalization-input.example.yaml \
      --config config.example.yaml \
@@ -76,29 +76,29 @@ Prompt contracts live in `prompts/`. They contain guardrails, task instructions,
    Inspect `readiness.status`, `issues`, `artifacts`, and `nextAction`. Ask for live-command confirmation only when `readiness.status` is `ready_for_first_live_command_confirmation`.
 2. If the prepare bundle is not ready, route the natural-language request and identify missing inputs manually:
    ```bash
-   node intake-request.js \
+   node lib/intake-request.js \
      --request "Find people at these companies by job title" \
      --out runs/<date>/<playbook-id>-intake.json
    ```
    Inspect `routing.selectedPlaybook`, `routing.alternatives`, `routing.ambiguity`, `inputSummary`, and `missingInputQuestions`. If `routing.ambiguity` is `review-required`, ask a focused clarification before generating a plan. Use `profile-context.js` when checking runtime profile values so raw workbook/folder IDs do not leak into committed notes.
 3. Read the selected playbook.
-4. Read the matching prompt contract with `node prompt-library.js --playbook <playbook-id> --json`.
+4. Read the matching prompt contract with `node lib/prompt-library.js --playbook <playbook-id> --json`.
 5. Resolve required inputs in an ignored local input file or a public-safe example file.
 6. Generate an offline plan:
    ```bash
-   node plan-playbook.js playbooks/<playbook-id>.yaml --inputs examples/<playbook-id>-input.example.yaml --json
+   node lib/plan-playbook.js playbooks/<playbook-id>.yaml --inputs examples/<playbook-id>-input.example.yaml --json
    ```
    Inspect `generatedSpecPlan` for input bindings, selected templates, offline validation commands, and confirmation-gated live sample commands.
    To write one selected template execution plan under ignored `runs/`:
    ```bash
-   node plan-playbook.js playbooks/<playbook-id>.yaml \
+   node lib/plan-playbook.js playbooks/<playbook-id>.yaml \
      --inputs examples/<playbook-id>-input.example.yaml \
      --template-plan <template-basename-or-index> \
      --out runs/<date>/<playbook-id>-template-plan.json
    ```
    To write a confirmation-ready sample-run packet:
    ```bash
-   node plan-playbook.js playbooks/<playbook-id>.yaml \
+   node lib/plan-playbook.js playbooks/<playbook-id>.yaml \
      --inputs examples/<playbook-id>-input.example.yaml \
      --sample-run <template-basename-or-index> \
      --out runs/<date>/<playbook-id>-sample-run.json
@@ -106,7 +106,7 @@ Prompt contracts live in `prompts/`. They contain guardrails, task instructions,
    The packet separates offline commands, exact live Clay commands that need chat confirmation, readback commands, and stop conditions.
    Validate the operator config/profile before preflight:
    ```bash
-   node profile-context.js config.example.yaml \
+   node lib/profile-context.js config.example.yaml \
      --profile yourTestProfile \
      --require-resolved \
      --workspace TEST_WS \
@@ -114,7 +114,7 @@ Prompt contracts live in `prompts/`. They contain guardrails, task instructions,
      --workbook <sandbox-workbook-id> \
      --json
 
-   node validate-config.js config.example.yaml \
+   node lib/validate-config.js config.example.yaml \
      --profile yourTestProfile \
      --require-resolved \
      --require-test-profile \
@@ -124,7 +124,7 @@ Prompt contracts live in `prompts/`. They contain guardrails, task instructions,
    ```
    Preflight the packet before asking for confirmation:
    ```bash
-   node preflight-sample-run.js runs/<date>/<playbook-id>-sample-run.json \
+   node lib/preflight-sample-run.js runs/<date>/<playbook-id>-sample-run.json \
      --config config.example.yaml \
      --profile yourTestProfile \
      --workspace TEST_WS \
@@ -144,7 +144,7 @@ Prompt contracts live in `prompts/`. They contain guardrails, task instructions,
 11. Create/import only sample rows.
    After `apply-spec` succeeds, hydrate the sample-run packet with the returned table/view IDs:
    ```bash
-   node advance-sample-run.js \
+   node lib/advance-sample-run.js \
      --prepared runs/<date>/<playbook-id>/<playbook-id>-prepared-sample-run.json \
      --apply-result runs/<date>/<playbook-id>-apply-result.json \
      --config config.example.yaml \
@@ -160,7 +160,7 @@ Prompt contracts live in `prompts/`. They contain guardrails, task instructions,
 12. Export/readback/verify the result.
    Collect ignored evidence from the run artifacts:
    ```bash
-   node collect-evidence.js \
+   node lib/collect-evidence.js \
      --apply runs/<date>/<playbook-id>-apply-result.json \
      --preflight runs/<date>/<playbook-id>-preflight.json \
      --hydrated-preflight runs/<date>/<playbook-id>-hydrated-preflight.json \
@@ -171,19 +171,19 @@ Prompt contracts live in `prompts/`. They contain guardrails, task instructions,
    Or rerun `advance-sample-run.js` with `--verify`, `--manifest`, and `--counts` to write hydrated preflight, evidence, and report artifacts together.
 13. Produce a continue/stop recommendation:
    ```bash
-   node quality-report.js <plan.json> --out <sample-quality-report.md>
+   node lib/quality-report.js <plan.json> --out <sample-quality-report.md>
    ```
    The generated report includes spec-template evidence, confirmation-required phase labels, first-run gate checks, and scale-gate requirements.
    To fill the report from ignored run evidence:
    ```bash
-   node quality-report.js runs/<date>/<playbook-id>-plan.json \
+   node lib/quality-report.js runs/<date>/<playbook-id>-plan.json \
      --evidence runs/<date>/<playbook-id>-evidence.json \
      --out runs/<date>/<playbook-id>-quality-report.md
    ```
 14. Scale only after a second explicit confirmation.
    Generate the offline scale gate first:
    ```bash
-   node scale-gate.js \
+   node lib/scale-gate.js \
      --plan runs/<date>/<playbook-id>-plan.json \
      --evidence runs/<date>/<playbook-id>-evidence.json \
      --command '<exact Clay scale command with --confirm>' \
@@ -193,7 +193,7 @@ Prompt contracts live in `prompts/`. They contain guardrails, task instructions,
    Ask for the second confirmation only when `readiness.status` is `ready_for_second_scale_confirmation`. Use the artifact's `confirmationPrompt`; do not summarize or alter the command.
 15. Audit completion before claiming the package goal is done:
    ```bash
-   node completion-audit.js \
+   node lib/completion-audit.js \
      --prepared runs/<date>/<playbook-id>/<playbook-id>-prepared-sample-run.json \
      --apply-result runs/<date>/<playbook-id>/<playbook-id>-apply-result.json \
      --advanced runs/<date>/<playbook-id>/<playbook-id>-advanced-sample-run.json \

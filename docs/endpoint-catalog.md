@@ -72,7 +72,7 @@ These notes were copied from an internal endpoint-capture corpus assembled durin
 | PATCH | `/v3/tables/:tableId/views/:viewId/fields/:fieldId` | View field order/hidden state | autoclay-note | Sequential reorder fallback. |
 | POST | `/v3/tables/:tableId/fields/group` | Create field group | autoclay-note | Needed for parity. |
 | POST | `/v3/tables/:tableId/fields/group/:groupId` | Update field group | autoclay-note | Needed for parity. |
-| POST | `/v3/tables/:tableId/bulk-fetch-records` | Fetch records + action external content | existing in `full_export.py` | Current Python uses this successfully. Should port/wrap. |
+| POST | `/v3/tables/:tableId/bulk-fetch-records` | Fetch records + action external content | existing in `scripts/full_export.py` | Current Python uses this successfully. Should port/wrap. |
 
 ## Source / Search Builder Unknowns
 

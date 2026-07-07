@@ -12,7 +12,7 @@ repo - see the redaction rule at the bottom before you share anything you export
 ## Full-fidelity workbook export (all rows, all tables)
 
 ```bash
-python3 full_export.py wb_TEST_WORKBOOK ./exports/wb_TEST_WORKBOOK
+python3 scripts/full_export.py wb_TEST_WORKBOOK ./exports/wb_TEST_WORKBOOK
 ```
 
 - Exports **every row of every table** in the workbook, including action-cell

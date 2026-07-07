@@ -1,0 +1,49 @@
+<svg width="880" height="270" viewBox="0 0 880 270" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="880" y2="270" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0d1220"/>
+      <stop offset="1" stop-color="#131b2e"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="880" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4f8cff"/>
+      <stop offset="0.5" stop-color="#7c5cff"/>
+      <stop offset="1" stop-color="#38bdf8"/>
+    </linearGradient>
+  </defs>
+  <rect width="880" height="270" rx="14" fill="url(#bg)"/>
+  <rect x="0.5" y="0.5" width="879" height="269" rx="13.5" stroke="#2a3550"/>
+  <rect x="0" y="0" width="880" height="4" rx="2" fill="url(#accent)"/>
+
+  <!-- left: title block -->
+  <text x="48" y="86" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="34" font-weight="700" fill="#f2f5fa">unofficial-clay-cli</text>
+  <text x="48" y="122" font-family="-apple-system, 'Segoe UI', sans-serif" font-size="17" fill="#9fb0ca">Run Clay from your terminal or your AI agent - safely.</text>
+
+  <g font-family="-apple-system, 'Segoe UI', sans-serif" font-size="13" fill="#c7d2e4">
+    <rect x="48" y="150" width="118" height="30" rx="15" fill="#1b2540" stroke="#2f3d61"/>
+    <text x="66" y="169">50 commands</text>
+    <rect x="176" y="150" width="102" height="30" rx="15" fill="#1b2540" stroke="#2f3d61"/>
+    <text x="194" y="169">playbooks</text>
+    <rect x="288" y="150" width="164" height="30" rx="15" fill="#1b2540" stroke="#2f3d61"/>
+    <text x="306" y="169">community + voting</text>
+    <rect x="462" y="150" width="130" height="30" rx="15" fill="#152b22" stroke="#245a41"/>
+    <text x="480" y="169" fill="#7fd8a6">safety gates</text>
+  </g>
+
+  <text x="48" y="224" font-family="-apple-system, 'Segoe UI', sans-serif" font-size="12.5" fill="#5f7191">Not affiliated with Clay. Built by the community, guarded by CI.</text>
+
+  <!-- right: terminal card -->
+  <g>
+    <rect x="612" y="52" width="228" height="166" rx="10" fill="#0a0e18" stroke="#2a3550"/>
+    <circle cx="632" cy="72" r="4.5" fill="#ff5f57"/>
+    <circle cx="648" cy="72" r="4.5" fill="#febc2e"/>
+    <circle cx="664" cy="72" r="4.5" fill="#28c840"/>
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11.5">
+      <text x="630" y="100" fill="#7fd8a6">$ npm run share</text>
+      <text x="630" y="122" fill="#9fb0ca">rebuilding template...</text>
+      <text x="630" y="140" fill="#9fb0ca">secrets found: 0</text>
+      <text x="630" y="158" fill="#9fb0ca">preview approved</text>
+      <text x="630" y="182" fill="#4f8cff">ready to publish -&gt;</text>
+      <text x="630" y="204" fill="#5f7191">votes decide the rest</text>
+    </g>
+  </g>
+</svg>

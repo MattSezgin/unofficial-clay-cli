@@ -54,7 +54,7 @@ Start offline:
 
 ```bash
 npm run test:all
-node simulate-full-loop.js \
+node lib/simulate-full-loop.js \
   --request "Build a campaign personalization table" \
   --inputs examples/outbound-personalization-input.example.yaml \
   --config config.example.yaml \
@@ -69,14 +69,14 @@ node simulate-full-loop.js \
 Prepare a real sample bundle:
 
 ```bash
-node profile-context.js "<local-config.yaml>" \
+node lib/profile-context.js "<local-config.yaml>" \
   --profile "<profile>" \
   --require-resolved \
   --json
 
-node prompt-library.js --playbook "<playbook-id>" --json
+node lib/prompt-library.js --playbook "<playbook-id>" --json
 
-node prepare-sample-run.js \
+node lib/prepare-sample-run.js \
   --request "<operator request>" \
   --inputs "<ignored-or-example-input.yaml>" \
   --config "<local-config.yaml>" \
@@ -93,7 +93,7 @@ If the prepared manifest is not `ready_for_first_live_command_confirmation`, res
 After a live apply result is saved, advance the sample:
 
 ```bash
-node advance-sample-run.js \
+node lib/advance-sample-run.js \
   --prepared runs/<date>/<playbook-id>/<playbook-id>-prepared-sample-run.json \
   --apply-result runs/<date>/<playbook-id>/<playbook-id>-apply-result.json \
   --config "<local-config.yaml>" \
@@ -110,7 +110,7 @@ Ask for the next live command only if the advanced manifest is `ready_for_next_l
 After sample readback, collect evidence and gate scale:
 
 ```bash
-node advance-sample-run.js \
+node lib/advance-sample-run.js \
   --prepared runs/<date>/<playbook-id>/<playbook-id>-prepared-sample-run.json \
   --apply-result runs/<date>/<playbook-id>/<playbook-id>-apply-result.json \
   --verify runs/<date>/<playbook-id>/<playbook-id>-verify.json \
@@ -120,7 +120,7 @@ node advance-sample-run.js \
   --out-dir runs/<date>/<playbook-id> \
   --json
 
-node scale-gate.js \
+node lib/scale-gate.js \
   --plan runs/<date>/<playbook-id>/<playbook-id>-plan.json \
   --evidence runs/<date>/<playbook-id>/<playbook-id>-evidence.json \
   --command '<exact Clay scale command with --confirm>' \
@@ -133,7 +133,7 @@ Scale only after the user confirms the exact `confirmationPrompt` from the scale
 Before claiming the broader package goal is complete, run a completion audit:
 
 ```bash
-node completion-audit.js \
+node lib/completion-audit.js \
   --prepared runs/<date>/<playbook-id>/<playbook-id>-prepared-sample-run.json \
   --apply-result runs/<date>/<playbook-id>/<playbook-id>-apply-result.json \
   --advanced runs/<date>/<playbook-id>/<playbook-id>-advanced-sample-run.json \

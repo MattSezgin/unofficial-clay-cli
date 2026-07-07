@@ -28,20 +28,20 @@ node clay-v2.js actions-catalog --workspace {{workspace_id}} --query "linkedin"
 node clay-v2.js normalize-actions-catalog actions-catalog.raw.json --out actions-catalog.normalized.json
 node clay-v2.js catalog-delta stored-catalog.json new-catalog.json --out delta-report.json
 # equivalent standalone form:
-node catalog-delta.js stored-catalog.json new-catalog.json --out delta-report.json
+node lib/catalog-delta.js stored-catalog.json new-catalog.json --out delta-report.json
 ```
 
 ## Coverage, safety, and promotion tooling (offline, standalone scripts)
 
 ```bash
-node catalog-coverage-dashboard.js --raw actions-catalog.raw.json --strict-registry integration-library/registry.yaml --md coverage.md --limit 25
-node safety-classifier.js --input actions-catalog.raw.json --output classifications.json --per-action
-node proof-strategy-classifier.js actions-catalog.raw.json proof-strategies.json
-node action-template-generator.js actions-catalog.raw.json --query "email" --limit 10 --format yaml --out templates.yaml
-node blocked-action-report.js --catalog actions-catalog.raw.json --json-out blocked.json --md-out blocked.md
-node merge-catalog-shards.js --raw actions-catalog.raw.json --shards shards-dir --out merged.json --dashboard dashboard.md
-node catalog-promotion-guard.js propose --catalog actions-catalog.raw.json --registry integration-library/registry.yaml --key example-action-key --proof proof.json --out registry.yaml
-node catalog-promotion-guard.js promote --catalog actions-catalog.raw.json --registry integration-library/registry.yaml --key example-action-key --proof proof.json --out registry.yaml
+node lib/catalog-coverage-dashboard.js --raw actions-catalog.raw.json --strict-registry integration-library/registry.yaml --md coverage.md --limit 25
+node lib/safety-classifier.js --input actions-catalog.raw.json --output classifications.json --per-action
+node lib/proof-strategy-classifier.js actions-catalog.raw.json proof-strategies.json
+node lib/action-template-generator.js actions-catalog.raw.json --query "email" --limit 10 --format yaml --out templates.yaml
+node lib/blocked-action-report.js --catalog actions-catalog.raw.json --json-out blocked.json --md-out blocked.md
+node lib/merge-catalog-shards.js --raw actions-catalog.raw.json --shards shards-dir --out merged.json --dashboard dashboard.md
+node lib/catalog-promotion-guard.js propose --catalog actions-catalog.raw.json --registry integration-library/registry.yaml --key example-action-key --proof proof.json --out registry.yaml
+node lib/catalog-promotion-guard.js promote --catalog actions-catalog.raw.json --registry integration-library/registry.yaml --key example-action-key --proof proof.json --out registry.yaml
 ```
 
 - `catalog-coverage-dashboard.js` compares the raw catalog against the strict proof

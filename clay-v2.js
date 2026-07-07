@@ -13,11 +13,11 @@ const path = require('path');
 const crypto = require('crypto');
 const YAML = require('yaml');
 const { ClayAPI } = require('./clay-api.js');
-const { buildCommandProvenance } = require('./provenance');
-const { listIntegrations, getIntegration, validateSpecAgainstIntegrationRegistry, integrationPromotionReport, integrationPromotionMarkdown } = require('./integration-library');
-const { buildProofPacketFromManifest } = require('./proof-harness');
-const { readAndNormalizeActionsCatalog } = require('./catalog-normalizer');
-const { compareCatalogs, readCatalog } = require('./catalog-delta');
+const { buildCommandProvenance } = require('./lib/provenance');
+const { listIntegrations, getIntegration, validateSpecAgainstIntegrationRegistry, integrationPromotionReport, integrationPromotionMarkdown } = require('./lib/integration-library');
+const { buildProofPacketFromManifest } = require('./lib/proof-harness');
+const { readAndNormalizeActionsCatalog } = require('./lib/catalog-normalizer');
+const { compareCatalogs, readCatalog } = require('./lib/catalog-delta');
 
 const SENSITIVE_KEY_RE = /(cookie|authorization|bearer|token|api[_-]?key|apikey|secret|password|passwd|credential|private[_-]?key|session|webhook|slack|google[_-]?sheet|auth(?:Account)?Id|auth[_-]?id|appAccountId|apiToken|intercomHash|profilePicture|oauth|client[_-]?secret|campaign(?:Id|[_-]?id)|lead(?:Id|[_-]?id))/i;
 const SENSITIVE_VALUE_RE = /(Bearer\s+[A-Za-z0-9._\-]+|sk-[A-Za-z0-9._\-]+|eyJ[A-Za-z0-9._\-]+|xox[baprs]-[A-Za-z0-9._\-]+|https:\/\/hooks\.slack\.com\/\S+|https:\/\/api\.clay\.com\/v3\/sources\/webhook\S+|https?:\/\/[^\s"'<>]*(?:webhook|token|signature|secret|api[_-]?key|client_secret)=[^\s"'<>]+|(?:api(?:[_-]?key)?|apikey|token|secret|password|client_secret|access_token|refresh_token|code)=['"]?[A-Za-z0-9._%+\-]{8,})/i;

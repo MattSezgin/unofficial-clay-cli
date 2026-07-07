@@ -64,14 +64,14 @@ placeholders in the file or from real environment variables. Validate before rel
 on it:
 
 ```bash
-node validate-config.js config.local.yaml --profile default
+node lib/validate-config.js config.local.yaml --profile default
 ```
 
 To inspect a profile without ever printing raw IDs (env presence + redacted values
 only):
 
 ```bash
-node profile-context.js config.local.yaml --profile default
+node lib/profile-context.js config.local.yaml --profile default
 ```
 
 ## Write scopes are env-driven - know this before you try to write
