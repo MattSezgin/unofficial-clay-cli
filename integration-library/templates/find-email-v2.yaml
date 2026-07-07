@@ -1,0 +1,30 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: find-email-v2
+promotionStatus: battle-tested
+proofStatus: real_data_output_verified
+strictBattleTested: true
+field:
+  name: Find Email V2
+  type: action
+  actionKey: find-email-v2
+  actionPackageId: 9cfc7721-5c91-423b-a0b0-4cc1f42c6089
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: ${CLAY_FIND_EMAIL_V2_AUTH_ACCOUNT_ID}
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    full_name: ${FIND_EMAIL_V2_FULL_NAME}
+    domain: ${FIND_EMAIL_V2_DOMAIN}
+  optionalInputs: {}
+  extractedOutputPaths: []
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: <example-id>
+  viewId: <example-id>
+  fieldId: <example-id>
+  sourceId: null
+  rowLimit: 10
+  artifacts: []
+blockedReason: null

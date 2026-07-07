@@ -1,0 +1,106 @@
+playbookVersion: 1
+id: source-to-ready-list
+name: Source To Ready List
+status: draft
+purpose: >
+  Source companies and/or people, extract identity fields, qualify rows, and
+  produce ready/reject views for outbound list building.
+
+variables:
+  workspaceId: "${CLAY_WORKSPACE_ID}"
+  testFolderId: "${CLAY_TEST_FOLDER_ID}"
+  workbookId: "${CLAY_WORKBOOK_ID}"
+  aiModel: "${CLAY_AI_MODEL:-clay-argon}"
+
+inputs:
+  requiredBrief:
+    - icp_description
+    - target_titles_or_personas
+    - geography
+    - exclusion_rules
+  optionalBrief:
+    - lookalike_customers
+    - technologies
+    - employee_range
+    - industry_filters
+    - competitor_context
+
+sampleRows:
+  max: 10
+  recommended: 10
+  reason: "Source quality and dedupe behavior must be inspected before full import."
+
+safety:
+  requiresChatConfirmation:
+    - source-preview
+    - source-import
+    - action-run
+    - scale-beyond-sample
+  creditConsumingSteps:
+    - technographics_filters
+    - people_source_import
+    - ai_qualification
+
+workflow:
+  - id: company_source_preview
+    type: companies-source-preview
+    description: Preview companies from ICP filters; do not import full volume yet.
+
+  - id: company_sample_import
+    type: companies-source-import
+    maxRows: 10
+    outputs:
+      - company_name
+      - company_domain
+      - company_linkedin_url
+      - industry
+      - location
+
+  - id: company_qualification
+    type: use-ai-or-formula
+    outputs:
+      - qualified_status
+      - qualification_reason
+      - exclusion_reason
+
+  - id: people_source_preview
+    type: people-source-preview
+    description: Preview people for qualified companies and target titles.
+
+  - id: people_sample_import
+    type: people-source-import
+    maxRows: 10
+    outputs:
+      - full_name
+      - job_title
+      - linkedin_profile_url
+      - company_domain
+
+  - id: ready_list_qa
+    type: qa
+    outputs:
+      - dedupe_key
+      - ready_status
+      - review_reason
+
+scaleGate:
+  require:
+    - sourcePreviewReviewed
+    - sampleImportReviewed
+    - readyRejectViewsChecked
+    - userConfirmedScale
+
+outputs:
+  qaViews:
+    - source_sample
+    - qualified_companies
+    - rejected_companies
+    - people_sample
+    - ready_to_export
+    - needs_manual_review
+
+knownFailureModes:
+  - Source imports are asynchronous.
+  - Source preview counts can be approximate.
+  - Deleting rows does not necessarily reset source history.
+  - Exclusion lists must be joined by normalized domain or LinkedIn URL, not display name.

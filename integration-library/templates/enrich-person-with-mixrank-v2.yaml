@@ -1,0 +1,32 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: enrich-person-with-mixrank-v2
+promotionStatus: battle-tested
+proofStatus: real_data_output_verified
+strictBattleTested: true
+field:
+  name: Enrich Person With Mixrank V2
+  type: action
+  actionKey: enrich-person-with-mixrank-v2
+  actionPackageId: e251a70e-46d7-4f3a-b3ef-a211ad3d8bd2
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: null
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    person_identifier: ${ENRICH_PERSON_WITH_MIXRANK_V2_PERSON_IDENTIFIER}
+  optionalInputs:
+    email: ${ENRICH_PERSON_WITH_MIXRANK_V2_EMAIL:-}
+  extractedOutputPaths:
+    - Name
+    - Url
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: <example-id>
+  viewId: <example-id>
+  fieldId: <example-id>
+  sourceId: null
+  rowLimit: 10
+  artifacts: []
+blockedReason: null

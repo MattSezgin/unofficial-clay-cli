@@ -1,0 +1,22 @@
+request:
+  playbook: email-phone-waterfall
+  clientContext: "Generic public-safe example"
+  rowCount: 10
+
+columns:
+  first_name: First Name
+  last_name: Last Name
+  company_domain: Company Domain
+  full_name: Full Name
+  linkedin_url: LinkedIn URL
+  company_name: Company Name
+  job_title: Job Title
+  country: Country
+  enrichment_priority: Enrichment Priority
+
+quality:
+  minimumValidEmailRate: 0.7
+  allowCatchAllForReviewOnly: true
+  enrichPhonesOnlyForQualifiedRows: true
+  scaleOnlyAfterConfirmation: true
+

@@ -1,0 +1,63 @@
+claySpecVersion: 1
+workspaceId: "${CLAY_WORKSPACE_ID}"
+workbookId: "${CLAY_WORKBOOK_ID}"
+table:
+  name: lookalike-role-search-sample
+  type: spreadsheet
+view:
+  name: Lookalike Role Search QA
+  type: grid
+fields:
+  - name: Company Name
+    type: text
+    dataType: text
+  - name: Company Domain
+    type: url
+    dataType: url
+  - name: Source Similarity Reason
+    type: text
+    dataType: text
+  - name: Company Description
+    type: text
+    dataType: text
+  - name: Target Industries
+    type: text
+    dataType: text
+  - name: Domain Normalized
+    type: formula
+    dataType: text
+    formula: "String({{Company Domain}} || '').replace(/^https?:\\/\\//,'').replace(/^www\\./,'').replace(/\\/$/,'').toLowerCase()"
+  - name: Ready For Fit QA
+    type: formula
+    dataType: text
+    formula: "{{Company Name}} && {{Domain Normalized}} ? 'Yes' : 'No'"
+  - name: Lookalike Fit AI
+    type: action
+    actionKey: use-ai
+    actionPackageId: 67ba01e9-1898-4e7d-afe7-7ebe24819a57
+    actionVersion: 1
+    dataType: json
+    runCondition: "{{Ready For Fit QA}} === 'Yes'"
+    inputs:
+      useCase: '"claygent"'
+      model: '"clay-argon"'
+      temperature: '"Low"'
+      prompt: >
+        "Classify this lookalike account for people-search triggering. Company: "+({{Company Name}} || "")+".
+        Domain: "+({{Domain Normalized}} || "")+". Similarity: "+({{Source Similarity Reason}} || "none")+".
+        Description: "+({{Company Description}} || "none")+". Target industries: "+({{Target Industries}} || "none")+".
+        Return JSON fields company_fit_status, fit_reason, recommended_role_lanes, exclusion_reason,
+        confidence, reasoning. Do not recommend people search for rejected or weak-fit accounts."
+    outputs:
+      - { name: company_fit_status, type: text, path: company_fit_status }
+      - { name: fit_reason, type: text, path: fit_reason }
+      - { name: recommended_role_lanes, type: text, path: recommended_role_lanes }
+      - { name: exclusion_reason, type: text, path: exclusion_reason }
+      - { name: confidence, type: text, path: confidence }
+      - { name: reasoning, type: text, path: reasoning }
+rows:
+  - Company Name: Example Co
+    Company Domain: https://example.com
+    Source Similarity Reason: Similar to seed account
+    Company Description: Example public-safe company description
+    Target Industries: B2B SaaS

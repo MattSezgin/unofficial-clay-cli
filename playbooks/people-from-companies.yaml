@@ -1,0 +1,125 @@
+playbookVersion: 1
+id: people-from-companies
+name: People From Companies
+status: draft
+purpose: >
+  Given company names and target job titles, create a deduplicated company list,
+  test company domain/LinkedIn discovery on a small sample, then create a people
+  table that finds matching people by job title at the verified companies.
+
+variables:
+  workspaceId: "${CLAY_WORKSPACE_ID}"
+  testFolderId: "${CLAY_TEST_FOLDER_ID}"
+  workbookId: "${CLAY_WORKBOOK_ID}"
+  aiModel: "${CLAY_AI_MODEL:-clay-argon}"
+
+inputs:
+  requiredColumns:
+    - company_name
+    - target_job_titles
+  optionalColumns:
+    - company_domain
+    - company_linkedin_url
+    - country
+    - exclude_reason
+  rowIdentity:
+    primary: company_domain
+    fallback:
+      - company_linkedin_url
+      - company_name
+
+sampleRows:
+  max: 10
+  recommended: 5
+  reason: "Test company matching quality before spending credits on the full list."
+
+safety:
+  allowedLiveWorkspace: "${CLAY_WORKSPACE_ID}"
+  allowedLiveFolder: "${CLAY_TEST_FOLDER_ID}"
+  requiresChatConfirmation:
+    - source-import
+    - action-run
+    - scale-beyond-sample
+  creditConsumingSteps:
+    - company_source_import
+    - people_source_import
+    - ai_quality_check
+
+workflow:
+  - id: normalize_company_input
+    type: local-or-formula
+    description: Normalize company names, strip suffixes, lowercase domains, and preserve original input.
+    outputs:
+      - normalized_company_name
+      - normalized_domain
+      - normalized_company_linkedin_url
+
+  - id: dedupe_companies
+    type: local-or-formula
+    description: Dedupe by normalized domain, then LinkedIn URL, then normalized company name.
+    outputs:
+      - company_dedupe_key
+      - duplicate_count
+      - duplicate_members
+
+  - id: sample_company_resolution
+    type: clay-source-or-ai
+    description: Import or enrich at most 10 companies to resolve domain and LinkedIn profile.
+    firstRunGate:
+      successMetric: "resolved_domain_or_linkedin_rate"
+      minimumPassRate: 0.8
+      inspect:
+        - company_name_match
+        - domain_match
+        - linkedin_company_match
+        - wrong_company_risk
+
+  - id: scale_company_resolution
+    type: gated-scale
+    description: Scale company resolution only after the sample pass rate is acceptable and user confirms.
+
+  - id: create_people_search_table
+    type: clay-people-source
+    description: Use verified companies and target job titles to find people.
+    notes:
+      - Prefer current-role title match.
+      - Use domain/LinkedIn URL where available, not only company name.
+      - Keep initial people import to 10 or fewer.
+
+  - id: people_quality_check
+    type: qa
+    description: Verify each person is at the intended company and title family.
+    outputs:
+      - person_match_status
+      - person_match_reason
+      - linkedin_profile_url
+
+scaleGate:
+  require:
+    - sampleCompanyRowsChecked
+    - samplePeopleRowsChecked
+    - noCriticalWrongCompanyMatches
+    - userConfirmedScale
+
+outputs:
+  readyColumns:
+    - company_name
+    - company_domain
+    - company_linkedin_url
+    - full_name
+    - job_title
+    - linkedin_profile_url
+    - person_match_status
+    - person_match_reason
+  qaViews:
+    - sample_company_resolution
+    - sample_people_resolution
+    - ready_to_export
+    - needs_manual_review
+    - rejected_wrong_company
+
+knownFailureModes:
+  - Company names can resolve to the wrong legal entity or regional subsidiary.
+  - Multiple target titles can return multiple people per company; dedupe at person LinkedIn URL.
+  - People-source imports are asynchronous; poll rows before judging output.
+  - Preview counts can differ from imported rows.

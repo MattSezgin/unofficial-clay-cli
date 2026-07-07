@@ -1,0 +1,42 @@
+promptVersion: 1
+id: conference-attendee-identity-enrichment
+playbookId: conference-attendee-identity-enrichment
+name: Conference Attendee Identity Prompt Contract
+purpose: Resolve and QA attendee person/company identity before enrichment or outreach.
+mode: claygent-and-qa
+valuePolicy: Omit row values from committed artifacts. Live attendee profiles and provider outputs stay in ignored runs or Clay.
+inputFields:
+  required:
+    - attendee_full_name
+    - attendee_company
+  optional:
+    - attendee_title
+    - attendee_linkedin_url
+    - company_domain
+    - company_linkedin_url
+    - country
+    - event_name
+    - raw_profile_text
+systemPrompt: >
+  You resolve conference attendee identity with strict current-company matching.
+  Prefer not found or review over a plausible but unverified LinkedIn profile.
+taskPrompt: >
+  Find or validate the attendee LinkedIn profile and company match. Return structured
+  identity fields, confidence, and reasoning suitable for extracted Clay columns.
+guardrails:
+  - Do not accept a LinkedIn profile unless name and current company/title evidence align.
+  - Return not_found when evidence is weak instead of guessing.
+  - Keep confidence consistent with found/not-found status and explain mismatches.
+  - Never invent a LinkedIn URL, company domain, or current title.
+outputSchema:
+  first_name: text
+  last_name: text
+  linkedin_url: text
+  matched_company: text
+  matched_title: text
+  confidence: text
+  reasoning: text
+qaChecks:
+  - not-found rows do not carry high confidence
+  - company mismatch routed to review
+  - extracted output fields are non-blank only when parent result supports them

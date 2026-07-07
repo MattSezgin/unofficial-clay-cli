@@ -1,0 +1,71 @@
+claySpecVersion: 1
+workspaceId: "${CLAY_WORKSPACE_ID}"
+workbookId: "${CLAY_WORKBOOK_ID}"
+table:
+  name: people-from-companies-company-stage-sample
+  type: spreadsheet
+view:
+  name: Company Resolution QA
+  type: grid
+fields:
+  - name: Company Name
+    type: text
+    dataType: text
+  - name: Target Job Titles
+    type: text
+    dataType: text
+  - name: Provided Domain
+    type: url
+    dataType: url
+  - name: Provided Company LinkedIn URL
+    type: url
+    dataType: url
+  - name: Country
+    type: text
+    dataType: text
+  - name: Company Name Normalized
+    type: formula
+    dataType: text
+    formula: "String({{Company Name}} || '').trim().toLowerCase().replace(/\\b(inc|llc|ltd|corp|corporation|gmbh|plc)\\b\\.?/g,'').replace(/\\s+/g,' ').trim()"
+  - name: Domain Normalized
+    type: formula
+    dataType: text
+    formula: "String({{Provided Domain}} || '').replace(/^https?:\\/\\//,'').replace(/^www\\./,'').replace(/\\/$/,'').toLowerCase()"
+  - name: Company LinkedIn Normalized
+    type: formula
+    dataType: text
+    formula: "String({{Provided Company LinkedIn URL}} || '').trim().replace(/\\/$/,'')"
+  - name: Company Dedupe Key
+    type: formula
+    dataType: text
+    formula: "{{Domain Normalized}} || {{Company LinkedIn Normalized}} || {{Company Name Normalized}}"
+  - name: Run Company Resolution
+    type: formula
+    dataType: text
+    formula: "{{Company Name Normalized}} ? 'Yes' : 'No'"
+  - name: Resolved Domain
+    type: text
+    dataType: text
+  - name: Resolved Company LinkedIn URL
+    type: url
+    dataType: url
+  - name: Company Match Status
+    type: text
+    dataType: text
+  - name: Company Match Reason
+    type: text
+    dataType: text
+  - name: Ready For People Search
+    type: formula
+    dataType: text
+    formula: "({{Company Match Status}} === 'match' && ({{Resolved Domain}} || {{Resolved Company LinkedIn URL}})) ? 'Yes' : 'No'"
+rows:
+  - Company Name: Example Co
+    Target Job Titles: VP Marketing; Head of Growth
+    Provided Domain: https://example.com
+    Provided Company LinkedIn URL: ""
+    Country: United States
+    Resolved Domain: ""
+    Resolved Company LinkedIn URL: ""
+    Company Match Status: sample_pending
+    Company Match Reason: sample_pending

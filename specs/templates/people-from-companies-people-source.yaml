@@ -1,0 +1,71 @@
+workspaceId: "${CLAY_WORKSPACE_ID}"
+source:
+  type: people
+  limit: 10
+  filters:
+    about_keywords: []
+    certification_keywords: []
+    company_description_keywords: []
+    company_description_keywords_exclude: []
+    # Required for Clay's company include filter: populate with the selected company domains.
+    # Record IDs/table IDs alone are not enough for source-preview/source-import.
+    company_identifier: []
+    company_record_id: []
+    company_table_id: ""
+    company_table_view_id: null
+    company_table_field_id: null
+    company_sizes: []
+    company_industries_include: []
+    company_industries_exclude: []
+    company_annual_revenues: []
+    include_company_filter_bitmap: null
+    include_company_filter_identifier_count: 0
+    current_role_max_months_since_start_date: null
+    current_role_min_months_since_start_date: null
+    exclude_entities_configuration: []
+    exclude_people_identifiers_mixed: []
+    experience_count: null
+    connection_count: null
+    follower_count: 10
+    max_connection_count: null
+    max_experience_count: null
+    max_follower_count: 20000
+    exclude_entities_bitmap: null
+    exclude_entity_bitmap: null
+    previous_entities_bitmap: null
+    headline_keywords: []
+    include_past_experiences: false
+    job_description_keywords: []
+    job_functions: []
+    job_title_mode: smart
+    job_title_exact_keyword_match: null
+    job_title_exact_match: null
+    job_title_exclude_keywords: []
+    job_title_keywords: []
+    job_title_seniority_levels: []
+    job_title_seniority_levels_v2: []
+    job_title_seniority_match_mode: exact
+    languages: []
+    locations: []
+    locations_exclude: []
+    location_cities_exclude: []
+    location_cities_include: []
+    location_countries_exclude: []
+    location_countries_include: []
+    location_regions_exclude: []
+    location_regions_include: []
+    location_states_exclude: []
+    location_states_include: []
+    name: ""
+    names: []
+    profile_keywords: []
+    school_names: []
+    role_range_end_month: null
+    role_range_start_month: null
+    search_raw_location: false
+    start_from_method: query
+  extract:
+    - { name: Full Name, type: text, path: name }
+    - { name: Job Title, type: text, path: latest_experience_title }
+    - { name: LinkedIn Profile, type: text, path: url }
+    - { name: Current Company, type: text, path: latest_experience_company_name }

@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "clay-cli/community/template",
+  "title": "Community workflow template",
+  "description": "A shared Clay workflow template. Strict by design: there is no field that can carry raw table exports, API keys, webhook URLs, or real resource IDs. Values are validated shape-first; the repo-wide secret scanner runs on top of this.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "title", "author", "category", "description", "inputs", "steps"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{2,60}$",
+      "description": "kebab-case slug; must match the folder name community/templates/<id>/"
+    },
+    "title": { "type": "string", "minLength": 4, "maxLength": 80 },
+    "author": {
+      "type": "string",
+      "pattern": "^([a-zA-Z0-9](?:[a-zA-Z0-9]|-(?=[a-zA-Z0-9])){0,38}|anonymous)$",
+      "description": "GitHub handle (must match a community/contributors/<handle>/profile.yaml) or 'anonymous'"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["enrichment", "scoring", "sourcing", "outreach-prep", "crm-sync", "data-cleaning", "qa", "other"]
+    },
+    "description": { "type": "string", "minLength": 20, "maxLength": 600 },
+    "maturity": { "type": "string", "enum": ["shared", "validated"], "default": "shared" },
+    "credits_note": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "Honest cost note, e.g. '~2 credits per row via provider X'"
+    },
+    "inputs": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 30,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "type"],
+        "properties": {
+          "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,40}$" },
+          "type": { "type": "string", "enum": ["text", "url", "number", "email-like", "select"] },
+          "required": { "type": "boolean", "default": false },
+          "example": {
+            "type": "string",
+            "maxLength": 80,
+            "pattern": "^[^\\n]{0,80}$",
+            "description": "Synthetic example only - the scanner rejects anything shaped like a real ID, key, or webhook"
+          },
+          "description": { "type": "string", "maxLength": 200 }
+        }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 40,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["field", "kind"],
+        "properties": {
+          "field": { "type": "string", "minLength": 1, "maxLength": 80 },
+          "kind": { "type": "string", "enum": ["action", "formula", "use-ai", "http-placeholder", "lookup", "source"] },
+          "action_key": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{1,80}$",
+            "description": "For kind=action: a key from integration-library/registry.yaml"
+          },
+          "inputs_binding": {
+            "type": "object",
+            "maxProperties": 30,
+            "additionalProperties": false,
+            "patternProperties": {
+              "^[a-z][a-z0-9_]{0,60}$": {
+                "type": "string",
+                "maxLength": 120,
+                "pattern": "^(\\{\\{[a-z][a-z0-9_]{0,40}\\}\\}|\\$\\{[A-Z][A-Z0-9_]{0,40}\\}|[A-Za-z0-9 ,.'&()\\-_]{0,120})$",
+                "description": "A {{template_var}}, an ${ENV_PLACEHOLDER}, or a short plain literal. URLs, colons, slashes, and long tokens are structurally impossible here - that is where keys leak from Clay HTTP columns."
+              }
+            }
+          },
+          "run_condition_note": { "type": "string", "maxLength": 300 },
+          "prompt_contract": {
+            "type": "string",
+            "maxLength": 4000,
+            "description": "For kind=use-ai: the prompt with {{variables}}. The scanner rejects real IDs/keys/URLs-with-tokens inside prompts."
+          },
+          "notes": { "type": "string", "maxLength": 500 }
+        }
+      }
+    },
+    "first_run": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sample_rows": { "type": "integer", "minimum": 1, "maximum": 10 },
+        "quality_checks": { "type": "array", "maxItems": 15, "items": { "type": "string", "maxLength": 300 } }
+      },
+      "description": "Safety contract: templates must tell users to try <=10 rows first"
+    }
+  }
+}

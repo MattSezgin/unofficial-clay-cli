@@ -1,0 +1,17 @@
+# gitleaks config - default rules plus allowlist for the redaction-engine
+# test fixtures, whose purpose is containing FAKE secret-shaped values.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Fake fixtures that test the redaction engine + npm lockfile hashes"
+paths = [
+  '''test-redaction\.js''',
+  '''test/redaction-input\.json''',
+  '''test-proof-packet\.js''',
+  '''package-lock\.json''',
+]
+regexes = [
+  '''FAKESECRET''',
+  '''FAKEWEBHOOK''',
+]

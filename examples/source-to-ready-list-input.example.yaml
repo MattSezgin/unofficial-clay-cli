@@ -1,0 +1,22 @@
+request:
+  playbook: source-to-ready-list
+  clientContext: "Generic public-safe example"
+  sourceMode: companies_then_people
+  sampleRows: 10
+
+brief:
+  icp_description: "B2B software companies that sell to operations or revenue teams."
+  target_titles_or_personas: "Revenue Operations, Sales Operations, Growth, and Demand Generation leaders."
+  geography: "United States and Canada"
+  exclusion_rules: "Exclude agencies, consultants, existing customers, competitors, students, and personal email domains."
+  lookalike_customers: "Use public-safe example brands only; do not include private customer data."
+  technologies: "CRM, marketing automation, enrichment, or data warehouse tools."
+  employee_range: "50-1000"
+  industry_filters: "Software and internet services"
+  competitor_context: "Avoid matching companies whose primary offer is identical to the sender's category."
+
+quality:
+  minimumQualifiedCompanyRate: 0.7
+  minimumReadyContactRate: 0.6
+  scaleOnlyAfterConfirmation: true
+

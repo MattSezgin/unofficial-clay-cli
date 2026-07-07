@@ -1,0 +1,29 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: snov-domain-by-company-name
+promotionStatus: battle-tested
+proofStatus: real_data_output_verified
+strictBattleTested: true
+field:
+  name: Snov Domain By Company Name
+  type: action
+  actionKey: snov-domain-by-company-name
+  actionPackageId: d8c220e0-401e-49ca-8c6b-37c7577baffd
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: ${CLAY_SNOV_DOMAIN_BY_COMPANY_NAME_AUTH_ACCOUNT_ID}
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    companyName: ${SNOV_DOMAIN_BY_COMPANY_NAME_COMPANYNAME}
+  optionalInputs: {}
+  extractedOutputPaths: []
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: <example-id>
+  viewId: <example-id>
+  fieldId: <example-id>
+  sourceId: null
+  rowLimit: 10
+  artifacts: []
+blockedReason: null

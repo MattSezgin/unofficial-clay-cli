@@ -1,0 +1,24 @@
+request:
+  playbook: conference-attendee-identity-enrichment
+  clientContext: "Generic public-safe example"
+  rowCount: 10
+
+columns:
+  attendee_full_name: Attendee Full Name
+  attendee_company: Attendee Company
+  attendee_title: Attendee Title
+  attendee_linkedin_url: Attendee LinkedIn URL
+  company_domain: Company Domain
+  company_linkedin_url: Company LinkedIn URL
+  country: Country
+  event_role: Event Role
+  raw_profile_text: Raw Profile Text
+
+brief:
+  event_name: Example Conference
+  identity_policy: Require name and current-company match before enrichment or campaign activation.
+
+quality:
+  requireCurrentEmploymentMatch: true
+  requireNotFoundRowsLowConfidence: true
+  scaleOnlyAfterConfirmation: true

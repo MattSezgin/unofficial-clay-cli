@@ -1,0 +1,99 @@
+playbookVersion: 1
+id: webhook-enrichment
+name: Webhook Enrichment
+status: draft
+purpose: >
+  Turn a Clay table into a small enrichment service: receive one JSON payload,
+  enrich it, and optionally callback to a downstream system.
+
+variables:
+  workspaceId: "${CLAY_WORKSPACE_ID}"
+  testFolderId: "${CLAY_TEST_FOLDER_ID}"
+  workbookId: "${CLAY_WORKBOOK_ID}"
+  aiModel: "${CLAY_AI_MODEL:-clay-argon}"
+  callbackUrl: "${CLAY_CALLBACK_URL}"
+
+inputs:
+  requiredPayloadFields:
+    - request_id
+    - company_name
+  optionalPayloadFields:
+    - company_domain
+    - person_name
+    - job_title
+    - source_context
+
+sampleRows:
+  max: 1
+  recommended: 1
+  reason: "Webhook tests should start with a single synthetic payload."
+
+safety:
+  requiresChatConfirmation:
+    - webhook-source-create
+    - webhook-test-post
+    - action-run
+    - callback-run
+  creditConsumingSteps:
+    - enrichment_actions
+    - ai_summary
+
+workflow:
+  - id: create_webhook_source
+    type: clay-webhook-source
+    description: Create a webhook source in the allowed test folder and redact the URL immediately.
+    outputs:
+      - webhook_source_id
+      - webhook_url_redacted
+
+  - id: post_single_test_payload
+    type: external-test
+    description: Send one synthetic JSON payload with no client PII.
+    outputs:
+      - created_record_id
+      - intake_status
+
+  - id: enrich_payload
+    type: actions
+    outputs:
+      - enrichment_status
+      - enrichment_result
+      - enrichment_errors
+
+  - id: callback
+    type: http-api
+    runCondition: "{{Enrichment Status}} === 'success'"
+    description: POST sanitized result to callback URL if configured.
+    outputs:
+      - callback_status
+      - callback_response
+
+firstRunGate:
+  inspect:
+    - webhook_redaction
+    - one_payload_one_row
+    - enrichment_status
+    - callback_payload_redaction
+  passCriteria:
+    - "Webhook URL is not printed or committed in raw form."
+    - "One POST creates exactly one row."
+    - "Callback body contains no secrets."
+
+outputs:
+  readyColumns:
+    - request_id
+    - intake_status
+    - enrichment_status
+    - enrichment_result
+    - callback_status
+  qaViews:
+    - webhook_intake
+    - successful_enrichments
+    - failed_enrichments
+    - callback_failures
+
+knownFailureModes:
+  - Webhook URL is sensitive and usually displayed only once.
+  - Arrays in a webhook payload become one row, not many rows.
+  - In-flight actions may still consume credits after a stop.
+  - Callback URLs and payloads need redaction before artifact storage.

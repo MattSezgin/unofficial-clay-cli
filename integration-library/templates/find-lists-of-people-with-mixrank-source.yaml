@@ -1,0 +1,42 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: find-lists-of-people-with-mixrank-source
+promotionStatus: battle-tested
+proofStatus: real_data_output_verified
+strictBattleTested: true
+field:
+  name: Find Lists Of People With Mixrank Source
+  type: action
+  actionKey: find-lists-of-people-with-mixrank-source
+  actionPackageId: e251a70e-46d7-4f3a-b3ef-a211ad3d8bd2
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: null
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    limit: ${FIND_LISTS_OF_PEOPLE_WITH_MIXRANK_SOURCE_LIMIT}
+    company_table_id: ${FIND_LISTS_OF_PEOPLE_WITH_MIXRANK_SOURCE_COMPANY_TABLE_ID}
+    company_record_id: ${FIND_LISTS_OF_PEOPLE_WITH_MIXRANK_SOURCE_COMPANY_RECORD_ID}
+    company_identifier: ${FIND_LISTS_OF_PEOPLE_WITH_MIXRANK_SOURCE_COMPANY_IDENTIFIER}
+    start_from_method: ${FIND_LISTS_OF_PEOPLE_WITH_MIXRANK_SOURCE_START_FROM_METHOD}
+  optionalInputs:
+    job_title_keywords: ${FIND_LISTS_OF_PEOPLE_WITH_MIXRANK_SOURCE_JOB_TITLE_KEYWORDS:-}
+    job_title_seniority_levels: ${FIND_LISTS_OF_PEOPLE_WITH_MIXRANK_SOURCE_JOB_TITLE_SENIORITY_LEVELS:-}
+    locations: ${FIND_LISTS_OF_PEOPLE_WITH_MIXRANK_SOURCE_LOCATIONS:-}
+    locations_exclude: ${FIND_LISTS_OF_PEOPLE_WITH_MIXRANK_SOURCE_LOCATIONS_EXCLUDE:-}
+    include_company_filter_identifier_count: ${FIND_LISTS_OF_PEOPLE_WITH_MIXRANK_SOURCE_INCLUDE_COMPANY_FILTER_IDENTIFIER_COUNT:-}
+  extractedOutputPaths:
+    - full_name
+    - linkedin_url
+    - title
+    - latest_experience_company
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: <example-id>
+  viewId: <example-id>
+  fieldId: null
+  sourceId: s_TEST_SOURCE
+  rowLimit: 10
+  artifacts: []
+blockedReason: null

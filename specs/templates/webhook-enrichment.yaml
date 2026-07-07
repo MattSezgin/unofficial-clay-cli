@@ -1,0 +1,63 @@
+claySpecVersion: 1
+workspaceId: "${CLAY_WORKSPACE_ID}"
+workbookId: "${CLAY_WORKBOOK_ID}"
+table:
+  name: webhook-enrichment-sample
+  type: spreadsheet
+view:
+  name: Webhook Enrichment QA
+  type: grid
+fields:
+  - name: Request ID
+    type: text
+    dataType: text
+  - name: Company Name
+    type: text
+    dataType: text
+  - name: Company Domain
+    type: url
+    dataType: url
+  - name: Person Name
+    type: text
+    dataType: text
+  - name: Job Title
+    type: text
+    dataType: text
+  - name: Source Context
+    type: text
+    dataType: text
+  - name: Intake Status
+    type: formula
+    dataType: text
+    formula: "{{Request ID}} && {{Company Name}} ? 'accepted' : 'missing_required_payload_fields'"
+  - name: Domain Normalized
+    type: formula
+    dataType: text
+    formula: "String({{Company Domain}} || '').replace(/^https?:\\/\\//,'').replace(/^www\\./,'').replace(/\\/$/,'').toLowerCase()"
+  - name: Enrichment Status
+    type: text
+    dataType: text
+  - name: Enrichment Result
+    type: text
+    dataType: text
+  - name: Enrichment Errors
+    type: text
+    dataType: text
+  - name: Callback Status
+    type: text
+    dataType: text
+  - name: Callback Response
+    type: text
+    dataType: text
+rows:
+  - Request ID: sample-request-1
+    Company Name: Example Co
+    Company Domain: https://example.com
+    Person Name: Jane Doe
+    Job Title: VP Marketing
+    Source Context: synthetic sample payload
+    Enrichment Status: sample_pending
+    Enrichment Result: sample_pending
+    Enrichment Errors: ""
+    Callback Status: not_run
+    Callback Response: ""

@@ -1,0 +1,31 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: icypeas-enrich-profile
+promotionStatus: reviewed
+proofStatus: blocked_missing_safe_test_data
+strictBattleTested: false
+field:
+  name: Icypeas Enrich Profile
+  type: action
+  actionKey: icypeas-enrich-profile
+  actionPackageId: 303cd8bc-26dc-4c8c-bd5a-e94528d6c77d
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: null
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    linkedin_url: ${ICYPEAS_ENRICH_PROFILE_LINKEDIN_URL}
+  optionalInputs: {}
+  extractedOutputPaths: []
+proof:
+  workspaceId: null
+  workbookId: null
+  tableId: null
+  viewId: null
+  fieldId: null
+  sourceId: null
+  rowLimit: null
+  artifacts: []
+blockedReason: Gap audit found export evidence for Icypeas profile enrichment,
+  but no sandbox <=10-row run/readback/fullValue/extracted output proof exists
+  yet.

@@ -1,0 +1,83 @@
+claySpecVersion: 1
+workspaceId: "${CLAY_WORKSPACE_ID}"
+workbookId: "${CLAY_WORKBOOK_ID}"
+table:
+  name: crm-enrichment-export-sample
+  type: spreadsheet
+view:
+  name: CRM Enrichment Export QA
+  type: grid
+fields:
+  - name: CRM Record ID
+    type: text
+    dataType: text
+  - name: Company Name
+    type: text
+    dataType: text
+  - name: Company Domain
+    type: url
+    dataType: url
+  - name: Account Owner
+    type: text
+    dataType: text
+  - name: Lifecycle Stage
+    type: text
+    dataType: text
+  - name: ARR
+    type: text
+    dataType: text
+  - name: Industry
+    type: text
+    dataType: text
+  - name: Employee Count
+    type: number
+    dataType: number
+  - name: Notes
+    type: text
+    dataType: text
+  - name: CRM Record ID String
+    type: formula
+    dataType: text
+    formula: "String({{CRM Record ID}} || '').trim()"
+  - name: Company Name Clean
+    type: formula
+    dataType: text
+    formula: "String({{Company Name}} || '').trim()"
+  - name: Domain Normalized
+    type: formula
+    dataType: text
+    formula: "String({{Company Domain}} || '').replace(/^https?:\\/\\//,'').replace(/^www\\./,'').replace(/\\/$/,'').toLowerCase()"
+  - name: Account Dedupe Key
+    type: formula
+    dataType: text
+    formula: "{{Domain Normalized}} || {{CRM Record ID String}} || String({{Company Name Clean}} || '').toLowerCase()"
+  - name: Segment
+    type: text
+    dataType: text
+  - name: Segment Reason
+    type: text
+    dataType: text
+  - name: Import Action
+    type: formula
+    dataType: text
+    formula: "{{CRM Record ID String}} ? 'update_existing' : 'blocked_missing_crm_id'"
+  - name: Import Ready
+    type: formula
+    dataType: text
+    formula: "{{CRM Record ID String}} && {{Company Name Clean}} ? 'Yes' : 'No'"
+  - name: Import Blocker
+    type: formula
+    dataType: text
+    formula: "{{Import Ready}} === 'Yes' ? '' : (!{{CRM Record ID String}} ? 'missing_crm_record_id' : 'missing_company_name')"
+rows:
+  - CRM Record ID: "1234567890123456789"
+    Company Name: Example Co
+    Company Domain: https://example.com
+    Account Owner: Owner Name
+    Lifecycle Stage: Customer
+    ARR: "100000"
+    Industry: B2B SaaS
+    Employee Count: 250
+    Notes: sample row only
+    Segment: sample_pending
+    Segment Reason: sample_pending

@@ -1,0 +1,33 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: leadmagic-enrich-company
+promotionStatus: reviewed
+proofStatus: blocked_external_dependency
+strictBattleTested: false
+field:
+  name: Leadmagic Enrich Company
+  type: action
+  actionKey: leadmagic-enrich-company
+  actionPackageId: edb58209-a62d-42be-992a-e41b87eeacc2
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: ${CLAY_LEADMAGIC_ENRICH_COMPANY_AUTH_ACCOUNT_ID}
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    domain: ${LEADMAGIC_ENRICH_COMPANY_DOMAIN}
+  optionalInputs:
+    company_name: ${LEADMAGIC_ENRICH_COMPANY_COMPANY_NAME:-}
+    company_linkedin_url: ${LEADMAGIC_ENRICH_COMPANY_COMPANY_LINKEDIN_URL:-}
+  extractedOutputPaths: []
+proof:
+  workspaceId: null
+  workbookId: null
+  tableId: null
+  viewId: null
+  fieldId: null
+  sourceId: null
+  rowLimit: null
+  artifacts: []
+blockedReason: Gap audit found export evidence for LeadMagic company enrichment,
+  but current LeadMagic auth paths already showed Forbidden/Bad Request failures
+  in related LeadMagic proofs. Needs safe working auth before promotion.

@@ -1,0 +1,38 @@
+promptVersion: 1
+id: crm-enrichment-export
+playbookId: crm-enrichment-export
+name: CRM Enrichment Classification Prompt Contract
+purpose: Enrich and classify CRM export rows for clean re-import.
+mode: use-ai
+valuePolicy: Omit CRM row values from committed artifacts. Preserve IDs as strings in ignored artifacts only.
+inputFields:
+  required:
+    - crm_record_id
+    - company_name
+    - company_domain
+    - account_owner
+    - lifecycle_stage
+  optional:
+    - arr
+    - industry
+    - employee_count
+    - notes
+systemPrompt: >
+  You classify CRM account rows for operations cleanup. Be conservative and preserve import safety.
+taskPrompt: >
+  Assign a normalized segment, explain the reason, and identify whether the row is import-ready or needs review.
+guardrails:
+  - Never alter CRM record IDs.
+  - Do not infer segment from account name alone when website or notes conflict.
+  - Preserve uncertainty as REVIEW.
+  - Keep output stable for CSV/JSON import.
+outputSchema:
+  normalized_segment: text
+  segment_reason: text
+  import_ready_status: text
+  missing_fields: text
+  confidence_score: number
+qaChecks:
+  - record IDs preserved as strings
+  - REVIEW rows separated
+  - import-ready fields are stable

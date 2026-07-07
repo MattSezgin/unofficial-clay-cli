@@ -1,0 +1,35 @@
+# Public-safe Clay CLI profile template.
+#
+# Copy to a local ignored config file or map these values from environment.
+# Do not put session cookies, API keys, webhook URLs, app account IDs, or client
+# row data in committed profiles.
+
+profiles:
+  default:
+    workspaceId: "${CLAY_WORKSPACE_ID}"
+    testFolderId: "${CLAY_TEST_FOLDER_ID}"
+    defaultWorkbookId: "${CLAY_DEFAULT_WORKBOOK_ID}"
+    defaultModel: "clay-argon"
+    maxSampleRows: 10
+    requireChatConfirmationFor:
+      - mutating
+      - destructive
+      - credit-consuming
+      - source-preview
+      - source-import
+      - browser-capture
+
+  # Example second profile: a stricter sandbox scope for testing new playbooks.
+  yourTestProfile:
+    workspaceId: "${CLAY_WORKSPACE_ID}"
+    testFolderId: "${CLAY_SANDBOX_FOLDER_ID}"
+    defaultWorkbookId: "${CLAY_SANDBOX_WORKBOOK_ID}"
+    defaultModel: "clay-argon"
+    maxSampleRows: 10
+    requireChatConfirmationFor:
+      - mutating
+      - destructive
+      - credit-consuming
+      - source-preview
+      - source-import
+      - browser-capture

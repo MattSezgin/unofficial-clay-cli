@@ -1,0 +1,55 @@
+claySpecVersion: 1
+workspaceId: "${CLAY_WORKSPACE_ID}"
+workbookId: "${CLAY_SCRATCH_WORKBOOK_ID}"
+table:
+  name: table-audit-clone-sample
+  type: spreadsheet
+view:
+  name: Audit Clone QA
+  type: grid
+fields:
+  - name: Source Table ID
+    type: text
+    dataType: text
+  - name: Source View ID
+    type: text
+    dataType: text
+  - name: Source Field Count
+    type: number
+    dataType: number
+  - name: Source Action Count
+    type: number
+    dataType: number
+  - name: Manifest Redacted Path
+    type: text
+    dataType: text
+  - name: Verification Error Count
+    type: number
+    dataType: number
+  - name: Verification Warning Count
+    type: number
+    dataType: number
+  - name: Unsupported Features
+    type: text
+    dataType: text
+  - name: Clone Readiness
+    type: formula
+    dataType: text
+    formula: "{{Verification Error Count}} === 0 && !{{Unsupported Features}} ? 'ready_for_scratch_clone' : 'needs_manual_repair_plan'"
+  - name: Repair Plan Summary
+    type: text
+    dataType: text
+  - name: Parity Score
+    type: text
+    dataType: text
+rows:
+  - Source Table ID: "${CLAY_SOURCE_TABLE_ID}"
+    Source View ID: "${CLAY_SOURCE_VIEW_ID}"
+    Source Field Count: 0
+    Source Action Count: 0
+    Manifest Redacted Path: ""
+    Verification Error Count: 0
+    Verification Warning Count: 0
+    Unsupported Features: ""
+    Repair Plan Summary: sample_pending
+    Parity Score: sample_pending

@@ -1,0 +1,63 @@
+claySpecVersion: 1
+workspaceId: "${CLAY_WORKSPACE_ID}"
+workbookId: "${CLAY_WORKBOOK_ID}"
+table:
+  name: source-to-ready-list-sample
+  type: spreadsheet
+view:
+  name: Source To Ready QA
+  type: grid
+fields:
+  - name: Company Name
+    type: text
+    dataType: text
+  - name: Company Domain
+    type: url
+    dataType: url
+  - name: Company LinkedIn URL
+    type: url
+    dataType: url
+  - name: Industry
+    type: text
+    dataType: text
+  - name: Location
+    type: text
+    dataType: text
+  - name: Target Titles
+    type: text
+    dataType: text
+  - name: Exclusion Rule Match
+    type: text
+    dataType: text
+  - name: Domain Normalized
+    type: formula
+    dataType: text
+    formula: "String({{Company Domain}} || '').replace(/^https?:\\/\\//,'').replace(/^www\\./,'').replace(/\\/$/,'').toLowerCase()"
+  - name: Company Dedupe Key
+    type: formula
+    dataType: text
+    formula: "{{Domain Normalized}} || String({{Company LinkedIn URL}} || '').trim().replace(/\\/$/,'') || String({{Company Name}} || '').trim().toLowerCase()"
+  - name: Qualification Status
+    type: text
+    dataType: text
+  - name: Qualification Reason
+    type: text
+    dataType: text
+  - name: Ready Status
+    type: formula
+    dataType: text
+    formula: "{{Exclusion Rule Match}} ? 'rejected' : ({{Qualification Status}} === 'qualified' ? 'ready' : 'needs_review')"
+  - name: Review Reason
+    type: formula
+    dataType: text
+    formula: "{{Ready Status}} === 'rejected' ? {{Exclusion Rule Match}} : ({{Ready Status}} === 'needs_review' ? ({{Qualification Reason}} || 'qualification_pending') : '')"
+rows:
+  - Company Name: Example Co
+    Company Domain: https://example.com
+    Company LinkedIn URL: ""
+    Industry: B2B SaaS
+    Location: United States
+    Target Titles: VP Marketing; Head of Growth
+    Exclusion Rule Match: ""
+    Qualification Status: sample_pending
+    Qualification Reason: sample_pending

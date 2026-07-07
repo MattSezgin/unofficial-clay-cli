@@ -1,0 +1,168 @@
+playbookVersion: 1
+id: campaign-activation-with-status-lookup
+name: Campaign Activation With Status Lookup
+status: draft
+purpose: >
+  Build an activation table that checks existing campaign status, colleague or
+  account context, sendability, and AI personalization before adding leads to an
+  outbound campaign through Smartlead, Instantly, or another connected
+  sequencer.
+variables:
+  workspaceId: ${CLAY_WORKSPACE_ID}
+  testFolderId: ${CLAY_TEST_FOLDER_ID}
+  workbookId: ${CLAY_WORKBOOK_ID}
+  sequencer: ${OUTBOUND_SEQUENCER:-smartlead}
+  campaignId: ${OUTBOUND_CAMPAIGN_ID}
+  aiModel: ${CLAY_AI_MODEL:-clay-argon}
+inputs:
+  requiredColumns:
+    - email
+    - first_name
+    - last_name
+    - company_name
+    - company_domain
+  optionalColumns:
+    - title
+    - linkedin_url
+    - account_segment
+    - previous_campaign_id
+    - colleague_emails
+    - personalization_context
+    - exclusion_reason
+sampleRows:
+  max: 10
+  recommended: 10
+  reason: Campaign-add actions are mutating and can create messy sequencer state;
+    test status lookup and gating on a small sample first.
+safety:
+  requiresChatConfirmation:
+    - campaign-status-lookup
+    - add-lead-to-campaign
+    - bulk-upload-or-scale
+    - destructive-cleanup
+  creditConsumingSteps:
+    - ai_personalization
+    - optional_email_validation
+  mutatingSteps:
+    - add_lead_to_campaign
+  readOnlySteps:
+    - lookup_existing_campaign_status
+    - lookup_colleague_context
+    - qa_manifest_readback
+workflow:
+  - id: normalize_send_fields
+    type: formula
+    description: Normalize email, name, company, domain, and dedupe key.
+    outputs:
+      - email_normalized
+      - full_name
+      - domain_normalized
+      - lead_key
+      - required_fields_present
+  - id: lookup_existing_lead_status
+    type: provider-action
+    description: Query campaign or CRM status so existing leads, bounces, and
+      do-not-contact rows are excluded.
+    runCondition: "{{email_normalized}} !== ''"
+    outputs:
+      - existing_lead_status
+      - existing_campaign_status
+      - prior_reply_category
+      - prior_bounce_status
+      - suppression_reason
+  - id: lookup_colleague_or_account_context
+    type: table-lookup
+    description: Pull colleague/account context for personalization and dedupe risk.
+    runCondition: "{{domain_normalized}} !== ''"
+    outputs:
+      - colleague_count
+      - colleague_titles
+      - account_context
+      - active_account_match
+  - id: optional_email_validation
+    type: provider-action
+    description: Validate email where verification is not already available.
+    runCondition: "{{email_normalized}} !== '' && {{verification_status}} === ''"
+    outputs:
+      - verification_status
+      - verification_reason
+  - id: personalize_or_route
+    type: ai-action
+    outputFormat: JSONSchema
+    description: Produce send decision and personalization inputs from
+      lead/account/campaign context.
+    runCondition: "{{required_fields_present}} === true"
+    promptInputs:
+      - first_name
+      - title
+      - company_name
+      - account_context
+      - colleague_titles
+      - existing_lead_status
+      - prior_reply_category
+      - personalization_context
+    outputs:
+      - send_decision
+      - campaign_lane
+      - personalization_angle
+      - risk_flag
+      - exclusion_reason
+      - reasoning
+  - id: final_launch_gate
+    type: formula
+    description: Combine status lookup, verification, suppression, and AI decision
+      into one operator-safe launch flag.
+    outputs:
+      - final_launch_decision
+      - final_block_reason
+      - sequencer_payload_ready
+  - id: add_to_campaign
+    type: sequencer-action
+    description: Add only safe rows to the selected campaign.
+    runCondition: "{{final_launch_decision}} === 'launch' &&
+      {{sequencer_payload_ready}} === true"
+    outputs:
+      - campaign_add_status
+      - campaign_lead_id
+      - campaign_add_error
+firstRunGate:
+  inspect:
+    - existing_status_distribution
+    - rows_blocked_before_campaign_add
+    - campaign_add_status_counts
+    - payload_field_readback
+    - accidental_duplicate_or_suppressed_rows
+  passCriteria:
+    - No row with prior negative status, bounce, DNC, or suppression reason
+      reaches campaign-add.
+    - Campaign-add action is gated by a final launch formula, not by raw AI
+      output alone.
+    - Every launched row has normalized email and required personalization
+      fields.
+outputs:
+  readyColumns:
+    - email_normalized
+    - full_name
+    - company_name
+    - existing_lead_status
+    - verification_status
+    - send_decision
+    - campaign_lane
+    - personalization_angle
+    - final_launch_decision
+    - campaign_add_status
+    - final_block_reason
+  qaViews:
+    - launch_ready
+    - suppressed_or_prior_negative
+    - missing_required_fields
+    - campaign_add_errors
+    - personalization_review
+knownFailureModes:
+  - Sequencer lead records can be shared across campaigns; updating fields may
+    affect other campaign memberships.
+  - Campaign status endpoints may not expose all reply categories; combine
+    campaign lookup with lead/category lookup when available.
+  - AI personalization should not override hard suppression or validation blocks.
+  - Add-to-campaign actions are mutating; never run them in a broad sample
+    without exact scope confirmation.

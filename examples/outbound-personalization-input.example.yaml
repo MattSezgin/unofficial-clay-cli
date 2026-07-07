@@ -1,0 +1,21 @@
+request:
+  playbook: outbound-personalization
+  clientContext: "Generic public-safe example"
+  rowCount: 10
+
+columns:
+  company_name: Company Name
+  company_domain: Company Domain
+  persona_or_title: Persona or Title
+  first_name: First Name
+  linkedin_url: LinkedIn URL
+  industry: Industry
+  employee_count: Employee Count
+  signal: Signal
+  case_study: Case Study
+  product_context: Product Context
+
+quality:
+  minimumUsableEmailAngleRate: 0.8
+  requireNoCriticalHallucinations: true
+  scaleOnlyAfterConfirmation: true

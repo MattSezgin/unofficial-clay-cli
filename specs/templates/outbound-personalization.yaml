@@ -1,0 +1,115 @@
+claySpecVersion: 1
+workspaceId: "${CLAY_WORKSPACE_ID}"
+workbookId: "${CLAY_WORKBOOK_ID}"
+table:
+  name: outbound-personalization-sample
+  type: spreadsheet
+view:
+  name: Outbound Personalization QA
+  type: grid
+fields:
+  - name: Company Name
+    type: text
+    dataType: text
+  - name: Company Domain
+    type: url
+    dataType: url
+  - name: Persona or Title
+    type: text
+    dataType: text
+  - name: First Name
+    type: text
+    dataType: text
+  - name: LinkedIn URL
+    type: url
+    dataType: url
+  - name: Industry
+    type: text
+    dataType: text
+  - name: Employee Count
+    type: number
+    dataType: number
+  - name: Signal
+    type: text
+    dataType: text
+  - name: Case Study
+    type: text
+    dataType: text
+  - name: Product Context
+    type: text
+    dataType: text
+  - name: Exclude Reason
+    type: text
+    dataType: text
+  - name: Domain Normalized
+    type: formula
+    dataType: text
+    formula: "String({{Company Domain}} || '').replace(/^https?:\\/\\//,'').replace(/^www\\./,'').replace(/\\/$/,'').toLowerCase()"
+  - name: First Name Clean
+    type: formula
+    dataType: text
+    formula: "String({{First Name}} || '').trim()"
+  - name: Company Name Clean
+    type: formula
+    dataType: text
+    formula: "String({{Company Name}} || '').trim()"
+  - name: Signal Or None
+    type: formula
+    dataType: text
+    formula: "String({{Signal}} || '').trim() || 'none'"
+  - name: Run Personalization
+    type: formula
+    dataType: text
+    formula: "({{Company Name Clean}} && {{Domain Normalized}} && {{Persona or Title}} && !{{Exclude Reason}}) ? 'Yes' : 'No'"
+  - name: AI Personalization
+    type: action
+    actionKey: use-ai
+    actionPackageId: 67ba01e9-1898-4e7d-afe7-7ebe24819a57
+    actionVersion: 1
+    dataType: json
+    runCondition: "{{Run Personalization}} === 'Yes'"
+    inputs:
+      useCase: '"claygent"'
+      model: '"clay-argon"'
+      temperature: '"Low"'
+      prompt: >
+        "You are preparing cold outbound personalization. Use only row-provided facts.
+        If evidence is missing, return NOT_FOUND. Company: "+({{Company Name Clean}} || "")+".
+        Domain: "+({{Domain Normalized}} || "")+". Persona/title: "+({{Persona or Title}} || "")+".
+        First name: "+({{First Name Clean}} || "none")+". Industry: "+({{Industry}} || "none")+".
+        Employees: "+({{Employee Count}} || "unknown")+". Signal: "+({{Signal Or None}} || "none")+".
+        Case study: "+({{Case Study}} || "none")+". Product context: "+({{Product Context}} || "none")+".
+        Return JSON fields segment, why_this_account, opener_angle, email_angle, confidence_score, risk_flag.
+        Keep each field concise for a cold email. Do not invent product usage, funding, hiring,
+        competitor, or customer claims."
+    outputs:
+      - { name: segment, type: text, path: segment }
+      - { name: why_this_account, type: text, path: why_this_account }
+      - { name: opener_angle, type: text, path: opener_angle }
+      - { name: email_angle, type: text, path: email_angle }
+      - { name: confidence_score, type: text, path: confidence_score }
+      - { name: risk_flag, type: text, path: risk_flag }
+  - name: Personalization Status
+    type: formula
+    dataType: text
+    formula: "{{Run Personalization}} !== 'Yes' ? 'missing_required_inputs' : 'sample_pending_or_check_ai_output'"
+  - name: Needs Manual Review
+    type: formula
+    dataType: text
+    formula: "{{Personalization Status}} === 'missing_required_inputs' ? 'Yes' : 'Check sample output before scale'"
+  - name: Campaign Ready
+    type: formula
+    dataType: text
+    formula: "{{Personalization Status}} === 'missing_required_inputs' ? 'No' : 'Sample QA Required'"
+rows:
+  - Company Name: Example Co
+    Company Domain: https://example.com
+    Persona or Title: VP Marketing
+    First Name: Jane
+    LinkedIn URL: https://linkedin.com/in/example
+    Industry: B2B SaaS
+    Employee Count: 250
+    Signal: Hiring lifecycle marketing roles
+    Case Study: none
+    Product Context: generic outbound test
+    Exclude Reason: ""

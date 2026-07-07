@@ -1,0 +1,20 @@
+request:
+  playbook: campaign-activation-with-status-lookup
+  clientContext: "Generic public-safe example"
+  rowCount: 10
+
+columns:
+  email: Email
+  first_name: First Name
+  last_name: Last Name
+  company_name: Company Name
+  company_domain: Company Domain
+  title: Title
+  linkedin_url: LinkedIn URL
+  verification_status: Verification Status
+  personalization_context: Personalization Context
+
+quality:
+  requireStatusLookupBeforeAdd: true
+  requireFinalLaunchGate: true
+  scaleOnlyAfterConfirmation: true

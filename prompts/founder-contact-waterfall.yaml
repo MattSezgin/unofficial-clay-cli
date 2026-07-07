@@ -1,0 +1,42 @@
+promptVersion: 1
+id: founder-contact-waterfall
+playbookId: founder-contact-waterfall
+name: Founder Identity And Contact QA Prompt Contract
+purpose: Validate founder identity, company match, ICP fit, and contact-readiness after enrichment.
+mode: qa-use-ai
+valuePolicy: Omit row values from committed artifacts. Provider values and emails stay in ignored runs or Clay.
+inputFields:
+  required:
+    - founder_full_name
+    - company_name
+    - company_domain
+  optional:
+    - title
+    - linkedin_url
+    - enriched_current_company
+    - enriched_title
+    - company_description
+    - email_status
+    - provider_trace
+systemPrompt: >
+  You inspect founder/contact enrichment rows for identity correctness and outbound
+  readiness. Current company match is more important than a plausible-looking name.
+taskPrompt: >
+  Decide whether the founder identity is accepted, needs manual review, or should
+  be rejected. Then classify campaign readiness and the safest next operator action.
+guardrails:
+  - Reject or review profiles where current company does not match the target company.
+  - Do not accept a work email unless the identity and company are consistent.
+  - Treat side projects, investor roles, and old employment as mismatch risks.
+  - Never invent founder titles, LinkedIn URLs, or emails.
+outputSchema:
+  identity_match_status: text
+  founder_relevance: text
+  campaign_readiness: text
+  risk_flag: text
+  recommended_angle: text
+  reasoning: text
+qaChecks:
+  - wrong-company profiles blocked
+  - email accepted only after identity check
+  - review lane explains ambiguity

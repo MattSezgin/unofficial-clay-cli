@@ -1,0 +1,34 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: enrich-job
+promotionStatus: reviewed
+proofStatus: blocked_missing_safe_test_data
+strictBattleTested: false
+field:
+  name: Enrich Job
+  type: action
+  actionKey: enrich-job
+  actionPackageId: e251a70e-46d7-4f3a-b3ef-a211ad3d8bd2
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: null
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    job_id: ${ENRICH_JOB_JOB_ID}
+  optionalInputs: {}
+  extractedOutputPaths:
+    - Job Description
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: <example-id>
+  viewId: <example-id>
+  fieldId: null
+  sourceId: null
+  rowLimit: 10
+  artifacts: []
+blockedReason: Strict proof requires a real Clay job_id from a Find Jobs source.
+  Shared workbook exports/onboarding only exposed the binding
+  {{f_jobs_search}}?.job_id and no materialized job_id values. Guessing job IDs
+  would not be a valid proof, so this action is blocked until a safe job source
+  run/materialized job_id is approved or provided.

@@ -1,0 +1,32 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: wiza-find-work-email
+promotionStatus: battle-tested
+proofStatus: real_data_output_verified
+strictBattleTested: true
+field:
+  name: Wiza Find Work Email
+  type: action
+  actionKey: wiza-find-work-email
+  actionPackageId: 204f124b-1fd1-42dc-8783-dbedb9adce2e
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: ${CLAY_WIZA_FIND_WORK_EMAIL_AUTH_ACCOUNT_ID}
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    full_name: ${WIZA_FIND_WORK_EMAIL_FULL_NAME}
+    domain: ${WIZA_FIND_WORK_EMAIL_DOMAIN}
+  optionalInputs:
+    company: ${WIZA_FIND_WORK_EMAIL_COMPANY:-}
+    profile_url: ${WIZA_FIND_WORK_EMAIL_PROFILE_URL:-}
+  extractedOutputPaths: []
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: <example-id>
+  viewId: <example-id>
+  fieldId: <example-id>
+  sourceId: null
+  rowLimit: 10
+  artifacts: []
+blockedReason: null

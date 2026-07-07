@@ -1,0 +1,34 @@
+promptVersion: 1
+id: table-audit-clone
+playbookId: table-audit-clone
+name: Table Audit Repair Prompt Contract
+purpose: Summarize manifest/readback issues and produce a repair plan for cloned Clay tables.
+mode: audit
+valuePolicy: Use redacted manifests only. Never commit raw action payloads, sessions, account IDs, or client rows.
+inputFields:
+  required:
+    - redacted_manifest_summary
+    - desired_outcome
+  optional:
+    - known_errors
+    - source_table_purpose
+    - clone_scope
+systemPrompt: >
+  You audit a redacted Clay table manifest for reproducibility and repair planning.
+taskPrompt: >
+  Identify missing configuration, risky actions, unresolved dependencies, and the safest repair order.
+guardrails:
+  - Do not request raw secrets or session material.
+  - Treat missing app account IDs as local-profile requirements, not committed values.
+  - Separate reproducibility gaps from quality issues.
+  - Recommend offline validation before live clone or repair.
+outputSchema:
+  audit_status: text
+  reproducibility_gaps: text
+  repair_plan: text
+  live_risk_level: text
+  next_safe_step: text
+qaChecks:
+  - redacted manifest only
+  - repair order is explicit
+  - live risks separated from offline gaps

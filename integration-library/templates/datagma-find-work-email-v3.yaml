@@ -1,0 +1,30 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: datagma-find-work-email-v3
+promotionStatus: battle-tested
+proofStatus: real_data_output_verified
+strictBattleTested: true
+field:
+  name: Datagma Find Work Email V3
+  type: action
+  actionKey: datagma-find-work-email-v3
+  actionPackageId: f240a97e-3d3e-4ffa-a85e-8d70afe348a5
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: ${CLAY_DATAGMA_FIND_WORK_EMAIL_V3_AUTH_ACCOUNT_ID}
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    full_name: ${DATAGMA_FIND_WORK_EMAIL_V3_FULL_NAME}
+    company_domain: ${DATAGMA_FIND_WORK_EMAIL_V3_COMPANY_DOMAIN}
+  optionalInputs: {}
+  extractedOutputPaths: []
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: <example-id>
+  viewId: <example-id>
+  fieldId: <example-id>
+  sourceId: null
+  rowLimit: 10
+  artifacts: []
+blockedReason: null

@@ -1,0 +1,32 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: normalize-company-name
+promotionStatus: battle-tested
+proofStatus: real_data_output_verified
+strictBattleTested: true
+field:
+  name: Normalize Company Name
+  type: action
+  actionKey: normalize-company-name
+  actionPackageId: 6c973999-fb78-4a5a-8d99-d2fee5b73878
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: null
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    companyName: ${NORMALIZE_COMPANY_NAME_COMPANYNAME}
+  optionalInputs:
+    titleCase: ${NORMALIZE_COMPANY_NAME_TITLECASE:-}
+  extractedOutputPaths:
+    - Normalized Company Name
+    - Normalized Name
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: <example-id>
+  viewId: <example-id>
+  fieldId: <example-id>
+  sourceId: null
+  rowLimit: 10
+  artifacts: []
+blockedReason: null

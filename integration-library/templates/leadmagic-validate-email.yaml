@@ -1,0 +1,32 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: leadmagic-validate-email
+promotionStatus: battle-tested
+proofStatus: real_data_output_verified
+strictBattleTested: true
+field:
+  name: Leadmagic Validate Email
+  type: action
+  actionKey: leadmagic-validate-email
+  actionPackageId: edb58209-a62d-42be-992a-e41b87eeacc2
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: ${CLAY_LEADMAGIC_VALIDATE_EMAIL_AUTH_ACCOUNT_ID}
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    email: ${LEADMAGIC_VALIDATE_EMAIL_EMAIL}
+  optionalInputs:
+    onlySafe: ${LEADMAGIC_VALIDATE_EMAIL_ONLYSAFE:-}
+  extractedOutputPaths:
+    - Status
+    - Sub Status
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: <example-id>
+  viewId: <example-id>
+  fieldId: <example-id>
+  sourceId: null
+  rowLimit: 10
+  artifacts: []
+blockedReason: null

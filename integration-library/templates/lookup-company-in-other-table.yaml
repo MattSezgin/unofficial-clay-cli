@@ -1,0 +1,45 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: lookup-company-in-other-table
+promotionStatus: battle-tested
+proofStatus: real_data_output_verified
+strictBattleTested: true
+field:
+  name: Lookup Company In Other Table
+  type: action
+  actionKey: lookup-company-in-other-table
+  actionPackageId: 4299091f-3cd3-4d68-b198-0143575f471d
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: null
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    companyTableId: ${LOOKUP_COMPANY_IN_OTHER_TABLE_COMPANYTABLEID}
+    companyRecordId: ${LOOKUP_COMPANY_IN_OTHER_TABLE_COMPANYRECORDID}
+  optionalInputs: {}
+  extractedOutputPaths:
+    - Example Proof Snippet
+    - Example Output Field
+    - Proof Text Snippet
+    - Comparison Target Name
+    - Csv Platform Rank
+    - Product Name
+    - Phone Number
+    - Question_1
+    - Question_2
+    - Question_3
+    - Account Name
+    - Contact Window
+    - Contact Window (2)
+    - Top Comparison Target Name
+    - csv-Domain
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: <example-id>
+  viewId: <example-id>
+  fieldId: <example-id>
+  sourceId: null
+  rowLimit: 10
+  artifacts: []
+blockedReason: null

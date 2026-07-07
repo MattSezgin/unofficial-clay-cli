@@ -1,0 +1,2839 @@
+version: 1
+source: generated from live-workspace discovery; observation evidence is not
+  included in the public build
+integrations:
+  add-lead-to-campaign:
+    actionKey: add-lead-to-campaign
+    actionPackageIds:
+      - 6e7ab2da-0d97-49ab-ba78-a6b2f3bf2029
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - allow_duplicate_leads_in_another_campaign
+      - allow_leads_from_community_bounce_list
+      - campaign_id
+      - company_name
+      - company_url
+      - custom_fields
+      - email
+      - first_name
+      - last_name
+      - linkedin_profile
+      - location
+      - phone_number
+      - website
+    extractedOutputsObserved: []
+    authRequiredObserved: true
+    runConditionObserved: true
+    status: discovered_from_full_export
+    promotionStatus: reviewed
+    requiredInputs:
+      - email
+      - campaign_id
+    optionalInputsObserved:
+      - allow_duplicate_leads_in_another_campaign
+      - allow_leads_from_community_bounce_list
+      - company_name
+      - company_url
+      - custom_fields
+      - first_name
+      - last_name
+      - linkedin_profile
+      - location
+      - phone_number
+      - website
+    inputBindingStats:
+      allow_duplicate_leads_in_another_campaign:
+        observedCount: 15
+        observedFrequency: 1
+        classification: candidate_required_observed
+      allow_leads_from_community_bounce_list:
+        observedCount: 15
+        observedFrequency: 1
+        classification: candidate_required_observed
+      campaign_id:
+        observedCount: 15
+        observedFrequency: 1
+        classification: required
+      company_name:
+        observedCount: 15
+        observedFrequency: 1
+        classification: candidate_required_observed
+      company_url:
+        observedCount: 15
+        observedFrequency: 1
+        classification: candidate_required_observed
+      custom_fields:
+        observedCount: 15
+        observedFrequency: 1
+        classification: candidate_required_observed
+      email:
+        observedCount: 15
+        observedFrequency: 1
+        classification: required
+      first_name:
+        observedCount: 15
+        observedFrequency: 1
+        classification: candidate_required_observed
+      last_name:
+        observedCount: 15
+        observedFrequency: 1
+        classification: candidate_required_observed
+      linkedin_profile:
+        observedCount: 15
+        observedFrequency: 1
+        classification: candidate_required_observed
+      location:
+        observedCount: 15
+        observedFrequency: 1
+        classification: candidate_required_observed
+      phone_number:
+        observedCount: 15
+        observedFrequency: 1
+        classification: candidate_required_observed
+      website:
+        observedCount: 15
+        observedFrequency: 1
+        classification: candidate_required_observed
+    actionInstanceCountObserved: 15
+    candidateRequiredInputsObserved:
+      - allow_duplicate_leads_in_another_campaign
+      - allow_leads_from_community_bounce_list
+      - campaign_id
+      - company_name
+      - company_url
+      - custom_fields
+      - email
+      - first_name
+      - last_name
+      - linkedin_profile
+      - location
+      - phone_number
+      - website
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: false
+      parentFullValueInspected: false
+      extractedOutputsCreated: false
+      extractedValuesVerified: false
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: true
+    proofStatus: blocked_destructive_external_mutation
+    blockedReason: This action mutates Smartlead/sequencer state by adding a lead to
+      a campaign. No approved sandbox campaign and lead-add mutation scope
+      exists, and production campaign mutation is explicitly out of
+      scope. Requires explicit per-command HITL approval with sandbox campaign
+      identifiers before any live proof run.
+    statusSemantics:
+      not_run/blocked_destructive_external_mutation: Campaign add action was not
+        executed because it mutates an external sequencer campaign and requires
+        explicit sandbox HITL approval.
+  enrich-company-with-mixrank-v2:
+    actionKey: enrich-company-with-mixrank-v2
+    actionPackageIds:
+      - e251a70e-46d7-4f3a-b3ef-a211ad3d8bd2
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - company_identifier
+    extractedOutputsObserved:
+      - Country
+      - Description
+      - Employee Count
+      - Industry
+      - Size
+      - Url
+    authRequiredObserved: false
+    runConditionObserved: true
+    status: discovered_from_full_export
+    promotionStatus: battle-tested
+    requiredInputs:
+      - company_identifier
+    optionalInputsObserved: []
+    inputBindingStats:
+      company_identifier:
+        observedCount: 12
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 12
+    candidateRequiredInputsObserved:
+      - company_identifier
+    proofStatus: real_data_output_verified
+    battleTestCriteria:
+      realDataRows: 10
+      parentFullValueInspected: true
+      extractedOutputsVisible: true
+      unresolvedSettingsErrors: false
+      unresolvedRuntimeErrors: false
+      valueLevelQa: company name/url/description/employee_count/industry/country
+        extracted SUCCESS:10
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+  enrich-person-with-mixrank-v2:
+    actionKey: enrich-person-with-mixrank-v2
+    actionPackageIds:
+      - e251a70e-46d7-4f3a-b3ef-a211ad3d8bd2
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - email
+      - person_identifier
+    extractedOutputsObserved:
+      - Name
+      - Url
+    authRequiredObserved: false
+    runConditionObserved: true
+    status: discovered_from_full_export
+    promotionStatus: battle-tested
+    requiredInputs:
+      - person_identifier
+    optionalInputsObserved:
+      - email
+    inputBindingStats:
+      email:
+        observedCount: 3
+        observedFrequency: 1
+        classification: candidate_required_observed
+      person_identifier:
+        observedCount: 3
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 3
+    candidateRequiredInputsObserved:
+      - email
+      - person_identifier
+    proofStatus: real_data_output_verified
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+    statusSemantics:
+      SUCCESS: Mixrank returned a hydrated person profile object for the supplied
+        LinkedIn/person identifier. Invalid/malformed identifiers can produce
+        ERROR_INVALID_INPUT; proof used a clean bounded identifier formula after
+        documenting that case.
+  http-api-v2:
+    actionKey: http-api-v2
+    actionPackageIds:
+      - 4299091f-3cd3-4d68-b198-0143575f471d
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - body
+      - fieldPaths
+      - followRedirects
+      - followRedirectsOptions|maxRedirects
+      - headers
+      - method
+      - queryString
+      - removeNull
+      - responseTimeout
+      - retryOptions|errorCodesToRetry
+      - retryOptions|maxRetries
+      - retryOptions|statusCodesToRetry
+      - returnResponseMetadata
+      - shouldRetry
+      - url
+    extractedOutputsObserved:
+      - Full Name (2)
+      - Result
+      - Result icy
+      - Result prospeo
+    authRequiredObserved: true
+    runConditionObserved: true
+    status: discovered_from_full_export
+    promotionStatus: battle-tested
+    requiredInputs:
+      - method
+      - url
+    optionalInputsObserved:
+      - body
+      - fieldPaths
+      - followRedirects
+      - followRedirectsOptions|maxRedirects
+      - headers
+      - queryString
+      - removeNull
+      - responseTimeout
+      - retryOptions|errorCodesToRetry
+      - retryOptions|maxRetries
+      - retryOptions|statusCodesToRetry
+      - returnResponseMetadata
+      - shouldRetry
+    inputBindingStats:
+      body:
+        observedCount: 19
+        observedFrequency: 1
+        classification: candidate_required_observed
+      fieldPaths:
+        observedCount: 19
+        observedFrequency: 1
+        classification: candidate_required_observed
+      followRedirects:
+        observedCount: 19
+        observedFrequency: 1
+        classification: candidate_required_observed
+      followRedirectsOptions|maxRedirects:
+        observedCount: 19
+        observedFrequency: 1
+        classification: candidate_required_observed
+      headers:
+        observedCount: 19
+        observedFrequency: 1
+        classification: candidate_required_observed
+      method:
+        observedCount: 19
+        observedFrequency: 1
+        classification: required
+      queryString:
+        observedCount: 19
+        observedFrequency: 1
+        classification: candidate_required_observed
+      removeNull:
+        observedCount: 19
+        observedFrequency: 1
+        classification: candidate_required_observed
+      responseTimeout:
+        observedCount: 19
+        observedFrequency: 1
+        classification: candidate_required_observed
+      retryOptions|errorCodesToRetry:
+        observedCount: 19
+        observedFrequency: 1
+        classification: candidate_required_observed
+      retryOptions|maxRetries:
+        observedCount: 19
+        observedFrequency: 1
+        classification: candidate_required_observed
+      retryOptions|statusCodesToRetry:
+        observedCount: 19
+        observedFrequency: 1
+        classification: candidate_required_observed
+      returnResponseMetadata:
+        observedCount: 19
+        observedFrequency: 1
+        classification: candidate_required_observed
+      shouldRetry:
+        observedCount: 19
+        observedFrequency: 1
+        classification: candidate_required_observed
+      url:
+        observedCount: 19
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 19
+    candidateRequiredInputsObserved:
+      - body
+      - fieldPaths
+      - followRedirects
+      - followRedirectsOptions|maxRedirects
+      - headers
+      - method
+      - queryString
+      - removeNull
+      - responseTimeout
+      - retryOptions|errorCodesToRetry
+      - retryOptions|maxRetries
+      - retryOptions|statusCodesToRetry
+      - returnResponseMetadata
+      - shouldRetry
+      - url
+    proofStatus: real_data_output_verified
+    proofCaveat: Previously promoted from artifact/status evidence, but the operator
+      clarified battle-tested requires real-data visible output inspection with
+      no unresolved proof-path errors. Re-run <=10-row sandbox proof before
+      battle-tested.
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+    battleTestCriteria:
+      realDataRows: 10
+      parentFullValueInspected: true
+      parentFullValueKeys:
+        - slideshow
+      extractedOutputsVisible: true
+      extractedOutputFields:
+        - HTTP Probe Title
+      unresolvedSettingsErrors: false
+      unresolvedRuntimeErrors: false
+      valueLevelQa: HTTP Probe Title extracted from slideshow.title; non-empty
+        SUCCESS/readback on 10 real sandbox rows
+    statusSemantics:
+      SUCCESS: Safe public HTTP endpoint returned JSON parent fullValue with slideshow
+        object; extracted slideshow.title visible for all checked rows.
+      proofPath: No settings/runtime errors observed on strict proof packet.
+  icypeas-find-email-v2:
+    actionKey: icypeas-find-email-v2
+    actionPackageIds:
+      - 303cd8bc-26dc-4c8c-bd5a-e94528d6c77d
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - domain
+      - fullname
+    extractedOutputsObserved:
+      - icy email
+    authRequiredObserved: true
+    runConditionObserved: true
+    status: discovered_from_full_export
+    promotionStatus: battle-tested
+    requiredInputs:
+      - first_name
+      - last_name
+      - domain
+    optionalInputsObserved:
+      - fullname
+    inputBindingStats:
+      domain:
+        observedCount: 3
+        observedFrequency: 1
+        classification: required
+      fullname:
+        observedCount: 3
+        observedFrequency: 1
+        classification: candidate_required_observed
+    actionInstanceCountObserved: 3
+    candidateRequiredInputsObserved:
+      - domain
+      - fullname
+    proofStatus: real_data_output_verified
+    proofCaveat: Previously promoted from artifact/status evidence, but the operator
+      clarified battle-tested requires real-data visible output inspection with
+      no unresolved proof-path errors. Re-run <=10-row sandbox proof before
+      battle-tested.
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+    statusSemantics:
+      SUCCESS: Found emails return parent fullValue with email, emails[],
+        status=FOUND, success=true, certainty, searchId.
+      SUCCESS_NO_DATA: No email found returns visible no-email value and null parent
+        fullValue; extracted field may show Clay metadata for no-data rows, so
+        parent fullValue is truth.
+  instantly-v2-add-lead-to-campaign:
+    actionKey: instantly-v2-add-lead-to-campaign
+    actionPackageIds:
+      - 70cda03a-a576-4a6c-b3b3-55e241f828b5
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - campaign
+      - company_name
+      - custom_variables
+      - email
+      - first_name
+      - last_name
+      - personalization
+      - phone
+      - skip_if_in_workspace
+      - website
+    extractedOutputsObserved: []
+    authRequiredObserved: true
+    runConditionObserved: true
+    status: discovered_from_full_export
+    promotionStatus: reviewed
+    requiredInputs:
+      - email
+      - campaign_id
+    optionalInputsObserved:
+      - campaign
+      - company_name
+      - custom_variables
+      - first_name
+      - last_name
+      - personalization
+      - phone
+      - skip_if_in_workspace
+      - website
+    inputBindingStats:
+      campaign:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      company_name:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      custom_variables:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      email:
+        observedCount: 1
+        observedFrequency: 1
+        classification: required
+      first_name:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      last_name:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      personalization:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      phone:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      skip_if_in_workspace:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      website:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+    actionInstanceCountObserved: 1
+    candidateRequiredInputsObserved:
+      - campaign
+      - company_name
+      - custom_variables
+      - email
+      - first_name
+      - last_name
+      - personalization
+      - phone
+      - skip_if_in_workspace
+      - website
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: false
+      parentFullValueInspected: false
+      extractedOutputsCreated: false
+      extractedValuesVerified: false
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: true
+    proofStatus: blocked_destructive_external_mutation
+    blockedReason: This action mutates Instantly campaign/workspace state by adding
+      a lead to a campaign. No approved sandbox Instantly campaign and lead-add
+      mutation scope exists, and production campaign mutation is
+      explicitly out of scope. Requires explicit per-command HITL approval with
+      sandbox campaign identifiers before any live proof run.
+    statusSemantics:
+      not_run/blocked_destructive_external_mutation: Campaign add action was not
+        executed because it mutates an external sequencer campaign and requires
+        explicit sandbox HITL approval.
+  leadmagic-find-work-email:
+    actionKey: leadmagic-find-work-email
+    actionPackageIds:
+      - edb58209-a62d-42be-992a-e41b87eeacc2
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - domain
+      - includeCatchAll
+      - name
+    extractedOutputsObserved:
+      - Email
+      - Email-2
+      - Employment Verified
+      - Status (2)
+      - leadmagic-email
+    authRequiredObserved: true
+    runConditionObserved: true
+    status: discovered_from_full_export
+    promotionStatus: reviewed
+    requiredInputs:
+      - name
+      - domain
+    optionalInputsObserved:
+      - includeCatchAll
+    inputBindingStats:
+      domain:
+        observedCount: 22
+        observedFrequency: 1
+        classification: required
+      includeCatchAll:
+        observedCount: 13
+        observedFrequency: 0.5909
+        classification: optional_observed
+      name:
+        observedCount: 22
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 22
+    candidateRequiredInputsObserved:
+      - domain
+      - name
+    proofStatus: blocked_external_dependency
+    proofCaveat: Previously promoted from artifact/status evidence, but the operator
+      clarified battle-tested requires real-data visible output inspection with
+      no unresolved proof-path errors. Re-run <=10-row sandbox proof before
+      battle-tested.
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: false
+      extractedValuesVerified: false
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: true
+    blockedReason: "Clean sandbox proof paths did not produce a strict found-output
+      proof: shared Clay-managed LeadMagic key returned SUCCESS_NO_DATA:9 +
+      ERROR:1 Bad Request with no parent fullValue; the operator LeadMagic key
+      returned ERROR:10 Forbidden; existing historical field had one found row
+      but unresolved ERROR:1 Bad Request, so strict proof path remains blocked."
+    statusSemantics:
+      SUCCESS_NO_DATA: Provider miss/no email found; parent fullValue null in clean proof.
+      ERROR: Bad Request/Forbidden errors are unresolved on clean proof paths and
+        block strict promotion.
+  leadmagic-validate-email:
+    actionKey: leadmagic-validate-email
+    actionPackageIds:
+      - edb58209-a62d-42be-992a-e41b87eeacc2
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - email
+      - onlySafe
+    extractedOutputsObserved:
+      - Status
+      - Sub Status
+    authRequiredObserved: true
+    runConditionObserved: true
+    status: discovered_from_full_export
+    promotionStatus: battle-tested
+    requiredInputs:
+      - email
+    optionalInputsObserved:
+      - onlySafe
+    inputBindingStats:
+      email:
+        observedCount: 8
+        observedFrequency: 1
+        classification: required
+      onlySafe:
+        observedCount: 8
+        observedFrequency: 1
+        classification: candidate_required_observed
+    actionInstanceCountObserved: 8
+    candidateRequiredInputsObserved:
+      - email
+      - onlySafe
+    proofStatus: real_data_output_verified
+    statusSemantics:
+      invalid: Known invalid test@example.com returns visible ❌ Invalid email and
+        parent status=invalid.
+      noInput: Blank upstream email inputs with run conditions show
+        ERROR_RUN_CONDITION_NOT_MET and null parent fullValue; this is expected
+        gating/no-input behavior, not provider validation output.
+      valid: No valid LeadMagic validation row was observed in this proof
+        batch; use parent status field for future valid vocabulary rather than
+        guessing.
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+  lookup-row-in-other-table:
+    actionKey: lookup-row-in-other-table
+    actionPackageIds:
+      - 4299091f-3cd3-4d68-b198-0143575f471d
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - fields|filterOperator
+      - fields|rowValue
+      - fields|targetColumn
+      - tableId
+    extractedOutputsObserved:
+      - "# Employees"
+      - Example Output Field
+      - Company Country
+      - Company Name
+      - Company Size
+      - Company Type
+      - Email Status
+      - Email-3
+      - Target Tool Status
+      - Is Consulting Segment
+      - Job Description
+      - Linkedin-url
+      - Phone Number
+      - Preferred Linkedin Company URL
+      - Primary Email Catch All Status
+      - Question_1
+      - Question_2
+      - Question_3
+      - Contact Window
+    authRequiredObserved: true
+    runConditionObserved: true
+    status: discovered_from_full_export
+    promotionStatus: battle-tested
+    requiredInputs:
+      - tableId
+    optionalInputsObserved:
+      - fields|filterOperator
+      - fields|rowValue
+      - fields|targetColumn
+    inputBindingStats:
+      fields|filterOperator:
+        observedCount: 23
+        observedFrequency: 1
+        classification: candidate_required_observed
+      fields|rowValue:
+        observedCount: 23
+        observedFrequency: 1
+        classification: candidate_required_observed
+      fields|targetColumn:
+        observedCount: 23
+        observedFrequency: 1
+        classification: candidate_required_observed
+      tableId:
+        observedCount: 23
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 23
+    candidateRequiredInputsObserved:
+      - fields|filterOperator
+      - fields|rowValue
+      - fields|targetColumn
+      - tableId
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+    proofStatus: real_data_output_verified
+    battleTestCriteria:
+      realDataRows: 10
+      matchingCase: true
+      nonMatchingCase: true
+      parentFullValueInspected: true
+      parentFullValueKeys:
+        - record
+      extractedOutputsVisible: true
+      extractedOutputFields:
+        - Lookup Row Company Domain
+        - Lookup Row Full Name
+        - Lookup Row Final Launch Decision
+      noDataSemantics: No-match run-watch reports SUCCESS_NO_DATA; visible cell value
+        is ❌ No Record Found and parent fullValue is null.
+      unresolvedSettingsErrors: false
+      unresolvedRuntimeErrors: false
+    statusSemantics:
+      SUCCESS: Matched lookup returns parent fullValue with record object; extracted
+        record fields are non-empty.
+      SUCCESS_NO_DATA: No matching row returns visible ❌ No Record Found and no parent
+        fullValue; this is expected no-data behavior, not a settings error.
+  normalize-company-name:
+    actionKey: normalize-company-name
+    actionPackageIds:
+      - 6c973999-fb78-4a5a-8d99-d2fee5b73878
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - companyName
+      - titleCase
+    extractedOutputsObserved:
+      - Normalized Company Name
+      - Normalized Name
+    authRequiredObserved: false
+    runConditionObserved: false
+    status: discovered_from_full_export
+    promotionStatus: battle-tested
+    requiredInputs:
+      - companyName
+    optionalInputsObserved:
+      - titleCase
+    inputBindingStats:
+      companyName:
+        observedCount: 6
+        observedFrequency: 1
+        classification: candidate_required_observed
+      titleCase:
+        observedCount: 6
+        observedFrequency: 1
+        classification: candidate_required_observed
+    actionInstanceCountObserved: 6
+    candidateRequiredInputsObserved:
+      - companyName
+      - titleCase
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+    proofStatus: real_data_output_verified
+    battleTestCriteria:
+      realDataRows: 10
+      parentFullValueInspected: true
+      parentFullValueKeys:
+        - normalized_name
+        - original_name
+      extractedOutputsVisible: true
+      extractedOutputFields:
+        - Normalize Original Company Name
+        - Normalize Normalized Company Name
+      unresolvedSettingsErrors: false
+      unresolvedRuntimeErrors: false
+    statusSemantics:
+      SUCCESS: Returns parent fullValue with original_name and normalized_name. In
+        proof, all 10 real company-name rows returned fullValue and both
+        extracted outputs were non-empty.
+  prospeo-find-work-email-v2:
+    actionKey: prospeo-find-work-email-v2
+    actionPackageIds:
+      - 48a31bbb-63e6-4461-8a62-d88bb2cd6b0f
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - company_domain
+      - full_name
+      - include_catch_all
+    extractedOutputsObserved:
+      - Email (2)
+      - Prospeo Email
+    authRequiredObserved: true
+    runConditionObserved: true
+    status: discovered_from_full_export
+    promotionStatus: reviewed
+    requiredInputs:
+      - full_name
+      - company_domain
+    optionalInputsObserved:
+      - include_catch_all
+    inputBindingStats:
+      company_domain:
+        observedCount: 13
+        observedFrequency: 1
+        classification: required
+      full_name:
+        observedCount: 13
+        observedFrequency: 1
+        classification: required
+      include_catch_all:
+        observedCount: 4
+        observedFrequency: 0.3077
+        classification: optional_observed
+    actionInstanceCountObserved: 13
+    candidateRequiredInputsObserved:
+      - company_domain
+      - full_name
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: false
+      extractedValuesVerified: false
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: true
+    proofStatus: blocked_missing_safe_test_data
+    blockedReason: Both bounded sandbox Prospeo probes (include_catch_all false and
+      true) returned SUCCESS_NO_DATA:10 with null parent fullValue and no
+      extracted email/status values. No runtime error, but no strict
+      found-output proof exists for promotion.
+    statusSemantics:
+      SUCCESS_NO_DATA: Provider returned no email found; parent fullValue null. Safe
+        probe establishes no-data behavior only, not found-output mapping.
+  use-ai:
+    actionKey: use-ai
+    actionPackageIds:
+      - 67ba01e9-1898-4e7d-afe7-7ebe24819a57
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - _metadata
+      - answerSchemaType
+      - browserbaseContextId
+      - claygentFieldMapping
+      - claygentId
+      - contextDocumentIds
+      - jsonMode
+      - maxCostInCents
+      - maxTokens
+      - mcpSettings
+      - metaprompt
+      - model
+      - prompt
+      - reasoningBudget
+      - reasoningLevel
+      - runBudget
+      - stopSequence
+      - systemPrompt
+      - tableExamples
+      - temperature
+      - topP
+      - useCase
+    extractedOutputsObserved:
+      - (backup) Uses Target Tool
+      - (upt) Normalized Job Title
+      - Company Linkedin Url
+      - Company Type
+      - Comparison Target Name
+      - Segment
+      - Functional Background Classification
+      - Is Current
+      - Is Consulting Segment
+      - Linkedin Company Url
+      - Linkedin Url
+      - New Column
+      - Normalized Job Title
+      - Product Details confidence
+      - Product Details selected Option Id
+      - Product Details Segment
+      - Reasoning
+      - Referral Note
+      - Selected Option Id
+      - Size
+      - Time Taken In Seconds
+      - Top Comparison Target Name
+      - Top Comparison Target Reasoning
+      - Total Cost To AI Provider
+      - Total Cost To AIProvider
+      - Total Input Tokens
+      - Total Output Tokens
+      - Uses Target Tool
+      - referrer_first_name
+      - referrer_last_name
+      - Example Output Field
+      - contact-linkedin-url
+      - steps
+    authRequiredObserved: true
+    runConditionObserved: true
+    status: discovered_from_full_export
+    promotionStatus: battle-tested
+    requiredInputs:
+      - prompt
+      - model
+      - useCase
+      - answerSchemaType
+    optionalInputsObserved:
+      - _metadata
+      - browserbaseContextId
+      - claygentFieldMapping
+      - claygentId
+      - contextDocumentIds
+      - jsonMode
+      - maxCostInCents
+      - maxTokens
+      - mcpSettings
+      - metaprompt
+      - reasoningBudget
+      - reasoningLevel
+      - runBudget
+      - stopSequence
+      - systemPrompt
+      - tableExamples
+      - temperature
+      - topP
+    inputBindingStats:
+      _metadata:
+        observedCount: 57
+        observedFrequency: 0.9048
+        classification: optional_observed
+      answerSchemaType:
+        observedCount: 63
+        observedFrequency: 1
+        classification: required
+      browserbaseContextId:
+        observedCount: 61
+        observedFrequency: 0.9683
+        classification: optional_observed
+      claygentFieldMapping:
+        observedCount: 61
+        observedFrequency: 0.9683
+        classification: optional_observed
+      claygentId:
+        observedCount: 61
+        observedFrequency: 0.9683
+        classification: optional_observed
+      contextDocumentIds:
+        observedCount: 61
+        observedFrequency: 0.9683
+        classification: optional_observed
+      jsonMode:
+        observedCount: 63
+        observedFrequency: 1
+        classification: candidate_required_observed
+      maxCostInCents:
+        observedCount: 63
+        observedFrequency: 1
+        classification: candidate_required_observed
+      maxTokens:
+        observedCount: 63
+        observedFrequency: 1
+        classification: candidate_required_observed
+      mcpSettings:
+        observedCount: 61
+        observedFrequency: 0.9683
+        classification: optional_observed
+      metaprompt:
+        observedCount: 7
+        observedFrequency: 0.1111
+        classification: optional_observed
+      model:
+        observedCount: 63
+        observedFrequency: 1
+        classification: required
+      prompt:
+        observedCount: 63
+        observedFrequency: 1
+        classification: required
+      reasoningBudget:
+        observedCount: 61
+        observedFrequency: 0.9683
+        classification: optional_observed
+      reasoningLevel:
+        observedCount: 61
+        observedFrequency: 0.9683
+        classification: optional_observed
+      runBudget:
+        observedCount: 61
+        observedFrequency: 0.9683
+        classification: optional_observed
+      stopSequence:
+        observedCount: 63
+        observedFrequency: 1
+        classification: candidate_required_observed
+      systemPrompt:
+        observedCount: 63
+        observedFrequency: 1
+        classification: candidate_required_observed
+      tableExamples:
+        observedCount: 63
+        observedFrequency: 1
+        classification: candidate_required_observed
+      temperature:
+        observedCount: 63
+        observedFrequency: 1
+        classification: candidate_required_observed
+      topP:
+        observedCount: 61
+        observedFrequency: 0.9683
+        classification: optional_observed
+      useCase:
+        observedCount: 63
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 63
+    candidateRequiredInputsObserved:
+      - answerSchemaType
+      - jsonMode
+      - maxCostInCents
+      - maxTokens
+      - model
+      - prompt
+      - stopSequence
+      - systemPrompt
+      - tableExamples
+      - temperature
+      - useCase
+    proofStatus: real_data_output_verified
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+    battleTestCriteria:
+      realDataRows: 10
+      jsonSchemaOutputMode: true
+      parentFullValueInspected: true
+      parentFullValueKeys:
+        - campaign_readiness
+        - confidence
+        - persona_segment
+        - rationale
+        - reasoning
+        - stepsTaken
+      extractedOutputsVisible: true
+      extractedOutputFields:
+        - AI Persona Segment Extracted
+        - AI Campaign Readiness Extracted
+        - AI Confidence Extracted
+        - AI Rationale Extracted
+      enumValueQa: campaign_readiness values READY/REVIEW allowed; confidence value
+        high allowed by this lowercase schema contract
+      semanticContradictionQa: No linkedin_url NOT_FOUND + high confidence
+        contradiction observed in parent fullValues.
+      unresolvedSettingsErrors: false
+      unresolvedRuntimeErrors: false
+    statusSemantics:
+      SUCCESS: Claygent JSON Schema output returned parent fullValue JSON with
+        persona_segment/campaign_readiness/confidence/rationale and extracted
+        outputs were non-empty.
+      proofPath: No settings/runtime errors observed on strict proof packet; value QA
+        enforced explicit enums and semantic contradiction checks.
+  wiza-find-work-email:
+    actionKey: wiza-find-work-email
+    actionPackageIds:
+      - 204f124b-1fd1-42dc-8783-dbedb9adce2e
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - company
+      - domain
+      - full_name
+      - profile_url
+    extractedOutputsObserved: []
+    authRequiredObserved: true
+    runConditionObserved: true
+    status: discovered_from_full_export
+    promotionStatus: battle-tested
+    requiredInputs:
+      - full_name
+      - domain
+    optionalInputsObserved:
+      - company
+      - profile_url
+    inputBindingStats:
+      company:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      domain:
+        observedCount: 1
+        observedFrequency: 1
+        classification: required
+      full_name:
+        observedCount: 1
+        observedFrequency: 1
+        classification: required
+      profile_url:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+    actionInstanceCountObserved: 1
+    candidateRequiredInputsObserved:
+      - company
+      - domain
+      - full_name
+      - profile_url
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+    proofStatus: real_data_output_verified
+    statusSemantics:
+      SUCCESS: Found rows have parent externalContent.fullValue containing email data;
+        extracted email/status fields must be non-empty before treating as
+        usable.
+      SUCCESS_NO_DATA: No-data rows are expected provider misses. Parent fullValue may
+        be null or may contain provider payload with null email/unfound status
+        depending on provider; parent fullValue + extracted email is truth.
+      ERROR: Runtime errors block promotion unless isolated to a separate non-proof
+        path.
+    parentFullValueKeysObserved:
+      - data
+  lookup-multiple-rows-in-other-table:
+    actionKey: lookup-multiple-rows-in-other-table
+    actionPackageIds:
+      - 4299091f-3cd3-4d68-b198-0143575f471d
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - fields|filterOperator
+      - fields|limit
+      - fields|rowValue
+      - fields|targetColumn
+      - tableId
+    extractedOutputsObserved:
+      - Number Of Results-team-mate
+    authRequiredObserved: true
+    runConditionObserved: false
+    status: discovered_from_workspace_onboarding
+    promotionStatus: battle-tested
+    requiredInputs:
+      - tableId
+    optionalInputsObserved:
+      - fields|filterOperator
+      - fields|limit
+      - fields|rowValue
+      - fields|targetColumn
+    inputBindingStats:
+      fields|filterOperator:
+        observedCount: 6
+        observedFrequency: 1
+        classification: candidate_required_observed
+      fields|limit:
+        observedCount: 4
+        observedFrequency: 0.6667
+        classification: optional_observed
+      fields|rowValue:
+        observedCount: 6
+        observedFrequency: 1
+        classification: candidate_required_observed
+      fields|targetColumn:
+        observedCount: 6
+        observedFrequency: 1
+        classification: candidate_required_observed
+      tableId:
+        observedCount: 6
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 6
+    candidateRequiredInputsObserved:
+      - fields|filterOperator
+      - fields|rowValue
+      - fields|targetColumn
+      - tableId
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+    proofStatus: real_data_output_verified
+    battleTestCriteria:
+      realDataRows: 10
+      oneToManyCase: true
+      parentFullValueInspected: true
+      parentFullValueKeys:
+        - records
+        - numberOfResults
+      extractedOutputsVisible: true
+      extractedOutputFields:
+        - Lookup Multiple Number Of Results
+        - Lookup Multiple First Full Name
+      valueSemantics: Parent value displays ✅ N Records Returned; fullValue contains
+        records[] and numberOfResults. Extracted count samples included 4 and 2.
+      unresolvedSettingsErrors: false
+      unresolvedRuntimeErrors: false
+    statusSemantics:
+      SUCCESS: Matched lookup returns records[] plus numberOfResults; extracted
+        numberOfResults and first record full name are non-empty.
+  enrich-job:
+    actionKey: enrich-job
+    actionPackageIds:
+      - e251a70e-46d7-4f3a-b3ef-a211ad3d8bd2
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - job_id
+    extractedOutputsObserved:
+      - Job Description
+    authRequiredObserved: false
+    runConditionObserved: true
+    status: discovered_from_workspace_onboarding
+    promotionStatus: reviewed
+    requiredInputs:
+      - job_id
+    optionalInputsObserved: []
+    inputBindingStats:
+      job_id:
+        observedCount: 6
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 6
+    candidateRequiredInputsObserved:
+      - job_id
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: false
+      parentFullValueInspected: false
+      extractedOutputsCreated: false
+      extractedValuesVerified: false
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: true
+    proofStatus: blocked_missing_safe_test_data
+    blockedReason: Strict proof requires a real Clay job_id from a Find Jobs source.
+      Shared workbook exports/onboarding only exposed the binding
+      {{f_jobs_search}}?.job_id and no materialized job_id values. Guessing job
+      IDs would not be a valid proof, so this action is blocked until a safe job
+      source run/materialized job_id is approved or provided.
+    statusSemantics:
+      blocked_missing_safe_test_data: No safe materialized job_id was available; action not run.
+  apify-run-actor:
+    actionKey: apify-run-actor
+    actionPackageIds:
+      - ea91b0b8-6c78-4d32-a978-345e923bdc93
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - actorId
+      - data
+    extractedOutputsObserved: []
+    authRequiredObserved: true
+    runConditionObserved: false
+    status: discovered_from_workspace_onboarding
+    promotionStatus: reviewed
+    requiredInputs:
+      - actorId
+      - data
+    optionalInputsObserved: []
+    inputBindingStats:
+      actorId:
+        observedCount: 4
+        observedFrequency: 1
+        classification: required
+      data:
+        observedCount: 4
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 4
+    candidateRequiredInputsObserved:
+      - actorId
+      - data
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: false
+      extractedOutputsCreated: false
+      extractedValuesVerified: false
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: true
+    proofStatus: blocked_paid_or_unbounded_cost
+    blockedReason: "Approved one-row sandbox proof used the observed workbook actor
+      <your-actor-id> and safe Apify account, but runtime returned
+      actor-is-not-rented: the paid actor free trial expired and must be rented
+      before it can run. Strict proof is blocked on paid external actor
+      dependency."
+    statusSemantics:
+      ERROR/actor-is-not-rented: Apify rejected the actor run because the actor must
+        be rented after trial expiration; no result payload/fullValue is
+        produced.
+  trigger-find-people-source:
+    actionKey: trigger-find-people-source
+    actionPackageIds:
+      - 4299091f-3cd3-4d68-b198-0143575f471d
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - companyIdentifier
+      - enableAutoUpdate
+      - sourceId
+    extractedOutputsObserved: []
+    authRequiredObserved: false
+    runConditionObserved: false
+    status: discovered_from_workspace_onboarding
+    promotionStatus: reviewed
+    requiredInputs:
+      - sourceId
+      - companyIdentifier
+    optionalInputsObserved:
+      - enableAutoUpdate
+    inputBindingStats:
+      companyIdentifier:
+        observedCount: 12
+        observedFrequency: 1
+        classification: required
+      enableAutoUpdate:
+        observedCount: 12
+        observedFrequency: 1
+        classification: candidate_required_observed
+      sourceId:
+        observedCount: 12
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 12
+    candidateRequiredInputsObserved:
+      - companyIdentifier
+      - enableAutoUpdate
+      - sourceId
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: false
+      extractedOutputsCreated: false
+      extractedValuesVerified: false
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: true
+    proofStatus: blocked_missing_safe_test_data
+    blockedReason: Approved one-row sandbox proof ran against existing safe people
+      source s_TEST_SOURCE and returned SUCCESS with value "People
+      Search Skipped", but produced no parent fullValue and no
+      extracted/materialized action output to verify. Strict proof requires
+      materialized source outputs, not just a skipped/no-op trigger, so this
+      remains blocked until a fresh safe source/company-trigger proof can
+      materialize new rows.
+    statusSemantics:
+      SUCCESS/People Search Skipped: Trigger accepted the request but skipped updating
+        the people source; no parent fullValue is produced and no materialized
+        output is available for strict proof.
+  lookup-company-in-other-table:
+    actionKey: lookup-company-in-other-table
+    actionPackageIds:
+      - 4299091f-3cd3-4d68-b198-0143575f471d
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - companyRecordId
+      - companyTableId
+    extractedOutputsObserved:
+      - Example Proof Snippet
+      - Example Output Field
+      - Proof Text Snippet
+      - Comparison Target Name
+      - Csv Platform Rank
+      - Product Name
+      - Phone Number
+      - Question_1
+      - Question_2
+      - Question_3
+      - Account Name
+      - Contact Window
+      - Contact Window (2)
+      - Top Comparison Target Name
+      - csv-Domain
+    authRequiredObserved: false
+    runConditionObserved: false
+    status: discovered_from_workspace_onboarding
+    promotionStatus: battle-tested
+    requiredInputs:
+      - companyTableId
+      - companyRecordId
+    optionalInputsObserved: []
+    inputBindingStats:
+      companyRecordId:
+        observedCount: 6
+        observedFrequency: 1
+        classification: required
+      companyTableId:
+        observedCount: 6
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 6
+    candidateRequiredInputsObserved:
+      - companyRecordId
+      - companyTableId
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+    proofStatus: real_data_output_verified
+    battleTestCriteria:
+      realDataRows: 10
+      inputSurfaceSufficient: true
+      parentFullValueInspected: true
+      parentFullValueKeys:
+        - Resolved Domain
+        - Resolved Company Name
+        - Resolved Company LinkedIn URL
+      extractedOutputsVisible: true
+      extractedOutputFields:
+        - Lookup Company Resolved Domain
+        - Lookup Company Resolved Name
+        - Lookup Company LinkedIn URL
+      valueSemantics: Constant real company record lookup returned a well-known
+        public company's domain/name/LinkedIn URL on all 10 proof rows.
+      unresolvedSettingsErrors: false
+      unresolvedRuntimeErrors: false
+    statusSemantics:
+      SUCCESS: Valid companyTableId/companyRecordId returns company record object with
+        resolved domain/name/LinkedIn URL.
+  smartlead-lookup-lead-status:
+    actionKey: smartlead-lookup-lead-status
+    actionPackageIds:
+      - 6e7ab2da-0d97-49ab-ba78-a6b2f3bf2029
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - campaign_id
+      - email
+    extractedOutputsObserved: []
+    authRequiredObserved: true
+    runConditionObserved: false
+    status: discovered_from_workspace_onboarding
+    promotionStatus: reviewed
+    requiredInputs:
+      - campaign_id
+      - email
+    optionalInputsObserved: []
+    inputBindingStats:
+      campaign_id:
+        observedCount: 2
+        observedFrequency: 1
+        classification: required
+      email:
+        observedCount: 2
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 2
+    candidateRequiredInputsObserved:
+      - campaign_id
+      - email
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: false
+      parentFullValueInspected: false
+      extractedOutputsCreated: false
+      extractedValuesVerified: false
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: true
+    proofStatus: blocked_missing_safe_test_data
+    blockedReason: Strict proof requires an approved sandbox Smartlead campaign_id
+      plus known test email/lead state. Shared workbook exports expose
+      production campaign IDs only; no sandbox campaign/lead identifiers were
+      approved for proof, so the action is blocked rather than run against
+      production campaign data.
+    statusSemantics:
+      not_run/blocked_missing_safe_test_data: Read-only Smartlead lookup was not
+        executed because strict proof needs approved sandbox campaign/lead data
+        that can produce auditable parent fullValue; production campaign
+        contexts from exports were not used as proof.
+  lookup-lead-in-campaign:
+    actionKey: lookup-lead-in-campaign
+    actionPackageIds:
+      - 6e7ab2da-0d97-49ab-ba78-a6b2f3bf2029
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - email
+    extractedOutputsObserved:
+      - Is Unsubscribed
+      - Lead Category Id
+    authRequiredObserved: true
+    runConditionObserved: true
+    status: discovered_from_workspace_onboarding
+    promotionStatus: reviewed
+    requiredInputs:
+      - email
+    optionalInputsObserved: []
+    inputBindingStats:
+      email:
+        observedCount: 2
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 2
+    candidateRequiredInputsObserved:
+      - email
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: false
+      parentFullValueInspected: false
+      extractedOutputsCreated: false
+      extractedValuesVerified: false
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: true
+    proofStatus: blocked_missing_safe_test_data
+    blockedReason: Strict proof requires an approved sandbox Smartlead lead/campaign
+      state where the lookup can return parent fullValue and extracted
+      lead-category/unsubscribe outputs. Shared exports only expose production
+      campaign/lead contexts, and using those for proof would not satisfy the
+      sandbox requirement. No production campaign read path was promoted.
+    statusSemantics:
+      not_run/blocked_missing_safe_test_data: Read-only Smartlead lookup was not
+        executed because strict proof needs approved sandbox campaign/lead data
+        that can produce auditable parent fullValue; production campaign
+        contexts from exports were not used as proof.
+  get-domain-from-company-name:
+    actionKey: get-domain-from-company-name
+    actionPackageIds:
+      - e5f3b09f-1b8f-4806-a960-27abf163940f
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - companyName
+    extractedOutputsObserved: []
+    authRequiredObserved: true
+    runConditionObserved: false
+    status: discovered_from_workspace_onboarding
+    promotionStatus: reviewed
+    requiredInputs:
+      - companyName
+    optionalInputsObserved: []
+    inputBindingStats:
+      companyName:
+        observedCount: 2
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 2
+    candidateRequiredInputsObserved:
+      - companyName
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: false
+      parentFullValueInspected: false
+      extractedOutputsCreated: false
+      extractedValuesVerified: false
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: true
+    proofStatus: blocked_requires_auth
+    blockedReason: Live sandbox create-action readback showed settingsError
+      MISSING_AUTH (Required auth account is missing). Available workspace
+      app-account inventory did not identify a safe matching account for package
+      e5f3b09f-1b8f-4806-a960-27abf163940f, so this action is blocked rather
+      than guessed.
+    statusSemantics:
+      MISSING_AUTH: Action field can be created with companyName binding, but Clay
+        reports settingsError MISSING_AUTH before a valid run. Do not run or
+        promote until a safe same-workspace auth account is identified.
+  snov-domain-by-company-name:
+    actionKey: snov-domain-by-company-name
+    actionPackageIds:
+      - d8c220e0-401e-49ca-8c6b-37c7577baffd
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - companyName
+    extractedOutputsObserved: []
+    authRequiredObserved: true
+    runConditionObserved: true
+    status: discovered_from_workspace_onboarding
+    promotionStatus: battle-tested
+    requiredInputs:
+      - companyName
+    optionalInputsObserved: []
+    inputBindingStats:
+      companyName:
+        observedCount: 2
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 2
+    candidateRequiredInputsObserved:
+      - companyName
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+    proofStatus: real_data_output_verified
+    battleTestCriteria:
+      realDataRows: 10
+      parentFullValueInspected: true
+      parentFullValueKeys:
+        - domain
+      extractedOutputsVisible: true
+      extractedOutputFields:
+        - Snov Domain Result
+      successCount: 9
+      successNoDataCount: 1
+      unresolvedSettingsErrors: false
+      unresolvedRuntimeErrors: false
+    statusSemantics:
+      SUCCESS: Returns parent fullValue with domain. Proof had 9/10 successful domain
+        matches.
+      SUCCESS_NO_DATA: No domain found returns visible ❌ No domain found and parent
+        fullValue null. This is expected no-data behavior; extracted output
+        readback may surface Clay metadata for the no-data row, so parent
+        fullValue is the truth source.
+  google-company-to-domain:
+    actionKey: google-company-to-domain
+    actionPackageIds:
+      - 3282a1c7-6bb0-497e-a34b-32268e104e55
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - country
+      - exclude
+      - language
+      - query
+    extractedOutputsObserved:
+      - Domain
+    authRequiredObserved: false
+    runConditionObserved: true
+    status: discovered_from_workspace_onboarding
+    promotionStatus: battle-tested
+    requiredInputs:
+      - query
+    optionalInputsObserved:
+      - country
+      - exclude
+      - language
+    inputBindingStats:
+      country:
+        observedCount: 2
+        observedFrequency: 0.5
+        classification: optional_observed
+      exclude:
+        observedCount: 2
+        observedFrequency: 0.5
+        classification: optional_observed
+      language:
+        observedCount: 2
+        observedFrequency: 0.5
+        classification: optional_observed
+      query:
+        observedCount: 4
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 4
+    candidateRequiredInputsObserved:
+      - query
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+    proofStatus: real_data_output_verified
+    battleTestCriteria:
+      realDataRows: 10
+      parentFullValueInspected: true
+      parentFullValueKeys:
+        - domain
+        - originalURL
+        - title
+      extractedOutputsVisible: true
+      extractedOutputFields:
+        - Google Domain Result
+        - Google Domain Title
+        - Google Domain Original URL
+      ambiguityObserved: true
+      unresolvedSettingsErrors: false
+      unresolvedRuntimeErrors: false
+    statusSemantics:
+      SUCCESS: "Returns parent fullValue with domain, originalURL, and title. Proof
+        returned 10/10 domains. Ambiguity is possible: one row resolved one
+        ambiguous small-business name to a third-party Prospeo profile
+        URL/domain, so downstream workflows should verify domain fit when
+        company names are ambiguous."
+  hg-insights-find-domain-from-company-name:
+    actionKey: hg-insights-find-domain-from-company-name
+    actionPackageIds:
+      - b7f3454a-5095-4cb2-b91b-79cdb54e0dd2
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - company_name
+    extractedOutputsObserved: []
+    authRequiredObserved: true
+    runConditionObserved: true
+    status: discovered_from_workspace_onboarding
+    promotionStatus: battle-tested
+    requiredInputs:
+      - company_name
+    optionalInputsObserved: []
+    inputBindingStats:
+      company_name:
+        observedCount: 2
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 2
+    candidateRequiredInputsObserved:
+      - company_name
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+    proofStatus: real_data_output_verified
+    battleTestCriteria:
+      realDataRows: 10
+      parentFullValueInspected: true
+      parentFullValueKeys:
+        - possible_matches
+      extractedOutputsVisible: true
+      extractedOutputFields:
+        - HG First Match Domain
+        - HG First Match Company Name
+      successCount: 7
+      successNoDataCount: 3
+      ambiguityObserved: true
+      unresolvedSettingsErrors: false
+      unresolvedRuntimeErrors: false
+    statusSemantics:
+      SUCCESS: Returns parent fullValue with possible_matches array. The first match
+        can be extracted via possible_matches.0.company_domain and
+        possible_matches.0.company_name, but multiple matches may be returned
+        and first-match is not always authoritative.
+      SUCCESS_NO_DATA: No company found returns visible ❌ No company found and parent
+        fullValue null. This is expected no-data behavior; extracted output
+        readback may surface Clay metadata for no-data rows, so parent fullValue
+        is the truth source.
+  scrape-website:
+    actionKey: scrape-website
+    actionPackageIds:
+      - 4299091f-3cd3-4d68-b198-0143575f471d
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - customRegex
+      - enableJavaScriptRendering
+      - keepNonText
+      - outputFields
+      - url
+      - waitFor
+    extractedOutputsObserved:
+      - Bodytext
+      - Description
+      - Extractedkeywords
+      - Keywords
+      - Title
+    authRequiredObserved: false
+    runConditionObserved: false
+    status: discovered_from_workspace_onboarding
+    promotionStatus: battle-tested
+    requiredInputs:
+      - url
+    optionalInputsObserved:
+      - customRegex
+      - enableJavaScriptRendering
+      - keepNonText
+      - outputFields
+      - waitFor
+    inputBindingStats:
+      customRegex:
+        observedCount: 2
+        observedFrequency: 1
+        classification: candidate_required_observed
+      enableJavaScriptRendering:
+        observedCount: 2
+        observedFrequency: 1
+        classification: candidate_required_observed
+      keepNonText:
+        observedCount: 2
+        observedFrequency: 1
+        classification: candidate_required_observed
+      outputFields:
+        observedCount: 2
+        observedFrequency: 1
+        classification: candidate_required_observed
+      url:
+        observedCount: 2
+        observedFrequency: 1
+        classification: required
+      waitFor:
+        observedCount: 2
+        observedFrequency: 1
+        classification: candidate_required_observed
+    actionInstanceCountObserved: 2
+    candidateRequiredInputsObserved:
+      - customRegex
+      - enableJavaScriptRendering
+      - keepNonText
+      - outputFields
+      - url
+      - waitFor
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+    proofStatus: real_data_output_verified
+    statusSemantics:
+      SUCCESS: Clay scrape-website returned parsed web page data. Safe proof used
+        https://example.com to avoid external target risk while proving parent
+        shape and extracted values.
+  apollo-oauth-enrich-person:
+    actionKey: apollo-oauth-enrich-person
+    actionPackageIds:
+      - 778df10d-f68b-461a-8eb7-56047737f5eb
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - domain
+      - email
+      - first_name
+      - id
+      - last_name
+      - name
+      - organization_name
+    extractedOutputsObserved:
+      - Linkedin Url - Person
+    authRequiredObserved: true
+    runConditionObserved: false
+    status: discovered_from_workspace_onboarding
+    promotionStatus: reviewed
+    requiredInputs:
+      - first_name
+      - last_name
+      - domain
+    optionalInputsObserved:
+      - email
+      - id
+      - name
+      - organization_name
+    inputBindingStats:
+      domain:
+        observedCount: 2
+        observedFrequency: 1
+        classification: required
+      email:
+        observedCount: 2
+        observedFrequency: 1
+        classification: candidate_required_observed
+      first_name:
+        observedCount: 2
+        observedFrequency: 1
+        classification: required
+      id:
+        observedCount: 2
+        observedFrequency: 1
+        classification: candidate_required_observed
+      last_name:
+        observedCount: 2
+        observedFrequency: 1
+        classification: required
+      name:
+        observedCount: 2
+        observedFrequency: 1
+        classification: candidate_required_observed
+      organization_name:
+        observedCount: 2
+        observedFrequency: 1
+        classification: candidate_required_observed
+    actionInstanceCountObserved: 2
+    candidateRequiredInputsObserved:
+      - domain
+      - email
+      - first_name
+      - id
+      - last_name
+      - name
+      - organization_name
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: false
+      extractedOutputsCreated: false
+      extractedValuesVerified: false
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: true
+    proofStatus: blocked_external_dependency
+    blockedReason: Bounded sandbox proof with the only discovered safe
+      same-workspace Apollo OAuth account returned ERROR_INVALID_CREDENTIALS:10
+      (Invalid account response), with no parent fullValue. No alternate safe
+      Apollo auth account was available, so strict proof is blocked rather than
+      guessed.
+    statusSemantics:
+      ERROR_INVALID_CREDENTIALS: Configured Apollo OAuth account was rejected by the
+        provider/Clay action; no parent fullValue is produced.
+  validate-email:
+    actionKey: validate-email
+    actionPackageIds:
+      - 8f0d2dc0-a6b4-4b84-9aad-a330b4a4586a
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - email
+    extractedOutputsObserved: []
+    authRequiredObserved: true
+    runConditionObserved: true
+    status: discovered_from_workspace_onboarding
+    promotionStatus: battle-tested
+    requiredInputs:
+      - email
+    optionalInputsObserved: []
+    inputBindingStats:
+      email:
+        observedCount: 38
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 38
+    candidateRequiredInputsObserved:
+      - email
+    proofStatus: real_data_output_verified
+    statusSemantics:
+      valid: Real verified-send-email inputs return visible ✅ Valid email and parent
+        status=valid.
+      invalid: Known fallback test@example.com returns visible ❌ Invalid email, parent
+        status=invalid, sub_status=does_not_accept_mail.
+      noData: Not separately produced in this mixed proof because fallback forces
+        blank/no-email rows into a known invalid input for status QA.
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+  datagma-find-work-email-v3:
+    actionKey: datagma-find-work-email-v3
+    actionPackageIds:
+      - f240a97e-3d3e-4ffa-a85e-8d70afe348a5
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - company_domain
+      - full_name
+    extractedOutputsObserved: []
+    authRequiredObserved: true
+    runConditionObserved: true
+    status: discovered_from_workspace_onboarding
+    promotionStatus: battle-tested
+    requiredInputs:
+      - full_name
+      - company_domain
+    optionalInputsObserved: []
+    inputBindingStats:
+      company_domain:
+        observedCount: 4
+        observedFrequency: 1
+        classification: required
+      full_name:
+        observedCount: 4
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 4
+    candidateRequiredInputsObserved:
+      - company_domain
+      - full_name
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+    proofStatus: real_data_output_verified
+    statusSemantics:
+      SUCCESS: Found rows have parent externalContent.fullValue containing email data;
+        extracted email/status fields must be non-empty before treating as
+        usable.
+      SUCCESS_NO_DATA: No-data rows are expected provider misses. Parent fullValue may
+        be null or may contain provider payload with null email/unfound status
+        depending on provider; parent fullValue + extracted email is truth.
+      ERROR: Runtime errors block promotion unless isolated to a separate non-proof
+        path.
+    parentFullValueKeysObserved:
+      - email
+      - flags
+      - status
+      - cachAll
+      - mxfound
+      - patterns
+      - smtpCheck
+      - creditBurn
+      - emailDomain
+      - explanation
+      - correlationId
+      - mostProbableEmail
+  wiza-find-email:
+    actionKey: wiza-find-email
+    actionPackageIds:
+      - 204f124b-1fd1-42dc-8783-dbedb9adce2e
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - domain
+      - full_name
+    extractedOutputsObserved: []
+    authRequiredObserved: true
+    runConditionObserved: true
+    status: discovered_from_workspace_onboarding
+    promotionStatus: battle-tested
+    requiredInputs:
+      - full_name
+      - domain
+    optionalInputsObserved: []
+    inputBindingStats:
+      domain:
+        observedCount: 4
+        observedFrequency: 1
+        classification: required
+      full_name:
+        observedCount: 4
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 4
+    candidateRequiredInputsObserved:
+      - domain
+      - full_name
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+    proofStatus: real_data_output_verified
+    statusSemantics:
+      SUCCESS: Found rows have parent externalContent.fullValue containing email data;
+        extracted email/status fields must be non-empty before treating as
+        usable.
+      SUCCESS_NO_DATA: No-data rows are expected provider misses. Parent fullValue may
+        be null or may contain provider payload with null email/unfound status
+        depending on provider; parent fullValue + extracted email is truth.
+      ERROR: Runtime errors block promotion unless isolated to a separate non-proof
+        path.
+    parentFullValueKeysObserved:
+      - data
+  find-email-v2:
+    actionKey: find-email-v2
+    actionPackageIds:
+      - 9cfc7721-5c91-423b-a0b0-4cc1f42c6089
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - domain
+      - full_name
+    extractedOutputsObserved: []
+    authRequiredObserved: true
+    runConditionObserved: true
+    status: discovered_from_workspace_onboarding
+    promotionStatus: battle-tested
+    requiredInputs:
+      - full_name
+      - domain
+    optionalInputsObserved: []
+    inputBindingStats:
+      domain:
+        observedCount: 4
+        observedFrequency: 1
+        classification: required
+      full_name:
+        observedCount: 4
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 4
+    candidateRequiredInputsObserved:
+      - domain
+      - full_name
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+    proofStatus: real_data_output_verified
+    statusSemantics:
+      SUCCESS: Found rows have parent externalContent.fullValue containing email data;
+        extracted email/status fields must be non-empty before treating as
+        usable.
+      SUCCESS_NO_DATA: No-data rows are expected provider misses. Parent fullValue may
+        be null or may contain provider payload with null email/unfound status
+        depending on provider; parent fullValue + extracted email is truth.
+      ERROR: Runtime errors block promotion unless isolated to a separate non-proof
+        path.
+    parentFullValueKeysObserved:
+      - email
+      - score
+      - domain
+      - company
+      - sources
+      - twitter
+      - position
+      - last_name
+      - accept_all
+      - first_name
+      - source_type
+      - linkedin_url
+      - phone_number
+      - verification
+  dropcontact-enrich-person:
+    actionKey: dropcontact-enrich-person
+    actionPackageIds:
+      - 6ddf27b7-ad83-4419-be62-c83f9c9e34a7
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - full_name
+      - website
+    extractedOutputsObserved: []
+    authRequiredObserved: true
+    runConditionObserved: true
+    status: discovered_from_workspace_onboarding
+    promotionStatus: battle-tested
+    requiredInputs:
+      - full_name
+      - website
+    optionalInputsObserved: []
+    inputBindingStats:
+      full_name:
+        observedCount: 4
+        observedFrequency: 1
+        classification: required
+      website:
+        observedCount: 4
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 4
+    candidateRequiredInputsObserved:
+      - full_name
+      - website
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+    proofStatus: real_data_output_verified
+    statusSemantics:
+      SUCCESS: Found rows have parent externalContent.fullValue containing email data;
+        extracted email/status fields must be non-empty before treating as
+        usable.
+      SUCCESS_NO_DATA: No-data rows are expected provider misses. Parent fullValue may
+        be null or may contain provider payload with null email/unfound status
+        depending on provider; parent fullValue + extracted email is truth.
+      ERROR: Runtime errors block promotion unless isolated to a separate non-proof
+        path.
+    parentFullValueKeysObserved:
+      - email
+      - company
+      - country
+      - website
+      - civility
+      - linkedin
+      - location
+      - full_name
+      - last_name
+      - first_name
+      - siret_city
+      - nb_employees
+      - company_linkedin
+      - siret_address
+      - phone
+      - siret_zip
+  findymail-find-work-email:
+    actionKey: findymail-find-work-email
+    actionPackageIds:
+      - 9515bb04-4267-4074-94eb-653545c3c38f
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - company_domain
+      - full_name
+    extractedOutputsObserved: []
+    authRequiredObserved: true
+    runConditionObserved: true
+    status: discovered_from_workspace_onboarding
+    promotionStatus: battle-tested
+    requiredInputs:
+      - full_name
+      - company_domain
+    optionalInputsObserved: []
+    inputBindingStats:
+      company_domain:
+        observedCount: 8
+        observedFrequency: 1
+        classification: required
+      full_name:
+        observedCount: 8
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 8
+    candidateRequiredInputsObserved:
+      - company_domain
+      - full_name
+    proofStatus: real_data_output_verified
+    proofCaveat: Previously promoted from artifact/status evidence, but the operator
+      clarified battle-tested requires real-data visible output inspection with
+      no unresolved proof-path errors. Re-run <=10-row sandbox proof before
+      battle-tested.
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+    statusSemantics:
+      SUCCESS: Found emails return parent fullValue with email and status, with
+        observed status=valid for found rows.
+      SUCCESS_NO_DATA: No email found rows display no-email behavior; parent fullValue
+        may contain null email/status, so non-empty email extraction is required
+        before treating as found.
+  check-url:
+    actionKey: check-url
+    actionPackageIds:
+      - 4299091f-3cd3-4d68-b198-0143575f471d
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - url
+      - tryVariants
+      - enableProxyFallback
+      - treatTimeoutsAsInvalid
+    extractedOutputsObserved: []
+    authRequiredObserved: false
+    runConditionObserved: false
+    status: discovered_from_gap_audit
+    promotionStatus: reviewed
+    requiredInputs:
+      - url
+    optionalInputsObserved:
+      - tryVariants
+      - enableProxyFallback
+      - treatTimeoutsAsInvalid
+    inputBindingStats:
+      url:
+        observedCount: 1
+        observedFrequency: 1
+        classification: required
+      tryVariants:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      enableProxyFallback:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      treatTimeoutsAsInvalid:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+    actionInstanceCountObserved: 1
+    candidateRequiredInputsObserved:
+      - url
+      - tryVariants
+      - enableProxyFallback
+      - treatTimeoutsAsInvalid
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: false
+      parentFullValueInspected: false
+      extractedOutputsCreated: false
+      extractedValuesVerified: false
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: true
+    proofStatus: blocked_missing_safe_test_data
+    blockedReason: Gap audit found real sandbox workbook fixture action `Generic
+      Check URL Valid`, but no strict proof packet with parent
+      fullValue/extracted output/value QA was recorded. Needs bounded safe URL
+      rerun/readback before promotion.
+    statusSemantics: {}
+  find-lists-of-companies-with-mixrank-source:
+    actionKey: find-lists-of-companies-with-mixrank-source
+    actionPackageIds:
+      - e251a70e-46d7-4f3a-b3ef-a211ad3d8bd2
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - limit
+      - sizes
+      - types
+      - locations
+      - industries
+      - country_names
+      - funding_amounts
+      - company_identifier
+      - startFromCompanyType
+    extractedOutputsObserved:
+      - name
+      - domain
+      - linkedin_url
+    authRequiredObserved: false
+    runConditionObserved: false
+    status: discovered_from_gap_audit
+    promotionStatus: battle-tested
+    requiredInputs:
+      - limit
+    optionalInputsObserved:
+      - sizes
+      - types
+      - locations
+      - industries
+      - country_names
+      - funding_amounts
+      - company_identifier
+      - startFromCompanyType
+    inputBindingStats:
+      limit:
+        observedCount: 1
+        observedFrequency: 1
+        classification: required
+      sizes:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      types:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      locations:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      industries:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      country_names:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      funding_amounts:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      company_identifier:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      startFromCompanyType:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+    actionInstanceCountObserved: 1
+    candidateRequiredInputsObserved:
+      - limit
+      - sizes
+      - types
+      - locations
+      - industries
+      - country_names
+      - funding_amounts
+      - company_identifier
+      - startFromCompanyType
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+    proofStatus: real_data_output_verified
+    statusSemantics: {}
+  find-lists-of-people-with-mixrank-source:
+    actionKey: find-lists-of-people-with-mixrank-source
+    actionPackageIds:
+      - e251a70e-46d7-4f3a-b3ef-a211ad3d8bd2
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - limit
+      - company_table_id
+      - company_record_id
+      - company_identifier
+      - start_from_method
+      - job_title_keywords
+      - job_title_seniority_levels
+      - locations
+      - locations_exclude
+      - include_company_filter_identifier_count
+    extractedOutputsObserved:
+      - full_name
+      - linkedin_url
+      - title
+      - latest_experience_company
+    authRequiredObserved: false
+    runConditionObserved: false
+    status: discovered_from_gap_audit
+    promotionStatus: battle-tested
+    requiredInputs:
+      - limit
+      - company_table_id
+      - company_record_id
+      - company_identifier
+      - start_from_method
+    optionalInputsObserved:
+      - job_title_keywords
+      - job_title_seniority_levels
+      - locations
+      - locations_exclude
+      - include_company_filter_identifier_count
+    inputBindingStats:
+      limit:
+        observedCount: 1
+        observedFrequency: 1
+        classification: required
+      company_table_id:
+        observedCount: 1
+        observedFrequency: 1
+        classification: required
+      company_record_id:
+        observedCount: 1
+        observedFrequency: 1
+        classification: required
+      company_identifier:
+        observedCount: 1
+        observedFrequency: 1
+        classification: required
+      start_from_method:
+        observedCount: 1
+        observedFrequency: 1
+        classification: required
+      job_title_keywords:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      job_title_seniority_levels:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      locations:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      locations_exclude:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      include_company_filter_identifier_count:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+    actionInstanceCountObserved: 1
+    candidateRequiredInputsObserved:
+      - limit
+      - company_table_id
+      - company_record_id
+      - company_identifier
+      - start_from_method
+      - job_title_keywords
+      - job_title_seniority_levels
+      - locations
+      - locations_exclude
+      - include_company_filter_identifier_count
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+    proofStatus: real_data_output_verified
+    statusSemantics: {}
+  find-lists-of-jobs-with-mixrank-source:
+    actionKey: find-lists-of-jobs-with-mixrank-source
+    actionPackageIds:
+      - e251a70e-46d7-4f3a-b3ef-a211ad3d8bd2
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - limit
+      - locations
+      - seniority
+      - startFrom
+      - company_table_id
+      - company_record_id
+      - company_identifier
+      - job_title_keywords
+      - job_description_keywords
+      - max_num_days_since_posted
+    extractedOutputsObserved:
+      - job_id
+      - title
+      - company
+    authRequiredObserved: false
+    runConditionObserved: false
+    status: discovered_from_gap_audit
+    promotionStatus: reviewed
+    requiredInputs:
+      - limit
+    optionalInputsObserved:
+      - locations
+      - seniority
+      - startFrom
+      - company_table_id
+      - company_record_id
+      - company_identifier
+      - job_title_keywords
+      - job_description_keywords
+      - max_num_days_since_posted
+    inputBindingStats:
+      limit:
+        observedCount: 1
+        observedFrequency: 1
+        classification: required
+      locations:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      seniority:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      startFrom:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      company_table_id:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      company_record_id:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      company_identifier:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      job_title_keywords:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      job_description_keywords:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      max_num_days_since_posted:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+    actionInstanceCountObserved: 1
+    candidateRequiredInputsObserved:
+      - limit
+      - locations
+      - seniority
+      - startFrom
+      - company_table_id
+      - company_record_id
+      - company_identifier
+      - job_title_keywords
+      - job_description_keywords
+      - max_num_days_since_posted
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: false
+      parentFullValueInspected: false
+      extractedOutputsCreated: false
+      extractedValuesVerified: false
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: true
+    proofStatus: blocked_missing_safe_test_data
+    blockedReason: Gap audit found exported job-source configs, but no bounded
+      sandbox job-source materialization/readback proof exists. Prior
+      `enrich-job` proof was blocked because no safe materialized job_id values
+      were available. Needs safe bounded job source run before promotion.
+    statusSemantics: {}
+  icypeas-enrich-profile:
+    actionKey: icypeas-enrich-profile
+    actionPackageIds:
+      - 303cd8bc-26dc-4c8c-bd5a-e94528d6c77d
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - linkedin_url
+    extractedOutputsObserved: []
+    authRequiredObserved: false
+    runConditionObserved: false
+    status: discovered_from_gap_audit
+    promotionStatus: reviewed
+    requiredInputs:
+      - linkedin_url
+    optionalInputsObserved: []
+    inputBindingStats:
+      linkedin_url:
+        observedCount: 1
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 1
+    candidateRequiredInputsObserved:
+      - linkedin_url
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: false
+      parentFullValueInspected: false
+      extractedOutputsCreated: false
+      extractedValuesVerified: false
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: true
+    proofStatus: blocked_missing_safe_test_data
+    blockedReason: Gap audit found export evidence for Icypeas profile enrichment,
+      but no sandbox <=10-row run/readback/fullValue/extracted output proof
+      exists yet.
+    statusSemantics: {}
+  leadmagic-enrich-company:
+    actionKey: leadmagic-enrich-company
+    actionPackageIds:
+      - edb58209-a62d-42be-992a-e41b87eeacc2
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - domain
+      - company_name
+      - company_linkedin_url
+    extractedOutputsObserved: []
+    authRequiredObserved: true
+    runConditionObserved: false
+    status: discovered_from_gap_audit
+    promotionStatus: reviewed
+    requiredInputs:
+      - domain
+    optionalInputsObserved:
+      - company_name
+      - company_linkedin_url
+    inputBindingStats:
+      domain:
+        observedCount: 1
+        observedFrequency: 1
+        classification: required
+      company_name:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+      company_linkedin_url:
+        observedCount: 1
+        observedFrequency: 1
+        classification: candidate_required_observed
+    actionInstanceCountObserved: 1
+    candidateRequiredInputsObserved:
+      - domain
+      - company_name
+      - company_linkedin_url
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: false
+      parentFullValueInspected: false
+      extractedOutputsCreated: false
+      extractedValuesVerified: false
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: true
+    proofStatus: blocked_external_dependency
+    blockedReason: Gap audit found export evidence for LeadMagic company enrichment,
+      but current LeadMagic auth paths already showed Forbidden/Bad Request
+      failures in related LeadMagic proofs. Needs safe working auth before
+      promotion.
+    statusSemantics: {}
+  extract-email-components:
+    actionKey: extract-email-components
+    actionPackageIds:
+      - 4299091f-3cd3-4d68-b198-0143575f471d
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - email
+    extractedOutputsObserved:
+      - address
+      - domain
+    authRequiredObserved: false
+    runConditionObserved: false
+    status: promoted_from_full_catalog_live_proof
+    promotionStatus: battle-tested
+    requiredInputs:
+      - email
+    optionalInputsObserved: []
+    inputBindingStats:
+      email:
+        observedCount: 1
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 1
+    candidateRequiredInputsObserved:
+      - email
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+    proofStatus: real_data_output_verified
+    statusSemantics:
+      SUCCESS: Parsed email/domain successfully; parent fullValue contains
+        address/domain/emailProvider and boolean classification keys.
+  generate-email-permutations:
+    actionKey: generate-email-permutations
+    actionPackageIds:
+      - 4299091f-3cd3-4d68-b198-0143575f471d
+    actionVersions:
+      - 1
+    requiredInputsObserved:
+      - full_name
+      - company_domain
+    extractedOutputsObserved:
+      - first_name
+      - last_name
+    authRequiredObserved: false
+    runConditionObserved: false
+    status: promoted_from_full_catalog_live_proof
+    promotionStatus: battle-tested
+    requiredInputs:
+      - full_name
+      - company_domain
+    optionalInputsObserved: []
+    inputBindingStats:
+      full_name:
+        observedCount: 1
+        observedFrequency: 1
+        classification: required
+      company_domain:
+        observedCount: 1
+        observedFrequency: 1
+        classification: required
+    actionInstanceCountObserved: 1
+    candidateRequiredInputsObserved:
+      - full_name
+      - company_domain
+    proofRequirements:
+      sourceExportEvidence: true
+      requiredOptionalInputsCurated: true
+      sandboxRealDataRun: true
+      parentFullValueInspected: true
+      extractedOutputsCreated: true
+      extractedValuesVerified: true
+      statusSemanticsDocumented: true
+      unresolvedProofPathErrors: false
+    proofStatus: real_data_output_verified
+    statusSemantics:
+      SUCCESS: Generated email permutations successfully; parent fullValue contains
+        permutations, comma_separated_list, first_name, and last_name.

@@ -1,0 +1,18 @@
+request:
+  playbook: people-from-companies
+  clientContext: "Generic public-safe example"
+  rowCount: 10
+
+columns:
+  company_name: Company Name
+  target_job_titles: Target Job Titles
+  company_domain: Company Domain
+  company_linkedin_url: Company LinkedIn URL
+  country: Country
+  exclude_reason: Exclude Reason
+
+quality:
+  minimumCompanyResolutionRate: 0.8
+  requireCurrentRoleMatch: true
+  scaleOnlyAfterConfirmation: true
+

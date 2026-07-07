@@ -1,0 +1,20 @@
+request:
+  playbook: lookalike-to-role-based-people-search
+  clientContext: "Generic public-safe example"
+  rowCount: 10
+
+columns:
+  seed_company_name: Seed Company Name
+  seed_company_domain: Seed Company Domain
+  seed_company_linkedin_url: Seed Company LinkedIn URL
+  seed_reason: Seed Reason
+  target_geo: Target Geo
+  target_industries: Target Industries
+  employee_range: Employee Range
+  exclusion_domains: Exclusion Domains
+  role_lane_definitions: Role Lane Definitions
+
+quality:
+  requireCompanyFitBeforePeopleSearch: true
+  requireCompanyIdentifiersForPeopleSource: true
+  scaleOnlyAfterConfirmation: true

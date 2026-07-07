@@ -1,0 +1,35 @@
+promptVersion: 1
+id: webhook-enrichment
+playbookId: webhook-enrichment
+name: Webhook Enrichment Response Prompt Contract
+purpose: Produce structured enrichment status for one webhook payload row.
+mode: use-ai
+valuePolicy: Omit payload values, webhook URLs, and callback URLs from committed artifacts.
+inputFields:
+  required:
+    - request_id
+    - payload
+    - callback_policy
+  optional:
+    - source_system
+    - retry_count
+    - enrichment_context
+systemPrompt: >
+  You process one webhook enrichment payload and return machine-readable status.
+taskPrompt: >
+  Summarize what enrichment can be completed, what is missing, and whether callback should proceed.
+guardrails:
+  - Do not expose webhook or callback URLs.
+  - Return INVALID_PAYLOAD when required payload fields are absent.
+  - Keep response deterministic for automation.
+  - Do not retry credit-consuming steps without explicit workflow policy.
+outputSchema:
+  enrichment_status: text
+  missing_fields: text
+  callback_ready: text
+  retry_recommendation: text
+  operator_note: text
+qaChecks:
+  - invalid payloads rejected
+  - callback readiness explicit
+  - no webhook URL leakage

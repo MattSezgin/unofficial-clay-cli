@@ -1,0 +1,60 @@
+claySpecVersion: 1
+workspaceId: "${CLAY_WORKSPACE_ID}"
+workbookId: "${CLAY_WORKBOOK_ID}"
+table:
+  name: conference-attendee-identity-sample
+  type: spreadsheet
+view:
+  name: Attendee Identity QA
+  type: grid
+fields:
+  - name: Attendee Full Name
+    type: text
+    dataType: text
+  - name: Attendee Company
+    type: text
+    dataType: text
+  - name: Attendee Title
+    type: text
+    dataType: text
+  - name: Company Domain
+    type: url
+    dataType: url
+  - name: Country
+    type: text
+    dataType: text
+  - name: Ready For Identity Lookup
+    type: formula
+    dataType: text
+    formula: "{{Attendee Full Name}} && {{Attendee Company}} ? 'Yes' : 'No'"
+  - name: Attendee LinkedIn Lookup AI
+    type: action
+    actionKey: use-ai
+    actionPackageId: 67ba01e9-1898-4e7d-afe7-7ebe24819a57
+    actionVersion: 1
+    dataType: json
+    runCondition: "{{Ready For Identity Lookup}} === 'Yes'"
+    inputs:
+      useCase: '"claygent"'
+      model: '"clay-argon"'
+      temperature: '"Low"'
+      prompt: >
+        "Find or validate this conference attendee's current LinkedIn profile. Name: "+({{Attendee Full Name}} || "")+".
+        Company: "+({{Attendee Company}} || "")+". Title: "+({{Attendee Title}} || "none")+".
+        Domain: "+({{Company Domain}} || "none")+". Country: "+({{Country}} || "none")+".
+        Return JSON fields first_name, last_name, linkedin_url, matched_company, matched_title,
+        confidence, reasoning. Return NOT_FOUND rather than guessing."
+    outputs:
+      - { name: first_name, type: text, path: first_name }
+      - { name: last_name, type: text, path: last_name }
+      - { name: linkedin_url, type: text, path: linkedin_url }
+      - { name: matched_company, type: text, path: matched_company }
+      - { name: matched_title, type: text, path: matched_title }
+      - { name: confidence, type: text, path: confidence }
+      - { name: reasoning, type: text, path: reasoning }
+rows:
+  - Attendee Full Name: Jane Example
+    Attendee Company: Example Co
+    Attendee Title: VP Marketing
+    Company Domain: https://example.com
+    Country: United States

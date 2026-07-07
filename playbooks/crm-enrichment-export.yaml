@@ -1,0 +1,115 @@
+playbookVersion: 1
+id: crm-enrichment-export
+name: CRM Enrichment Export
+status: draft
+purpose: >
+  Enrich CRM account/contact exports, classify records, preserve source IDs as
+  strings, and produce import-ready files plus an audit report.
+
+variables:
+  workspaceId: "${CLAY_WORKSPACE_ID}"
+  testFolderId: "${CLAY_TEST_FOLDER_ID}"
+  workbookId: "${CLAY_WORKBOOK_ID}"
+  aiModel: "${CLAY_AI_MODEL:-clay-argon}"
+
+inputs:
+  requiredColumns:
+    - crm_record_id
+    - company_name
+  optionalColumns:
+    - company_domain
+    - account_owner
+    - lifecycle_stage
+    - arr
+    - industry
+    - employee_count
+    - notes
+
+sampleRows:
+  max: 10
+  recommended: 10
+  reason: "CRM field mapping and update semantics must be verified before generating import files."
+
+safety:
+  requiresChatConfirmation:
+    - create-table
+    - action-run
+    - export-import-file
+    - crm-writeback
+  creditConsumingSteps:
+    - company_enrichment
+    - ai_segmentation
+
+workflow:
+  - id: preserve_source_ids
+    type: local-or-formula
+    description: Treat CRM IDs and long numeric identifiers as strings throughout the workflow.
+    outputs:
+      - crm_record_id_string
+      - source_row_hash
+
+  - id: normalize_account
+    type: formula
+    outputs:
+      - company_name_clean
+      - domain_normalized
+      - account_dedupe_key
+
+  - id: enrich_missing_company_fields
+    type: provider-action
+    runCondition: "{{Domain Normalized}} === '' || {{Employee Count}} === '' || {{Industry}} === ''"
+    outputs:
+      - enriched_domain
+      - enriched_industry
+      - enriched_employee_count
+
+  - id: segment_account
+    type: use-ai-or-formula
+    outputs:
+      - segment
+      - segment_reason
+      - update_confidence
+
+  - id: build_import_payload
+    type: local-export
+    outputs:
+      - import_action
+      - import_payload_json
+      - import_ready
+      - import_blocker
+
+firstRunGate:
+  inspect:
+    - id_preservation
+    - field_mapping_accuracy
+    - duplicate_detection
+    - import_ready_count
+    - blocked_update_reasons
+  passCriteria:
+    - "All source CRM IDs remain strings."
+    - "No duplicate keys inside an import batch."
+    - "Every blocked row has an explicit blocker reason."
+
+outputs:
+  readyColumns:
+    - crm_record_id_string
+    - company_name_clean
+    - domain_normalized
+    - segment
+    - segment_reason
+    - import_action
+    - import_payload_json
+    - import_ready
+    - import_blocker
+  qaViews:
+    - sample_enrichment
+    - import_ready
+    - blocked_missing_domain
+    - blocked_duplicate
+    - needs_manual_review
+
+knownFailureModes:
+  - CSV tools can round long numeric IDs unless treated as strings.
+  - CRM upserts can fail when duplicate keys exist inside the same batch.
+  - Display names are weak matching keys; prefer normalized domain or CRM ID.
+  - CRM writeback is outside Clay and needs its own confirmation gate.

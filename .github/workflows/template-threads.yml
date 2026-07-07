@@ -1,0 +1,26 @@
+name: template-threads
+# When a new community template lands on main, create its voting discussion.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'community/templates/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  discussions: write
+
+jobs:
+  ensure-threads:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci --ignore-scripts
+      - name: create missing voting threads
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/create-template-discussions.js

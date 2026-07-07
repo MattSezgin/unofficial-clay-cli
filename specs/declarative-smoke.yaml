@@ -1,0 +1,33 @@
+claySpecVersion: 1
+workspaceId: TEST_WS
+workbookId: wb_TEST_PLACEHOLDER
+table:
+  name: declarative-smoke
+  type: spreadsheet
+fields:
+  - name: Company Name
+    type: text
+    dataType: text
+  - name: Domain
+    type: url
+    dataType: url
+  - name: Company Name Copy
+    type: formula
+    dataType: text
+    formula: "{{Company Name}}"
+  - name: AI Category
+    type: action
+    actionKey: use-ai
+    actionPackageId: 67ba01e9-1898-4e7d-afe7-7ebe24819a57
+    actionVersion: 1
+    dataType: json
+    authAccountId: aa_TEST_PLACEHOLDER
+    inputs:
+      useCase: '"claygent"'
+      prompt: '"Classify company name: "+{{Company Name}}+". Return JSON with response."'
+      model: '"gemini-2.5-flash"'
+      temperature: '"Very Low"'
+    outputs:
+      - name: response
+        type: text
+        path: response

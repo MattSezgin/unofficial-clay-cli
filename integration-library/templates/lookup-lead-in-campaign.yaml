@@ -1,0 +1,35 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: lookup-lead-in-campaign
+promotionStatus: reviewed
+proofStatus: blocked_missing_safe_test_data
+strictBattleTested: false
+field:
+  name: Lookup Lead In Campaign
+  type: action
+  actionKey: lookup-lead-in-campaign
+  actionPackageId: 6e7ab2da-0d97-49ab-ba78-a6b2f3bf2029
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: ${CLAY_LOOKUP_LEAD_IN_CAMPAIGN_AUTH_ACCOUNT_ID}
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    email: ${LOOKUP_LEAD_IN_CAMPAIGN_EMAIL}
+  optionalInputs: {}
+  extractedOutputPaths:
+    - Is Unsubscribed
+    - Lead Category Id
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: null
+  viewId: null
+  fieldId: null
+  sourceId: null
+  rowLimit: 0
+  artifacts: []
+blockedReason: Strict proof requires an approved sandbox Smartlead lead/campaign
+  state where the lookup can return parent fullValue and extracted
+  lead-category/unsubscribe outputs. Shared exports only expose production
+  campaign/lead contexts, and using those for proof would not satisfy the
+  sandbox requirement. No production campaign read path was promoted.

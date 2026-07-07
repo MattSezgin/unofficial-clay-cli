@@ -1,0 +1,103 @@
+claySpecVersion: 1
+workspaceId: "${CLAY_WORKSPACE_ID}"
+workbookId: "${CLAY_WORKBOOK_ID}"
+table:
+  name: email-phone-waterfall-sample
+  type: spreadsheet
+view:
+  name: Email Phone Waterfall QA
+  type: grid
+fields:
+  - name: First Name
+    type: text
+    dataType: text
+  - name: Last Name
+    type: text
+    dataType: text
+  - name: Full Name
+    type: text
+    dataType: text
+  - name: Company Name
+    type: text
+    dataType: text
+  - name: Company Domain
+    type: url
+    dataType: url
+  - name: LinkedIn URL
+    type: url
+    dataType: url
+  - name: Job Title
+    type: text
+    dataType: text
+  - name: Country
+    type: text
+    dataType: text
+  - name: First Name Clean
+    type: formula
+    dataType: text
+    formula: "String({{First Name}} || '').trim()"
+  - name: Last Name Clean
+    type: formula
+    dataType: text
+    formula: "String({{Last Name}} || '').trim()"
+  - name: Domain Normalized
+    type: formula
+    dataType: text
+    formula: "String({{Company Domain}} || '').replace(/^https?:\\/\\//,'').replace(/^www\\./,'').replace(/\\/$/,'').toLowerCase()"
+  - name: LinkedIn URL Clean
+    type: formula
+    dataType: text
+    formula: "String({{LinkedIn URL}} || '').trim().replace(/\\/$/,'')"
+  - name: Identity Ready
+    type: formula
+    dataType: text
+    formula: "({{First Name Clean}} && {{Last Name Clean}} && {{Domain Normalized}}) ? 'Yes' : 'No'"
+  - name: Primary Email
+    type: text
+    dataType: text
+  - name: Primary Email Status
+    type: text
+    dataType: text
+  - name: Secondary Email
+    type: text
+    dataType: text
+  - name: Secondary Email Status
+    type: text
+    dataType: text
+  - name: Best Email
+    type: formula
+    dataType: text
+    formula: "{{Primary Email Status}} === 'valid' ? {{Primary Email}} : ({{Secondary Email Status}} === 'valid' ? {{Secondary Email}} : '')"
+  - name: Email Quality
+    type: formula
+    dataType: text
+    formula: "{{Primary Email Status}} === 'valid' ? 'primary_valid' : ({{Secondary Email Status}} === 'valid' ? 'secondary_valid' : 'missing_or_invalid')"
+  - name: Phone Number
+    type: text
+    dataType: text
+  - name: Phone Status
+    type: text
+    dataType: text
+  - name: Campaign Ready
+    type: formula
+    dataType: text
+    formula: "{{Best Email}} ? 'Yes' : 'No'"
+  - name: Reject Reason
+    type: formula
+    dataType: text
+    formula: "{{Campaign Ready}} === 'Yes' ? '' : ({{Identity Ready}} !== 'Yes' ? 'missing_identity' : 'no_valid_email')"
+rows:
+  - First Name: Jane
+    Last Name: Doe
+    Full Name: Jane Doe
+    Company Name: Example Co
+    Company Domain: https://example.com
+    LinkedIn URL: https://linkedin.com/in/example
+    Job Title: VP Marketing
+    Country: United States
+    Primary Email: ""
+    Primary Email Status: missing
+    Secondary Email: ""
+    Secondary Email Status: missing
+    Phone Number: ""
+    Phone Status: not_run

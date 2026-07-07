@@ -1,0 +1,195 @@
+playbookVersion: 1
+id: conference-attendee-identity-enrichment
+name: Conference Attendee Identity Enrichment
+status: draft
+purpose: >
+  Turn scraped or imported conference attendee rows into verified person/company
+  identities: resolve LinkedIn profiles, match current employment, enrich
+  company context, classify target fit, and expose QA lanes for outreach
+  readiness.
+variables:
+  workspaceId: ${CLAY_WORKSPACE_ID}
+  testFolderId: ${CLAY_TEST_FOLDER_ID}
+  workbookId: ${CLAY_WORKBOOK_ID}
+  eventName: ${EVENT_NAME}
+  aiModel: ${CLAY_AI_MODEL:-clay-argon}
+inputs:
+  requiredColumns:
+    - attendee_full_name
+    - attendee_company
+  optionalColumns:
+    - attendee_title
+    - attendee_linkedin_url
+    - company_domain
+    - company_linkedin_url
+    - country
+    - event_role
+    - badge_type
+    - raw_profile_text
+sampleRows:
+  max: 10
+  recommended: 10
+  reason: Attendee identity resolution is hallucination-prone; verify names,
+    companies, and current titles before any campaign action.
+safety:
+  requiresChatConfirmation:
+    - claygent-web-research-run
+    - person-enrichment-run
+    - email-provider-run
+    - campaign-add
+    - scale-beyond-sample
+  creditConsumingSteps:
+    - linkedin_profile_lookup
+    - person_enrichment
+    - company_enrichment
+    - email_lookup_or_validation
+    - fit_classification
+  readOnlySteps:
+    - source_row_readback
+    - prompt_schema_verification
+    - extracted_output_qa
+workflow:
+  - id: normalize_attendee_row
+    type: formula
+    description: Normalize attendee name, company, title, domain, and event role.
+    outputs:
+      - full_name_clean
+      - company_name_clean
+      - title_clean
+      - domain_normalized
+      - event_context
+  - id: resolve_linkedin_profile
+    type: ai-action
+    outputFormat: JSONSchema
+    description: Use Claygent/web research to find the attendee's likely current
+      LinkedIn profile.
+    runCondition: "{{full_name_clean}} !== '' && {{company_name_clean}} !== ''"
+    promptInputs:
+      - eventName
+      - full_name_clean
+      - title_clean
+      - company_name_clean
+      - domain_normalized
+      - company_linkedin_url
+      - country
+      - raw_profile_text
+    outputs:
+      - first_name
+      - last_name
+      - linkedin_url
+      - matched_company
+      - matched_title
+      - confidence
+      - reasoning
+  - id: enrich_person_profile
+    type: provider-action
+    description: Enrich the resolved person profile for current role, location, and
+      employer.
+    runCondition: "{{linkedin_url}} !== '' && {{linkedin_url}} !== 'NOT_FOUND'"
+    outputs:
+      - enriched_current_company
+      - enriched_current_title
+      - enriched_location
+      - person_enrichment_status
+  - id: match_current_employment
+    type: ai-action
+    outputFormat: JSONSchema
+    description: Decide whether the resolved profile is currently at the attendee company.
+    runCondition: "{{linkedin_url}} !== '' && {{enriched_current_company}} !== ''"
+    outputs:
+      - current_employment_match
+      - match_confidence
+      - mismatch_reason
+      - accepted_person_identity
+      - reasoning
+  - id: resolve_company_identity
+    type: ai-action
+    outputFormat: JSONSchema
+    description: Resolve company domain and LinkedIn URL when attendee source lacks
+      reliable company fields.
+    runCondition: "{{company_name_clean}} !== '' && ({{domain_normalized}} === '' ||
+      {{company_linkedin_url}} === '')"
+    outputs:
+      - resolved_company_domain
+      - resolved_company_linkedin_url
+      - company_match_status
+      - company_match_reasoning
+  - id: enrich_company_context
+    type: provider-action
+    description: Enrich company context for size, industry, description, and website.
+    runCondition: "{{resolved_company_domain}} !== '' || {{domain_normalized}} !==
+      '' || {{resolved_company_linkedin_url}} !== ''"
+    outputs:
+      - company_size
+      - company_industry
+      - company_description
+      - company_enrichment_status
+  - id: target_classification
+    type: ai-action
+    outputFormat: JSONSchema
+    description: Classify whether the attendee/account is a campaign target, review,
+      or reject.
+    runCondition: "{{accepted_person_identity}} === true || {{company_description}} !== ''"
+    outputs:
+      - target_status
+      - persona_segment
+      - outreach_angle
+      - risk_flag
+      - evidence
+      - reasoning
+  - id: campaign_readiness_formula
+    type: formula
+    description: Combine identity, company match, classification, and contactability
+      into an operator lane.
+    outputs:
+      - identity_verified
+      - company_verified
+      - campaign_readiness
+      - operator_lane
+      - blocker_reason
+firstRunGate:
+  inspect:
+    - linkedin_url_found_rate
+    - current_employment_match_distribution
+    - company_match_status_distribution
+    - target_status_distribution
+    - NOT_FOUND_rows_with_non_none_confidence
+    - extracted_output_blank_rate
+  passCriteria:
+    - Accepted LinkedIn rows have current-employment match or an explicit review
+      lane.
+    - Rows with NOT_FOUND identity do not proceed to email lookup or campaign
+      add.
+    - AI columns use JSON Schema and extracted outputs are value-checked, not
+      just schema-checked.
+outputs:
+  readyColumns:
+    - full_name_clean
+    - title_clean
+    - company_name_clean
+    - linkedin_url
+    - current_employment_match
+    - resolved_company_domain
+    - resolved_company_linkedin_url
+    - target_status
+    - persona_segment
+    - outreach_angle
+    - campaign_readiness
+    - operator_lane
+    - blocker_reason
+  qaViews:
+    - attendee_identity_ready
+    - linkedin_not_found
+    - company_mismatch_review
+    - target_fit_review
+    - campaign_ready
+    - identity_or_enrichment_errors
+knownFailureModes:
+  - Conference attendee company fields can be stale, abbreviated, or sponsor
+    names rather than employer names.
+  - Claygent can return plausible profiles with wrong current employer;
+    current-employment match is mandatory before launch.
+  - JSON Schema config does not guarantee enum/case conformity in live model
+    outputs; value-level QA must inspect cells.
+  - Company LinkedIn URL may be unavailable from attendee source data; prompt
+    mappings should explicitly show blank or fallback inputs.

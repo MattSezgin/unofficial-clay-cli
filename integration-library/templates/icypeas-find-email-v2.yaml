@@ -1,0 +1,33 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: icypeas-find-email-v2
+promotionStatus: battle-tested
+proofStatus: real_data_output_verified
+strictBattleTested: true
+field:
+  name: Icypeas Find Email V2
+  type: action
+  actionKey: icypeas-find-email-v2
+  actionPackageId: 303cd8bc-26dc-4c8c-bd5a-e94528d6c77d
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: ${CLAY_ICYPEAS_FIND_EMAIL_V2_AUTH_ACCOUNT_ID}
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    first_name: ${ICYPEAS_FIND_EMAIL_V2_FIRST_NAME}
+    last_name: ${ICYPEAS_FIND_EMAIL_V2_LAST_NAME}
+    domain: ${ICYPEAS_FIND_EMAIL_V2_DOMAIN}
+  optionalInputs:
+    fullname: ${ICYPEAS_FIND_EMAIL_V2_FULLNAME:-}
+  extractedOutputPaths:
+    - icy email
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: <example-id>
+  viewId: <example-id>
+  fieldId: <example-id>
+  sourceId: null
+  rowLimit: 10
+  artifacts: []
+blockedReason: null

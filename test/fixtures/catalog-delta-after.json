@@ -1,0 +1,43 @@
+{
+  "count": 4,
+  "actions": [
+    {
+      "key": "alpha-enrich",
+      "version": 1,
+      "package": { "id": "pkg-alpha", "key": "AlphaPackage", "displayName": "Alpha Pro", "categories": ["enrichment_tool"] },
+      "displayName": "Alpha Enrich",
+      "inputParameterSchema": [
+        { "name": "domain", "type": "text", "required": true },
+        { "name": "country", "type": "text", "required": false }
+      ],
+      "outputParameterSchema": [
+        { "name": "company", "type": "text", "path": "company.name" },
+        { "name": "employees", "type": "number", "path": "company.employees" }
+      ]
+    },
+    {
+      "key": "beta-lookup",
+      "version": 1,
+      "package": { "id": "pkg-beta", "key": "BetaPackage", "displayName": "Beta", "categories": ["data"] },
+      "displayName": "Beta Lookup",
+      "inputParameterSchema": [{ "name": "email", "type": "text", "required": true }],
+      "outputParameterSchema": [{ "name": "score", "type": "number", "path": "score" }]
+    },
+    {
+      "key": "delta-new",
+      "version": 1,
+      "package": { "id": "pkg-delta", "key": "DeltaPackage", "displayName": "Delta", "categories": ["source"] },
+      "displayName": "Delta New",
+      "inputParameterSchema": [],
+      "outputParameterSchema": []
+    },
+    {
+      "key": "variant-action",
+      "version": 2,
+      "package": { "id": "pkg-var", "key": "VariantPackage", "displayName": "Variant", "categories": [] },
+      "displayName": "Variant",
+      "inputParameterSchema": [],
+      "outputParameterSchema": []
+    }
+  ]
+}

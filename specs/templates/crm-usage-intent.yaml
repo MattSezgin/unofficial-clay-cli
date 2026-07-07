@@ -1,0 +1,59 @@
+claySpecVersion: 1
+workspaceId: "${CLAY_WORKSPACE_ID}"
+workbookId: "${CLAY_WORKBOOK_ID}"
+table:
+  name: crm-usage-intent-sample
+  type: spreadsheet
+view:
+  name: CRM Usage Intent QA
+  type: grid
+fields:
+  - name: Company Name
+    type: text
+    dataType: text
+  - name: Company Domain
+    type: url
+    dataType: url
+  - name: Careers URL
+    type: url
+    dataType: url
+  - name: Existing CRM Hint
+    type: text
+    dataType: text
+  - name: Domain Normalized
+    type: formula
+    dataType: text
+    formula: "String({{Company Domain}} || '').replace(/^https?:\\/\\//,'').replace(/^www\\./,'').replace(/\\/$/,'').toLowerCase()"
+  - name: Ready For CRM Intent AI
+    type: formula
+    dataType: text
+    formula: "{{Company Name}} && {{Domain Normalized}} ? 'Yes' : 'No'"
+  - name: CRM Usage Intent AI
+    type: action
+    actionKey: use-ai
+    actionPackageId: 67ba01e9-1898-4e7d-afe7-7ebe24819a57
+    actionVersion: 1
+    dataType: json
+    runCondition: "{{Ready For CRM Intent AI}} === 'Yes'"
+    inputs:
+      useCase: '"claygent"'
+      model: '"clay-argon"'
+      temperature: '"Low"'
+      prompt: >
+        "Classify CRM or GTM-tool usage evidence for this company. Use only row facts.
+        Company: "+({{Company Name}} || "")+". Domain: "+({{Domain Normalized}} || "")+".
+        Careers URL: "+({{Careers URL}} || "none")+". Existing hint: "+({{Existing CRM Hint}} || "none")+".
+        Return JSON fields crm_usage_status, evidence_type, evidence_quote, confidence,
+        recommended_segment, reasoning. Do not infer usage without concrete evidence."
+    outputs:
+      - { name: crm_usage_status, type: text, path: crm_usage_status }
+      - { name: evidence_type, type: text, path: evidence_type }
+      - { name: evidence_quote, type: text, path: evidence_quote }
+      - { name: confidence, type: text, path: confidence }
+      - { name: recommended_segment, type: text, path: recommended_segment }
+      - { name: reasoning, type: text, path: reasoning }
+rows:
+  - Company Name: Example Co
+    Company Domain: https://example.com
+    Careers URL: https://example.com/careers
+    Existing CRM Hint: "Hiring for CRM operations"

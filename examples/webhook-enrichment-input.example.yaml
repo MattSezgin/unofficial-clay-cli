@@ -1,0 +1,18 @@
+request:
+  playbook: webhook-enrichment
+  clientContext: "Generic public-safe example"
+  samplePayloadCount: 1
+
+payload:
+  request_id: "example-request-001"
+  company_name: "Example Company"
+  company_domain: "example.com"
+  person_name: "Example Person"
+  job_title: "Example Title"
+  source_context: "Synthetic sample payload for offline planning only."
+
+quality:
+  requireWebhookUrlRedaction: true
+  callbackUrl: "${CLAY_CALLBACK_URL}"
+  scaleOnlyAfterConfirmation: true
+

@@ -1,0 +1,23 @@
+request:
+  playbook: crm-enrichment-export
+  clientContext: "Generic public-safe example"
+  crm: generic
+  rowCount: 10
+
+columns:
+  crm_record_id: CRM Record ID
+  company_name: Company Name
+  company_domain: Company Domain
+  account_owner: Account Owner
+  lifecycle_stage: Lifecycle Stage
+  arr: ARR
+  industry: Industry
+  employee_count: Employee Count
+  notes: Notes
+
+quality:
+  preserveIdsAsStrings: true
+  requireImportActionForEveryReadyRow: true
+  blockDuplicateKeys: true
+  scaleOnlyAfterConfirmation: true
+

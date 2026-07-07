@@ -1,0 +1,29 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: validate-email
+promotionStatus: battle-tested
+proofStatus: real_data_output_verified
+strictBattleTested: true
+field:
+  name: Validate Email
+  type: action
+  actionKey: validate-email
+  actionPackageId: 8f0d2dc0-a6b4-4b84-9aad-a330b4a4586a
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: ${CLAY_VALIDATE_EMAIL_AUTH_ACCOUNT_ID}
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    email: ${VALIDATE_EMAIL_EMAIL}
+  optionalInputs: {}
+  extractedOutputPaths: []
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: <example-id>
+  viewId: <example-id>
+  fieldId: <example-id>
+  sourceId: null
+  rowLimit: 10
+  artifacts: []
+blockedReason: null

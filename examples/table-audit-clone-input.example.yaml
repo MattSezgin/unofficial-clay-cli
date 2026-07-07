@@ -1,0 +1,18 @@
+request:
+  playbook: table-audit-clone
+  clientContext: "Generic public-safe example"
+  mode: readback_then_scratch_clone
+
+parameters:
+  source_table_id: "${CLAY_SOURCE_TABLE_ID}"
+  source_view_id: "${CLAY_SOURCE_VIEW_ID}"
+  include_rows: 10
+  target_scratch_workbook_id: "${CLAY_SCRATCH_WORKBOOK_ID}"
+  clone_mode: scratch_only
+
+quality:
+  requireRedactedManifest: true
+  requireParityScore: true
+  neverPromoteCloneAutomatically: true
+  scaleOnlyAfterConfirmation: true
+

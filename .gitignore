@@ -1,0 +1,78 @@
+# Dependencies
+node_modules/
+
+# Local environment and profiles
+.env
+.env.*
+!.env.example
+*.env
+.envrc
+config.local.yaml
+config.local.yml
+config.local.json
+config.*.local.yaml
+config.*.local.yml
+config.*.local.json
+
+# Clay auth/session material
+.clay-session*
+.clay-session.json
+clay-session*
+*claysession*
+
+# Generated run artifacts and exports
+runs/
+exports/
+tmp/
+*-sample-run.json
+*-prepared-sample-run.json
+*-preflight.json
+*-hydrated-sample-run.json
+*-advanced-sample-run.json
+*-evidence.json
+*-scale-gate.json
+*-quality-report.md
+
+# Raw Clay manifests/specs/readbacks
+*.raw.yaml
+*.raw.yml
+*.raw.json
+specs/*.raw.yaml
+specs/*.raw.yml
+specs/*.raw.json
+manifest*.json
+*manifest-redacted.json
+
+# Browser/network captures
+*.har
+*.jsonl
+*.png
+*.jpg
+*.jpeg
+*.webp
+screenshots/
+.browser-data/
+
+# Data files that may contain contacts or PII
+*.csv
+*.tsv
+*.xlsx
+*.xls
+*.db
+*.sqlite
+*.sqlite3
+
+# OS/editor noise
+.DS_Store
+._*
+*.tmp
+*.temp
+*~
+
+# Bulk regenerable catalog artifacts (kept locally + in archives/, not in git)
+integration-library/catalog/actions/
+integration-library/catalog/actions-catalog-*.normalized.json
+integration-library/catalog/blocked-action-report.json
+
+# Local audit/scratch dirs - never ship
+_audit/

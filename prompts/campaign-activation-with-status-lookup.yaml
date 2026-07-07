@@ -1,0 +1,44 @@
+promptVersion: 1
+id: campaign-activation-with-status-lookup
+playbookId: campaign-activation-with-status-lookup
+name: Campaign Activation Gate Prompt Contract
+purpose: Decide whether a lead can safely be added to an outbound campaign after status and suppression checks.
+mode: qa-use-ai
+valuePolicy: Omit row values from committed artifacts. Campaign IDs, lead IDs, and provider outputs stay in ignored runs or Clay.
+inputFields:
+  required:
+    - email
+    - first_name
+    - last_name
+    - company_name
+  optional:
+    - title
+    - existing_lead_status
+    - prior_reply_category
+    - prior_bounce_status
+    - suppression_reason
+    - verification_status
+    - account_context
+    - personalization_context
+systemPrompt: >
+  You are a conservative outbound campaign launch gate. Hard suppression,
+  negative prior status, invalid email, or missing required fields must block launch.
+taskPrompt: >
+  Review lead status, verification, account context, and personalization inputs.
+  Return a send decision, campaign lane, risk flag, exclusion reason, and reasoning.
+guardrails:
+  - Never override do-not-contact, bounce, suppression, or prior negative status.
+  - Do not launch rows with missing normalized email or required identity fields.
+  - Personalization quality can downgrade to review but cannot override safety blocks.
+  - Never invent personalization facts or campaign history.
+outputSchema:
+  send_decision: text
+  campaign_lane: text
+  personalization_angle: text
+  risk_flag: text
+  exclusion_reason: text
+  reasoning: text
+qaChecks:
+  - suppressed rows blocked before campaign add
+  - invalid or unknown sendability routed correctly
+  - launch decision has a concrete reason

@@ -1,0 +1,29 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: hg-insights-find-domain-from-company-name
+promotionStatus: battle-tested
+proofStatus: real_data_output_verified
+strictBattleTested: true
+field:
+  name: Hg Insights Find Domain From Company Name
+  type: action
+  actionKey: hg-insights-find-domain-from-company-name
+  actionPackageId: b7f3454a-5095-4cb2-b91b-79cdb54e0dd2
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: ${CLAY_HG_INSIGHTS_FIND_DOMAIN_FROM_COMPANY_NAME_AUTH_ACCOUNT_ID}
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    company_name: ${HG_INSIGHTS_FIND_DOMAIN_FROM_COMPANY_NAME_COMPANY_NAME}
+  optionalInputs: {}
+  extractedOutputPaths: []
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: <example-id>
+  viewId: <example-id>
+  fieldId: <example-id>
+  sourceId: null
+  rowLimit: 10
+  artifacts: []
+blockedReason: null

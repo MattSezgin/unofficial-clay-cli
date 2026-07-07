@@ -1,0 +1,161 @@
+playbookVersion: 1
+id: crm-usage-intent
+name: CRM Usage And Hiring Intent
+status: draft
+purpose: >
+  Build a company/account workflow that combines job-posting evidence, CRM usage
+  signals, company enrichment, and AI classification to identify accounts likely
+  using or evaluating a target CRM or GTM tool.
+variables:
+  workspaceId: ${CLAY_WORKSPACE_ID}
+  testFolderId: ${CLAY_TEST_FOLDER_ID}
+  workbookId: ${CLAY_WORKBOOK_ID}
+  targetTool: ${TARGET_TOOL}
+  aiModel: ${CLAY_AI_MODEL:-clay-argon}
+inputs:
+  requiredColumns:
+    - company_name
+    - company_domain
+  optionalColumns:
+    - company_linkedin_url
+    - careers_url
+    - industry
+    - employee_count
+    - country
+    - existing_crm_hint
+sampleRows:
+  max: 10
+  recommended: 10
+  reason: Job and company enrichment can burn credits; verify signal quality and
+    false positives before scale.
+safety:
+  requiresChatConfirmation:
+    - provider-action-run
+    - http-job-page-fetch
+    - people-search-trigger
+    - scale-beyond-sample
+  creditConsumingSteps:
+    - company_enrichment
+    - job_enrichment
+    - ai_crm_usage_classifier
+    - people_search_trigger
+  readOnlySteps:
+    - manifest_readback
+    - parity_audit
+    - required_value_check
+workflow:
+  - id: normalize_account
+    type: formula
+    description: Normalize company name, domain, and LinkedIn slug before enrichment.
+    outputs:
+      - normalized_company_name
+      - normalized_domain
+      - linkedin_company_slug
+  - id: enrich_company
+    type: provider-action
+    description: Pull firmographic and LinkedIn-company context for the account.
+    runCondition: "{{normalized_domain}} !== '' || {{company_linkedin_url}} !== ''"
+    outputs:
+      - enriched_company_name
+      - enriched_company_linkedin_url
+      - employee_count_enriched
+      - industry_enriched
+      - company_description
+  - id: find_or_enrich_jobs
+    type: provider-action
+    description: Find relevant open roles or enrich supplied jobs for CRM/GTM stack
+      evidence.
+    runCondition: "{{normalized_domain}} !== ''"
+    outputs:
+      - relevant_job_titles
+      - relevant_job_urls
+      - job_descriptions_excerpt
+      - job_signal_status
+  - id: fetch_job_or_careers_page
+    type: http-action
+    description: Safely fetch public careers/job pages where configured; never embed
+      secrets in URL formulas.
+    runCondition: "{{relevant_job_urls}} !== '' || {{careers_url}} !== ''"
+    outputs:
+      - fetched_page_title
+      - fetched_page_text_excerpt
+      - fetch_status
+  - id: classify_crm_usage
+    type: ai-action
+    outputFormat: JSONSchema
+    description: Determine whether the account uses, evaluates, or hires for the
+      target CRM/tool.
+    runCondition: "{{company_description}} !== '' || {{job_descriptions_excerpt}}
+      !== '' || {{existing_crm_hint}} !== ''"
+    promptInputs:
+      - targetTool
+      - normalized_company_name
+      - company_description
+      - relevant_job_titles
+      - job_descriptions_excerpt
+      - existing_crm_hint
+    outputs:
+      - crm_usage_status
+      - evidence_type
+      - evidence_quote
+      - confidence
+      - recommended_segment
+      - reasoning
+  - id: classify_competitor_or_stack
+    type: ai-action
+    outputFormat: JSONSchema
+    description: Identify likely CRM/marketing stack or competitor replacement angle.
+    runCondition: "{{crm_usage_status}} !== 'unknown'"
+    outputs:
+      - likely_stack
+      - competitor_angle
+      - migration_risk
+      - outreach_angle
+      - reasoning
+  - id: trigger_people_search
+    type: source-trigger
+    description: Trigger people search only for accounts with usable CRM intent.
+    runCondition: "{{recommended_segment}} === 'target' || {{recommended_segment}}
+      === 'review'"
+    outputs:
+      - people_search_status
+      - people_search_table
+firstRunGate:
+  inspect:
+    - crm_usage_status_distribution
+    - false_positive_examples
+    - job_signal_status
+    - required_input_blanks
+    - people_search_trigger_count
+  passCriteria:
+    - At least one row has concrete evidence quote, not just generic AI
+      inference.
+    - Rows with no job/company evidence do not trigger people search.
+    - AI output uses JSON Schema and extracted output fields are populated.
+outputs:
+  readyColumns:
+    - normalized_company_name
+    - normalized_domain
+    - enriched_company_linkedin_url
+    - crm_usage_status
+    - evidence_type
+    - evidence_quote
+    - likely_stack
+    - recommended_segment
+    - outreach_angle
+    - people_search_status
+  qaViews:
+    - crm_intent_targets
+    - review_weak_evidence
+    - missing_job_context
+    - people_search_triggered
+    - enrichment_errors
+knownFailureModes:
+  - Job pages mention many tools in boilerplate; require evidence quotes tied to
+    the target team or role.
+  - Company enrichment can return parent-company context; compare normalized
+    company/domain before trusting it.
+  - Triggering people search on weak signals creates noisy contacts; gate on
+    segment and confidence.
+  - HTTP formulas must be redacted and audited for embedded API keys before
+    committing artifacts.

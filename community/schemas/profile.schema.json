@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "clay-cli/community/profile",
+  "title": "Contributor profile",
+  "description": "Public contributor profile. Opt-in. Only these fields exist - nothing else can be published.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["github", "first_name"],
+  "properties": {
+    "github": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9](?:[a-zA-Z0-9]|-(?=[a-zA-Z0-9])){0,38}$",
+      "description": "GitHub handle; must match the folder name community/contributors/<github>/"
+    },
+    "first_name": { "type": "string", "minLength": 1, "maxLength": 40, "pattern": "^[^\\n<>{}]{1,40}$" },
+    "last_name": { "type": "string", "maxLength": 40, "pattern": "^[^\\n<>{}]{0,40}$" },
+    "company": { "type": "string", "maxLength": 60, "pattern": "^[^\\n<>{}]{0,60}$" },
+    "role": { "type": "string", "maxLength": 60, "pattern": "^[^\\n<>{}]{0,60}$" },
+    "linkedin": {
+      "type": "string",
+      "pattern": "^https://(www\\.)?linkedin\\.com/in/[A-Za-z0-9\\-_%]{1,100}/?$",
+      "description": "Only linkedin.com/in/ profile URLs are accepted - no other links"
+    },
+    "tagline": { "type": "string", "maxLength": 120, "pattern": "^[^\\n<>{}]{0,120}$" }
+  }
+}

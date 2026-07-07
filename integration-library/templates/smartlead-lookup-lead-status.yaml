@@ -1,0 +1,34 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: smartlead-lookup-lead-status
+promotionStatus: reviewed
+proofStatus: blocked_missing_safe_test_data
+strictBattleTested: false
+field:
+  name: Smartlead Lookup Lead Status
+  type: action
+  actionKey: smartlead-lookup-lead-status
+  actionPackageId: 6e7ab2da-0d97-49ab-ba78-a6b2f3bf2029
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: ${CLAY_SMARTLEAD_LOOKUP_LEAD_STATUS_AUTH_ACCOUNT_ID}
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    campaign_id: ${SMARTLEAD_LOOKUP_LEAD_STATUS_CAMPAIGN_ID}
+    email: ${SMARTLEAD_LOOKUP_LEAD_STATUS_EMAIL}
+  optionalInputs: {}
+  extractedOutputPaths: []
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: null
+  viewId: null
+  fieldId: null
+  sourceId: null
+  rowLimit: 0
+  artifacts: []
+blockedReason: Strict proof requires an approved sandbox Smartlead campaign_id
+  plus known test email/lead state. Shared workbook exports expose production
+  campaign IDs only; no sandbox campaign/lead identifiers were approved for
+  proof, so the action is blocked rather than run against production campaign
+  data.

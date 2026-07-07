@@ -1,0 +1,83 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: use-ai
+promotionStatus: battle-tested
+proofStatus: real_data_output_verified
+strictBattleTested: true
+field:
+  name: Use Ai
+  type: action
+  actionKey: use-ai
+  actionPackageId: 67ba01e9-1898-4e7d-afe7-7ebe24819a57
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: ${CLAY_USE_AI_AUTH_ACCOUNT_ID}
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    prompt: ${USE_AI_PROMPT}
+    model: ${USE_AI_MODEL}
+    useCase: ${USE_AI_USECASE}
+    answerSchemaType: ${USE_AI_ANSWERSCHEMATYPE}
+  optionalInputs:
+    _metadata: ${USE_AI_METADATA:-}
+    browserbaseContextId: ${USE_AI_BROWSERBASECONTEXTID:-}
+    claygentFieldMapping: ${USE_AI_CLAYGENTFIELDMAPPING:-}
+    claygentId: ${USE_AI_CLAYGENTID:-}
+    contextDocumentIds: ${USE_AI_CONTEXTDOCUMENTIDS:-}
+    jsonMode: ${USE_AI_JSONMODE:-}
+    maxCostInCents: ${USE_AI_MAXCOSTINCENTS:-}
+    maxTokens: ${USE_AI_MAXTOKENS:-}
+    mcpSettings: ${USE_AI_MCPSETTINGS:-}
+    metaprompt: ${USE_AI_METAPROMPT:-}
+    reasoningBudget: ${USE_AI_REASONINGBUDGET:-}
+    reasoningLevel: ${USE_AI_REASONINGLEVEL:-}
+    runBudget: ${USE_AI_RUNBUDGET:-}
+    stopSequence: ${USE_AI_STOPSEQUENCE:-}
+    systemPrompt: ${USE_AI_SYSTEMPROMPT:-}
+    tableExamples: ${USE_AI_TABLEEXAMPLES:-}
+    temperature: ${USE_AI_TEMPERATURE:-}
+    topP: ${USE_AI_TOPP:-}
+  extractedOutputPaths:
+    - (backup) Uses Target Tool
+    - (upt) Normalized Job Title
+    - Company Linkedin Url
+    - Company Type
+    - Comparison Target Name
+    - Segment
+    - Functional Background Classification
+    - Is Current
+    - Is Consulting Segment
+    - Linkedin Company Url
+    - Linkedin Url
+    - New Column
+    - Normalized Job Title
+    - Product Details confidence
+    - Product Details selected Option Id
+    - Product Details Segment
+    - Reasoning
+    - Referral Note
+    - Selected Option Id
+    - Size
+    - Time Taken In Seconds
+    - Top Comparison Target Name
+    - Top Comparison Target Reasoning
+    - Total Cost To AI Provider
+    - Total Cost To AIProvider
+    - Total Input Tokens
+    - Total Output Tokens
+    - Uses Target Tool
+    - referrer_first_name
+    - referrer_last_name
+    - Example Output Field
+    - contact-linkedin-url
+    - steps
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: <example-id>
+  viewId: <example-id>
+  fieldId: <example-id>
+  sourceId: null
+  rowLimit: 10
+  artifacts: []
+blockedReason: null

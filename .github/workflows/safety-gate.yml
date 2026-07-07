@@ -1,0 +1,51 @@
+name: safety-gate
+# Runs on every push and pull request. Nothing merges with a single finding.
+# Three independent layers: our shape scanner, community schema validation, gitleaks.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    name: secret + identifier scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: repo shape scanner (Clay IDs, keys, webhooks, entropy, risky files)
+        run: node scripts/scan-repo.js
+      - name: gitleaks (independent secret scanner, full history)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  community:
+    name: community contribution validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci --ignore-scripts
+      - name: schema + author + action-key validation
+        run: node scripts/validate-community.js
+
+  tests:
+    name: offline test battery
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci --ignore-scripts
+      - run: npm run test:all

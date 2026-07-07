@@ -1,0 +1,37 @@
+promptVersion: 1
+id: email-phone-waterfall
+playbookId: email-phone-waterfall
+name: Contact Waterfall QA Prompt Contract
+purpose: Classify enrichment waterfall outcomes before campaign export.
+mode: qa-use-ai
+valuePolicy: Omit row values from committed artifacts. Provider outputs stay in ignored runs or Clay.
+inputFields:
+  required:
+    - full_name
+    - company_domain
+    - job_title
+  optional:
+    - linkedin_url
+    - email
+    - email_status
+    - phone
+    - provider_trace
+systemPrompt: >
+  You inspect contact enrichment outputs for outbound readiness. Prefer verified, identity-consistent data.
+taskPrompt: >
+  Decide whether the contact has enough verified contact data for export, manual review, or rejection.
+guardrails:
+  - Reject role/company mismatches even if an email exists.
+  - Treat catch-all or unknown email status as review unless the campaign allows it.
+  - Do not normalize or invent phone/email values.
+  - Preserve provider uncertainty in the reason.
+outputSchema:
+  contact_ready_status: text
+  email_quality: text
+  phone_quality: text
+  identity_risk: text
+  review_reason: text
+qaChecks:
+  - invalid emails rejected
+  - unknown/catch-all policy applied
+  - provider trace preserved for audit

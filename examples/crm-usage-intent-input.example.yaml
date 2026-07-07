@@ -1,0 +1,26 @@
+request:
+  playbook: crm-usage-intent
+  clientContext: "Generic public-safe example"
+  rowCount: 10
+
+columns:
+  company_name: Company Name
+  company_domain: Company Domain
+  company_linkedin_url: Company LinkedIn URL
+  careers_url: Careers URL
+  industry: Industry
+  employee_count: Employee Count
+  existing_crm_hint: Existing CRM Hint
+
+brief:
+  target_tool: HubSpot
+  evidence_policy: Require concrete company or job-post evidence before target segment.
+  target_segments:
+    - confirmed_usage
+    - hiring_intent
+    - replacement_intent
+
+quality:
+  requireEvidenceQuote: true
+  requireNoGenericInferenceTargets: true
+  scaleOnlyAfterConfirmation: true

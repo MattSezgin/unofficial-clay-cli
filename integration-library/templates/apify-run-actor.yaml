@@ -1,0 +1,33 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: apify-run-actor
+promotionStatus: reviewed
+proofStatus: blocked_paid_or_unbounded_cost
+strictBattleTested: false
+field:
+  name: Apify Run Actor
+  type: action
+  actionKey: apify-run-actor
+  actionPackageId: ea91b0b8-6c78-4d32-a978-345e923bdc93
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: ${CLAY_APIFY_RUN_ACTOR_AUTH_ACCOUNT_ID}
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    actorId: ${APIFY_RUN_ACTOR_ACTORID}
+    data: ${APIFY_RUN_ACTOR_DATA}
+  optionalInputs: {}
+  extractedOutputPaths: []
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: <example-id>
+  viewId: <example-id>
+  fieldId: <example-id>
+  sourceId: null
+  rowLimit: 1
+  artifacts: []
+blockedReason: "Approved one-row sandbox proof used the observed workbook actor
+  <your-actor-id> and safe Apify account, but runtime returned
+  actor-is-not-rented: the paid actor free trial expired and must be rented
+  before it can run. Strict proof is blocked on paid external actor dependency."

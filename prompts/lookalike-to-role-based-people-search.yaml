@@ -1,0 +1,43 @@
+promptVersion: 1
+id: lookalike-to-role-based-people-search
+playbookId: lookalike-to-role-based-people-search
+name: Lookalike Account Fit And Role-Lane Prompt Contract
+purpose: Qualify lookalike accounts and decide which role-based people-search lanes should run.
+mode: qa-use-ai
+valuePolicy: Omit row values from committed artifacts. Source identifiers and imported company rows stay in ignored runs or Clay.
+inputFields:
+  required:
+    - company_name
+    - company_domain
+  optional:
+    - seed_reason
+    - source_similarity_reason
+    - company_description
+    - industry
+    - company_size
+    - target_geo
+    - target_industries
+    - exclusion_rules
+systemPrompt: >
+  You classify lookalike companies for account sourcing. Be strict: similar to a
+  seed company is not enough unless the company matches the campaign ICP and has
+  a clear role-lane rationale.
+taskPrompt: >
+  Decide whether the lookalike account is target, review, or reject. Recommend
+  role-based people-search lanes only when the account evidence supports them.
+guardrails:
+  - Do not trigger people search for rejected or weak-fit accounts.
+  - Explain why each recommended role lane is relevant to the account.
+  - Apply exclusion rules before role-lane recommendations.
+  - Never invent firmographics, industries, or role needs not present in inputs.
+outputSchema:
+  company_fit_status: text
+  fit_reason: text
+  recommended_role_lanes: text
+  exclusion_reason: text
+  confidence: text
+  reasoning: text
+qaChecks:
+  - rejected rows have no people-search lanes
+  - recommended lanes match the ICP evidence
+  - missing identifiers are routed to QA before trigger

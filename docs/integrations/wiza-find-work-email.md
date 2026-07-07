@@ -1,0 +1,57 @@
+# wiza-find-work-email
+
+## Status
+
+- Promotion status: `battle-tested`
+- Proof status: `real_data_output_verified`
+- Strict battle-tested: `true`
+
+## Action identity
+
+- `actionKey`: `wiza-find-work-email`
+- `actionPackageId`: `204f124b-1fd1-42dc-8783-dbedb9adce2e`
+- `actionVersion`: `1`
+- Auth observed: `True`
+- Run condition observed: `True`
+
+## Real source evidence
+
+Evidence sections are not included in the public build. Validate against your own workspace with a <=10-row sandbox run.
+
+## Inputs
+
+### Required
+- `full_name`
+- `domain`
+
+### Optional observed
+- `company`
+- `profile_url`
+
+### Candidate-required observed
+- `company`
+- `domain`
+- `full_name`
+- `profile_url`
+
+## Extracted output paths observed/proven
+
+- None observed/curated.
+
+## Proof / block summary
+
+Strict live proof is complete: real sandbox data was run/read back, parent `externalContent.fullValue` or source materialization was inspected where applicable, extracted outputs/value QA were verified where applicable, status semantics are documented, and no unresolved proof-path settings/runtime errors remain.
+
+## Status semantics
+
+- `SUCCESS` — Found rows have parent externalContent.fullValue containing email data; extracted email/status fields must be non-empty before treating as usable.
+- `SUCCESS_NO_DATA` — No-data rows are expected provider misses. Parent fullValue may be null or may contain provider payload with null email/unfound status depending on provider; parent fullValue + extracted email is truth.
+- `ERROR` — Runtime errors block promotion unless isolated to a separate non-proof path.
+
+## Artifacts
+
+- Internal run-log references are not included in the public build.
+
+## Template
+
+- `integration-library/templates/wiza-find-work-email.yaml`

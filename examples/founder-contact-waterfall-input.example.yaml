@@ -1,0 +1,21 @@
+request:
+  playbook: founder-contact-waterfall
+  clientContext: "Generic public-safe example"
+  rowCount: 10
+
+columns:
+  founder_full_name: Founder Full Name
+  first_name: First Name
+  last_name: Last Name
+  company_name: Company Name
+  company_domain: Company Domain
+  founder_linkedin_url: Founder LinkedIn URL
+  company_linkedin_url: Company LinkedIn URL
+  title: Title
+  country: Country
+
+quality:
+  requireCurrentCompanyMatch: true
+  requireValidatedBestEmail: true
+  allowCatchAll: false
+  scaleOnlyAfterConfirmation: true

@@ -1,0 +1,47 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: http-api-v2
+promotionStatus: battle-tested
+proofStatus: real_data_output_verified
+strictBattleTested: true
+field:
+  name: Http Api V2
+  type: action
+  actionKey: http-api-v2
+  actionPackageId: 4299091f-3cd3-4d68-b198-0143575f471d
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: ${CLAY_HTTP_API_V2_AUTH_ACCOUNT_ID}
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    method: ${HTTP_API_V2_METHOD}
+    url: ${HTTP_API_V2_URL}
+  optionalInputs:
+    body: ${HTTP_API_V2_BODY:-}
+    fieldPaths: ${HTTP_API_V2_FIELDPATHS:-}
+    followRedirects: ${HTTP_API_V2_FOLLOWREDIRECTS:-}
+    followRedirectsOptions|maxRedirects: ${HTTP_API_V2_FOLLOWREDIRECTSOPTIONS_MAXREDIRECTS:-}
+    headers: ${HTTP_API_V2_HEADERS:-}
+    queryString: ${HTTP_API_V2_QUERYSTRING:-}
+    removeNull: ${HTTP_API_V2_REMOVENULL:-}
+    responseTimeout: ${HTTP_API_V2_RESPONSETIMEOUT:-}
+    retryOptions|errorCodesToRetry: ${HTTP_API_V2_RETRYOPTIONS_ERRORCODESTORETRY:-}
+    retryOptions|maxRetries: ${HTTP_API_V2_RETRYOPTIONS_MAXRETRIES:-}
+    retryOptions|statusCodesToRetry: ${HTTP_API_V2_RETRYOPTIONS_STATUSCODESTORETRY:-}
+    returnResponseMetadata: ${HTTP_API_V2_RETURNRESPONSEMETADATA:-}
+    shouldRetry: ${HTTP_API_V2_SHOULDRETRY:-}
+  extractedOutputPaths:
+    - Full Name (2)
+    - Result
+    - Result icy
+    - Result prospeo
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: <example-id>
+  viewId: <example-id>
+  fieldId: <example-id>
+  sourceId: null
+  rowLimit: 10
+  artifacts: []
+blockedReason: null

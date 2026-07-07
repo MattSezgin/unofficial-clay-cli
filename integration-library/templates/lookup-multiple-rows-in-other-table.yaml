@@ -1,0 +1,34 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: lookup-multiple-rows-in-other-table
+promotionStatus: battle-tested
+proofStatus: real_data_output_verified
+strictBattleTested: true
+field:
+  name: Lookup Multiple Rows In Other Table
+  type: action
+  actionKey: lookup-multiple-rows-in-other-table
+  actionPackageId: 4299091f-3cd3-4d68-b198-0143575f471d
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: ${CLAY_LOOKUP_MULTIPLE_ROWS_IN_OTHER_TABLE_AUTH_ACCOUNT_ID}
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    tableId: ${LOOKUP_MULTIPLE_ROWS_IN_OTHER_TABLE_TABLEID}
+  optionalInputs:
+    fields|filterOperator: ${LOOKUP_MULTIPLE_ROWS_IN_OTHER_TABLE_FIELDS_FILTEROPERATOR:-}
+    fields|limit: ${LOOKUP_MULTIPLE_ROWS_IN_OTHER_TABLE_FIELDS_LIMIT:-}
+    fields|rowValue: ${LOOKUP_MULTIPLE_ROWS_IN_OTHER_TABLE_FIELDS_ROWVALUE:-}
+    fields|targetColumn: ${LOOKUP_MULTIPLE_ROWS_IN_OTHER_TABLE_FIELDS_TARGETCOLUMN:-}
+  extractedOutputPaths:
+    - Number Of Results-team-mate
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: <example-id>
+  viewId: <example-id>
+  fieldId: <example-id>
+  sourceId: null
+  rowLimit: 10
+  artifacts: []
+blockedReason: null

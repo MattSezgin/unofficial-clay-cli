@@ -1,0 +1,58 @@
+claySpecVersion: 1
+workspaceId: "${CLAY_WORKSPACE_ID}"
+workbookId: "${CLAY_WORKBOOK_ID}"
+table:
+  name: founder-contact-waterfall-sample
+  type: spreadsheet
+view:
+  name: Founder Contact QA
+  type: grid
+fields:
+  - name: Founder Full Name
+    type: text
+    dataType: text
+  - name: Company Name
+    type: text
+    dataType: text
+  - name: Company Domain
+    type: url
+    dataType: url
+  - name: Founder LinkedIn URL
+    type: url
+    dataType: url
+  - name: Domain Normalized
+    type: formula
+    dataType: text
+    formula: "String({{Company Domain}} || '').replace(/^https?:\\/\\//,'').replace(/^www\\./,'').replace(/\\/$/,'').toLowerCase()"
+  - name: Ready For Founder QA
+    type: formula
+    dataType: text
+    formula: "{{Founder Full Name}} && {{Company Name}} && {{Domain Normalized}} ? 'Yes' : 'No'"
+  - name: Founder Identity QA
+    type: action
+    actionKey: use-ai
+    actionPackageId: 67ba01e9-1898-4e7d-afe7-7ebe24819a57
+    actionVersion: 1
+    dataType: json
+    runCondition: "{{Ready For Founder QA}} === 'Yes'"
+    inputs:
+      useCase: '"claygent"'
+      model: '"clay-argon"'
+      temperature: '"Low"'
+      prompt: >
+        "Validate founder identity and campaign readiness. Founder: "+({{Founder Full Name}} || "")+".
+        Company: "+({{Company Name}} || "")+". Domain: "+({{Domain Normalized}} || "")+".
+        LinkedIn: "+({{Founder LinkedIn URL}} || "none")+". Return JSON fields identity_match_status,
+        founder_relevance, campaign_readiness, risk_flag, recommended_angle, reasoning."
+    outputs:
+      - { name: identity_match_status, type: text, path: identity_match_status }
+      - { name: founder_relevance, type: text, path: founder_relevance }
+      - { name: campaign_readiness, type: text, path: campaign_readiness }
+      - { name: risk_flag, type: text, path: risk_flag }
+      - { name: recommended_angle, type: text, path: recommended_angle }
+      - { name: reasoning, type: text, path: reasoning }
+rows:
+  - Founder Full Name: Jane Founder
+    Company Name: Example Co
+    Company Domain: https://example.com
+    Founder LinkedIn URL: https://linkedin.com/in/example

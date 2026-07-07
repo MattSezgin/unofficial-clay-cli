@@ -1,0 +1,45 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: add-lead-to-campaign
+promotionStatus: reviewed
+proofStatus: blocked_destructive_external_mutation
+strictBattleTested: false
+field:
+  name: Add Lead To Campaign
+  type: action
+  actionKey: add-lead-to-campaign
+  actionPackageId: 6e7ab2da-0d97-49ab-ba78-a6b2f3bf2029
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: ${CLAY_ADD_LEAD_TO_CAMPAIGN_AUTH_ACCOUNT_ID}
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    email: ${ADD_LEAD_TO_CAMPAIGN_EMAIL}
+    campaign_id: ${ADD_LEAD_TO_CAMPAIGN_CAMPAIGN_ID}
+  optionalInputs:
+    allow_duplicate_leads_in_another_campaign: ${ADD_LEAD_TO_CAMPAIGN_ALLOW_DUPLICATE_LEADS_IN_ANOTHER_CAMPAIGN:-}
+    allow_leads_from_community_bounce_list: ${ADD_LEAD_TO_CAMPAIGN_ALLOW_LEADS_FROM_COMMUNITY_BOUNCE_LIST:-}
+    company_name: ${ADD_LEAD_TO_CAMPAIGN_COMPANY_NAME:-}
+    company_url: ${ADD_LEAD_TO_CAMPAIGN_COMPANY_URL:-}
+    custom_fields: ${ADD_LEAD_TO_CAMPAIGN_CUSTOM_FIELDS:-}
+    first_name: ${ADD_LEAD_TO_CAMPAIGN_FIRST_NAME:-}
+    last_name: ${ADD_LEAD_TO_CAMPAIGN_LAST_NAME:-}
+    linkedin_profile: ${ADD_LEAD_TO_CAMPAIGN_LINKEDIN_PROFILE:-}
+    location: ${ADD_LEAD_TO_CAMPAIGN_LOCATION:-}
+    phone_number: ${ADD_LEAD_TO_CAMPAIGN_PHONE_NUMBER:-}
+    website: ${ADD_LEAD_TO_CAMPAIGN_WEBSITE:-}
+  extractedOutputPaths: []
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: null
+  viewId: null
+  fieldId: null
+  sourceId: null
+  rowLimit: 0
+  artifacts: []
+blockedReason: This action mutates Smartlead/sequencer state by adding a lead to
+  a campaign. No approved sandbox campaign and lead-add mutation scope exists,
+  and production campaign mutation is explicitly out of scope.
+  Requires explicit per-command HITL approval with sandbox campaign identifiers
+  before any live proof run.

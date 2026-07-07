@@ -1,0 +1,15 @@
+{
+  "cookie": "claysession=FAKE_SESSION_COOKIE",
+  "apiToken": "apiToken-secret",
+  "authAccountId": "aa_FAKEAPPACCOUNT123",
+  "webhookUrl": "https://api.clay.com/v3/sources/webhook/FAKEWEBHOOK",
+  "slackWebhook": "https://hooks.slack.com/services/T000/B000/FAKESECRET",
+  "googleSheetId": "google-sheet-id-fake-123",
+  "formulaText": "\"https://example.test/enrich?api_key=FAKE_QUERY_KEY_12345&domain=\" + {{Domain}}",
+  "bareApiFormulaText": "\"https://example.test/verify?api=FAKE_BARE_QUERY_KEY_12345&email=\" + {{Email}}",
+  "headers": {
+    "Authorization": "Bearer FAKEBEARERTOKEN123"
+  },
+  "prompt": "Use sk-FAKEOPENAIKEY123456 only as a fake fixture.",
+  "safeField": "keep me"
+}

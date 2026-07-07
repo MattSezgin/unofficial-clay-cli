@@ -1,0 +1,41 @@
+promptVersion: 1
+id: crm-usage-intent
+playbookId: crm-usage-intent
+name: CRM Usage Intent Classifier Prompt Contract
+purpose: Classify company CRM/tool usage and job-posting evidence for account targeting.
+mode: qa-use-ai
+valuePolicy: Omit row values from committed artifacts. Evidence quotes may be stored only in ignored run artifacts or Clay.
+inputFields:
+  required:
+    - company_name
+    - company_domain
+  optional:
+    - target_tool
+    - company_description
+    - job_titles
+    - job_description_excerpt
+    - existing_crm_hint
+    - careers_page_excerpt
+systemPrompt: >
+  You classify whether an account shows credible evidence of using, replacing,
+  hiring for, or evaluating a target CRM or GTM tool. Prefer concrete evidence
+  from job posts, company copy, or sourced hints over generic inference.
+taskPrompt: >
+  Review the supplied account and evidence snippets. Return the CRM usage status,
+  evidence type, confidence, recommended segment, and an operator-friendly reason.
+guardrails:
+  - Do not infer usage from generic sales or marketing language alone.
+  - Include a short evidence quote or mark evidence as weak when no quote exists.
+  - Separate current usage, hiring intent, replacement intent, and unknown status.
+  - Never invent tools, job posts, or company facts not present in inputs.
+outputSchema:
+  crm_usage_status: text
+  evidence_type: text
+  evidence_quote: text
+  confidence: text
+  recommended_segment: text
+  reasoning: text
+qaChecks:
+  - concrete evidence required for target segment
+  - weak or missing evidence routed to review/unknown
+  - job-post boilerplate not treated as confirmed tool usage

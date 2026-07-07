@@ -1,0 +1,51 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: lookup-row-in-other-table
+promotionStatus: battle-tested
+proofStatus: real_data_output_verified
+strictBattleTested: true
+field:
+  name: Lookup Row In Other Table
+  type: action
+  actionKey: lookup-row-in-other-table
+  actionPackageId: 4299091f-3cd3-4d68-b198-0143575f471d
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: ${CLAY_LOOKUP_ROW_IN_OTHER_TABLE_AUTH_ACCOUNT_ID}
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    tableId: ${LOOKUP_ROW_IN_OTHER_TABLE_TABLEID}
+  optionalInputs:
+    fields|filterOperator: ${LOOKUP_ROW_IN_OTHER_TABLE_FIELDS_FILTEROPERATOR:-}
+    fields|rowValue: ${LOOKUP_ROW_IN_OTHER_TABLE_FIELDS_ROWVALUE:-}
+    fields|targetColumn: ${LOOKUP_ROW_IN_OTHER_TABLE_FIELDS_TARGETCOLUMN:-}
+  extractedOutputPaths:
+    - "# Employees"
+    - Example Output Field
+    - Company Country
+    - Company Name
+    - Company Size
+    - Company Type
+    - Email Status
+    - Email-3
+    - Target Tool Status
+    - Is Consulting Segment
+    - Job Description
+    - Linkedin-url
+    - Phone Number
+    - Preferred Linkedin Company URL
+    - Primary Email Catch All Status
+    - Question_1
+    - Question_2
+    - Question_3
+    - Contact Window
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: <example-id>
+  viewId: <example-id>
+  fieldId: <example-id>
+  sourceId: null
+  rowLimit: 10
+  artifacts: []
+blockedReason: null

@@ -1,0 +1,37 @@
+promptVersion: 1
+id: source-to-ready-list
+playbookId: source-to-ready-list
+name: ICP Source Qualification Prompt Contract
+purpose: Classify sourced companies against an ICP brief before ready-list export.
+mode: use-ai
+valuePolicy: Omit row values from committed artifacts. Runtime ICP briefs and rows stay local or in Clay.
+inputFields:
+  required:
+    - company_name
+    - company_domain
+    - icp_brief
+  optional:
+    - industry
+    - employee_count
+    - country
+    - website_summary
+    - exclusion_rules
+systemPrompt: >
+  You qualify sourced companies against a B2B ICP. Use only supplied row facts and the ICP brief.
+taskPrompt: >
+  Classify whether the company fits the ICP, explain the primary fit signal, and flag exclusions.
+guardrails:
+  - Apply exclusions before positive fit scoring.
+  - Do not infer revenue, stack, customers, or buying intent unless supplied.
+  - Return REVIEW when evidence is insufficient.
+  - Keep reasons operational and audit-friendly.
+outputSchema:
+  icp_status: text
+  fit_signal: text
+  exclusion_reason: text
+  confidence_score: number
+  ready_list_status: text
+qaChecks:
+  - exclusions applied first
+  - REVIEW rows separated from ready rows
+  - fit reasons cite supplied evidence

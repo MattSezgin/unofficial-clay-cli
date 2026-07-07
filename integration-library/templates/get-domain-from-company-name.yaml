@@ -1,0 +1,33 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: get-domain-from-company-name
+promotionStatus: reviewed
+proofStatus: blocked_requires_auth
+strictBattleTested: false
+field:
+  name: Get Domain From Company Name
+  type: action
+  actionKey: get-domain-from-company-name
+  actionPackageId: e5f3b09f-1b8f-4806-a960-27abf163940f
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: ${CLAY_GET_DOMAIN_FROM_COMPANY_NAME_AUTH_ACCOUNT_ID}
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    companyName: ${GET_DOMAIN_FROM_COMPANY_NAME_COMPANYNAME}
+  optionalInputs: {}
+  extractedOutputPaths: []
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: <example-id>
+  viewId: <example-id>
+  fieldId: <example-id>
+  sourceId: null
+  rowLimit: 0
+  artifacts: []
+blockedReason: Live sandbox create-action readback showed settingsError
+  MISSING_AUTH (Required auth account is missing). Available workspace
+  app-account inventory did not identify a safe matching account for package
+  e5f3b09f-1b8f-4806-a960-27abf163940f, so this action is blocked rather than
+  guessed.

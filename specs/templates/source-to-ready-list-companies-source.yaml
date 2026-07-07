@@ -1,0 +1,38 @@
+workspaceId: "${CLAY_WORKSPACE_ID}"
+source:
+  type: companies
+  enrichmentType: find-lists-of-companies-with-mixrank-source-preview
+  limit: 10
+  filters:
+    annual_revenues: []
+    company_identifier: []
+    country_names: []
+    country_names_exclude: []
+    derived_business_types: []
+    derived_industries: []
+    derived_revenue_streams: []
+    derived_subindustries: []
+    derived_subindustries_exclude: []
+    description_keywords: []
+    description_keywords_exclude: []
+    exclude_entities_configuration: []
+    exclude_company_identifiers_mixed: []
+    industries: []
+    industries_exclude: []
+    include_company_identifiers: []
+    locations: []
+    locations_exclude: []
+    name: ""
+    semantic_description: "${ICP_SEMANTIC_DESCRIPTION}"
+    sizes: []
+    start_from_method: CsvOfCompanies
+    startFromCompanyType: company_identifier
+    technographics_products: []
+    types: []
+    useRadialKnn: false
+  extract:
+    - { name: Company Name, type: text, path: name }
+    - { name: Company Domain, type: text, path: domain }
+    - { name: Company LinkedIn URL, type: text, path: linkedin_url }
+    - { name: Industry, type: text, path: industry }
+    - { name: Location, type: text, path: location }

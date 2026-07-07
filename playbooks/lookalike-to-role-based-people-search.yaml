@@ -1,0 +1,191 @@
+playbookVersion: 1
+id: lookalike-to-role-based-people-search
+name: Lookalike To Role Based People Search
+status: draft
+purpose: >
+  Start from seed accounts or lookalike-company sourcing, enrich and qualify the
+  companies, then trigger separate role-based people searches for executive,
+  founder, customer-experience, operations, marketing, or other campaign lanes.
+variables:
+  workspaceId: ${CLAY_WORKSPACE_ID}
+  testFolderId: ${CLAY_TEST_FOLDER_ID}
+  workbookId: ${CLAY_WORKBOOK_ID}
+  seedAccountSource: ${SEED_ACCOUNT_SOURCE}
+  aiModel: ${CLAY_AI_MODEL:-clay-argon}
+inputs:
+  requiredColumns:
+    - seed_company_name
+    - seed_company_domain
+  optionalColumns:
+    - seed_company_linkedin_url
+    - seed_reason
+    - target_geo
+    - target_industries
+    - employee_range
+    - exclusion_domains
+    - role_lane_definitions
+sampleRows:
+  max: 10
+  recommended: 10
+  reason: Lookalike sources can produce many near-matches; inspect company fit and
+    role-search behavior before importing or triggering at scale.
+safety:
+  requiresChatConfirmation:
+    - lookalike-source-import
+    - company-enrichment-run
+    - people-search-trigger
+    - contacts-final-export
+    - scale-beyond-sample
+  creditConsumingSteps:
+    - lookalike_company_source
+    - company_enrichment
+    - ai_company_qualification
+    - people_search_trigger
+  readOnlySteps:
+    - lookalike_preview
+    - qualified_company_readback
+    - people_search_readback
+workflow:
+  - id: normalize_seed_accounts
+    type: formula
+    description: Normalize seed domains, names, LinkedIn URLs, and exclusion keys.
+    outputs:
+      - seed_domain_normalized
+      - seed_name_normalized
+      - seed_linkedin_slug
+      - exclusion_key
+  - id: lookalike_company_preview
+    type: companies-source-preview
+    description: Preview lookalike or similar companies from seed accounts and ICP filters.
+    outputs:
+      - preview_company_count
+      - preview_filter_summary
+  - id: lookalike_company_sample_import
+    type: companies-source-import
+    maxRows: 10
+    description: Import a small sample of lookalike accounts for enrichment and QA.
+    outputs:
+      - company_name
+      - company_domain
+      - company_linkedin_url
+      - source_similarity_reason
+      - source_record_id
+  - id: enrich_lookalike_company
+    type: provider-action
+    description: Enrich imported companies with firmographics and LinkedIn/company
+      profile data.
+    runCondition: "{{company_domain}} !== '' || {{company_linkedin_url}} !== ''"
+    outputs:
+      - enriched_company_name
+      - enriched_domain
+      - enriched_company_size
+      - enriched_industry
+      - enriched_description
+      - enrichment_status
+  - id: qualify_company_fit
+    type: ai-action
+    outputFormat: JSONSchema
+    description: Decide whether each lookalike is a target account, review account,
+      or reject.
+    runCondition: "{{enriched_description}} !== '' || {{source_similarity_reason}} !== ''"
+    promptInputs:
+      - seed_reason
+      - source_similarity_reason
+      - enriched_company_name
+      - enriched_domain
+      - enriched_industry
+      - enriched_company_size
+      - enriched_description
+      - target_geo
+      - target_industries
+      - exclusion_domains
+    outputs:
+      - company_fit_status
+      - fit_reason
+      - recommended_role_lanes
+      - exclusion_reason
+      - confidence
+      - reasoning
+  - id: build_people_search_identifiers
+    type: formula
+    description: Build company_identifier, company_record_id,
+      table/view/source-field references, and lane-specific role filters.
+    runCondition: "{{company_fit_status}} === 'target' || {{company_fit_status}} ===
+      'review'"
+    outputs:
+      - people_search_company_identifier
+      - people_search_company_record_id
+      - executive_lane_query
+      - cx_ops_marketing_lane_query
+      - custom_lane_query
+  - id: trigger_executive_founder_search
+    type: source-trigger
+    description: Trigger founder/executive/leadership people search for qualified
+      accounts only.
+    runCondition: "{{recommended_role_lanes}} contains 'executive'"
+    outputs:
+      - executive_search_status
+      - executive_people_table
+      - executive_people_count
+  - id: trigger_functional_leader_search
+    type: source-trigger
+    description: Trigger functional leader people search for CX, operations,
+      marketing, sales, or other specified lanes.
+    runCondition: "{{recommended_role_lanes}} contains 'functional_leader'"
+    outputs:
+      - functional_search_status
+      - functional_people_table
+      - functional_people_count
+  - id: final_contacts_join
+    type: table-lookup-or-union
+    description: Join people-search outputs into a final contacts table with account
+      lane context.
+    outputs:
+      - contact_full_name
+      - contact_title
+      - contact_linkedin_url
+      - contact_company_domain
+      - role_lane
+      - account_fit_reason
+firstRunGate:
+  inspect:
+    - imported_lookalike_count
+    - target_vs_review_vs_reject_distribution
+    - people_search_trigger_count_by_lane
+    - companies_with_missing_identifiers
+    - final_contacts_role_lane_quality
+  passCriteria:
+    - Only qualified target/review accounts trigger people search.
+    - People-source payload includes domains and source record IDs, not table
+      references alone.
+    - Role lanes produce relevant titles rather than generic employees.
+outputs:
+  readyColumns:
+    - company_name
+    - company_domain
+    - source_similarity_reason
+    - company_fit_status
+    - fit_reason
+    - recommended_role_lanes
+    - executive_search_status
+    - functional_search_status
+    - contact_full_name
+    - contact_title
+    - contact_linkedin_url
+    - role_lane
+  qaViews:
+    - lookalike_sample_review
+    - qualified_accounts
+    - rejected_or_excluded_accounts
+    - people_search_triggered
+    - contacts_final_review
+    - missing_identifiers
+knownFailureModes:
+  - Lookalike providers often return adjacent but non-ICP companies; AI
+    qualification must inspect evidence before people search.
+  - People-search trigger can fail if company identifiers, record IDs,
+    table/view IDs, or source field IDs are incomplete.
+  - Role-lane definitions that are too broad create noisy contacts; inspect
+    title distribution before scale.
+  - Final contact tables need dedupe by normalized LinkedIn URL or email, not
+    only full name.

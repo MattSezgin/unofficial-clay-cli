@@ -1,0 +1,40 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: leadmagic-find-work-email
+promotionStatus: reviewed
+proofStatus: blocked_external_dependency
+strictBattleTested: false
+field:
+  name: Leadmagic Find Work Email
+  type: action
+  actionKey: leadmagic-find-work-email
+  actionPackageId: edb58209-a62d-42be-992a-e41b87eeacc2
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: ${CLAY_LEADMAGIC_FIND_WORK_EMAIL_AUTH_ACCOUNT_ID}
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    name: ${LEADMAGIC_FIND_WORK_EMAIL_NAME}
+    domain: ${LEADMAGIC_FIND_WORK_EMAIL_DOMAIN}
+  optionalInputs:
+    includeCatchAll: ${LEADMAGIC_FIND_WORK_EMAIL_INCLUDECATCHALL:-}
+  extractedOutputPaths:
+    - Email
+    - Email-2
+    - Employment Verified
+    - Status (2)
+    - leadmagic-email
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: <example-id>
+  viewId: <example-id>
+  fieldId: <example-id>
+  sourceId: null
+  rowLimit: 10
+  artifacts: []
+blockedReason: "Clean sandbox proof paths did not produce a strict found-output
+  proof: shared Clay-managed LeadMagic key returned SUCCESS_NO_DATA:9 + ERROR:1
+  Bad Request with no parent fullValue; the operator LeadMagic key returned
+  ERROR:10 Forbidden; existing historical field had one found row but unresolved
+  ERROR:1 Bad Request, so strict proof path remains blocked."

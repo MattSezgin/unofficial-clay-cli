@@ -1,0 +1,63 @@
+id: work-email-waterfall
+title: Work Email Waterfall
+author: MattSezgin
+category: enrichment
+description: >-
+  Find a work email for a person when you know their name and company domain,
+  by trying providers in cost order and validating the winner. Each provider
+  step only runs if the previous ones came up empty, so you never pay twice
+  for the same row.
+maturity: validated
+credits_note: "Usually 1-3 credits per row - later steps only fire on rows the earlier providers missed."
+inputs:
+  - name: first_name
+    type: text
+    required: true
+    example: Jane
+  - name: last_name
+    type: text
+    required: true
+    example: Doe
+  - name: company_domain
+    type: url
+    required: true
+    example: acme.example.com
+    description: Bare domain works best - strip https:// and paths first
+steps:
+  - field: Findymail Email
+    kind: action
+    action_key: findymail-find-work-email
+    inputs_binding:
+      first_name: "{{first_name}}"
+      last_name: "{{last_name}}"
+      domain: "{{company_domain}}"
+    notes: First provider - best hit rate for the cost in our runs.
+  - field: Icypeas Email
+    kind: action
+    action_key: icypeas-find-email-v2
+    inputs_binding:
+      first_name: "{{first_name}}"
+      last_name: "{{last_name}}"
+      domain: "{{company_domain}}"
+    run_condition_note: Only run if Findymail Email is empty - set the run condition on the column so the waterfall cascades automatically.
+  - field: Datagma Email
+    kind: action
+    action_key: datagma-find-work-email-v3
+    inputs_binding:
+      first_name: "{{first_name}}"
+      last_name: "{{last_name}}"
+      domain: "{{company_domain}}"
+    run_condition_note: Only run if both earlier providers are empty.
+  - field: Email Valid
+    kind: action
+    action_key: validate-email
+    inputs_binding:
+      email: "{{found_email}}"
+    run_condition_note: Point this at whichever email column filled first; only send rows that validate.
+first_run:
+  sample_rows: 10
+  quality_checks:
+    - At least half of the sample rows found an email from the first provider.
+    - Spot-check 3 found emails against the person's LinkedIn - right person, right company.
+    - Validation step returns a clear valid/invalid status for every found email.
+    - No provider ran on rows where an earlier provider already found an email.

@@ -1,0 +1,30 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: findymail-find-work-email
+promotionStatus: battle-tested
+proofStatus: real_data_output_verified
+strictBattleTested: true
+field:
+  name: Findymail Find Work Email
+  type: action
+  actionKey: findymail-find-work-email
+  actionPackageId: 9515bb04-4267-4074-94eb-653545c3c38f
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: ${CLAY_FINDYMAIL_FIND_WORK_EMAIL_AUTH_ACCOUNT_ID}
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    full_name: ${FINDYMAIL_FIND_WORK_EMAIL_FULL_NAME}
+    company_domain: ${FINDYMAIL_FIND_WORK_EMAIL_COMPANY_DOMAIN}
+  optionalInputs: {}
+  extractedOutputPaths: []
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: <example-id>
+  viewId: <example-id>
+  fieldId: <example-id>
+  sourceId: null
+  rowLimit: 10
+  artifacts: []
+blockedReason: null

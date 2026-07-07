@@ -1,0 +1,41 @@
+promptVersion: 1
+id: outbound-personalization
+playbookId: outbound-personalization
+name: Outbound Personalization Prompt Contract
+purpose: Generate campaign-safe personalization fields from row-provided account/contact facts.
+mode: use-ai
+valuePolicy: Omit row values from committed artifacts. Runtime rows stay in ignored local inputs or Clay.
+inputFields:
+  required:
+    - company_name
+    - company_domain
+    - persona_or_title
+  optional:
+    - first_name
+    - industry
+    - employee_count
+    - signal
+    - case_study
+    - product_context
+systemPrompt: >
+  You prepare B2B outbound personalization. Use only facts supplied in the row.
+  If evidence is missing, return NOT_FOUND instead of inventing claims.
+taskPrompt: >
+  Build concise personalization for the target persona. Explain why this account is relevant,
+  choose one email angle, and flag any evidence risk.
+guardrails:
+  - Do not invent product usage, funding, hiring, competitors, customers, or technology.
+  - Do not mention missing optional fields.
+  - Keep cold-email fields short enough to paste into a sequence.
+  - Use NOT_FOUND for unsupported claims.
+outputSchema:
+  segment: text
+  why_this_account: text
+  opener_angle: text
+  email_angle: text
+  confidence_score: number
+  risk_flag: text
+qaChecks:
+  - no invented evidence
+  - no blank-token copy
+  - email_angle usable for at least 80 percent of sample rows

@@ -1,0 +1,103 @@
+playbookVersion: 1
+id: table-audit-clone
+name: Table Audit Clone
+status: draft
+purpose: >
+  Inspect an existing Clay table, export a redacted manifest, verify statuses,
+  clone into a scratch location where allowed, and produce a repair plan.
+
+variables:
+  workspaceId: "${CLAY_WORKSPACE_ID}"
+  testFolderId: "${CLAY_TEST_FOLDER_ID}"
+  sourceTableId: "${CLAY_SOURCE_TABLE_ID}"
+  sourceViewId: "${CLAY_SOURCE_VIEW_ID}"
+  scratchWorkbookId: "${CLAY_SCRATCH_WORKBOOK_ID}"
+
+inputs:
+  requiredParameters:
+    - source_table_id
+    - source_view_id
+  optionalParameters:
+    - include_rows
+    - target_scratch_workbook_id
+    - clone_mode
+
+sampleRows:
+  max: 10
+  recommended: 10
+  reason: "Full action JSON samples are enough to diagnose most config issues without exporting whole tables."
+
+safety:
+  requiresChatConfirmation:
+    - clone-create
+    - action-run
+    - destructive-cleanup
+  creditConsumingSteps:
+    - optional_sample_run
+  readOnlySteps:
+    - manifest_export
+    - redaction
+    - status_audit
+
+workflow:
+  - id: export_redacted_manifest
+    type: manifest
+    description: Export table/view config and up to 10 rows with full action JSON, then redact.
+    outputs:
+      - manifest_redacted_path
+      - manifest_summary
+
+  - id: verify_statuses
+    type: verify
+    description: Inspect settings errors, action output definitions, and non-success cell statuses.
+    outputs:
+      - issue_count
+      - error_count
+      - warning_count
+
+  - id: generate_repair_plan
+    type: local-analysis
+    outputs:
+      - unsupported_features
+      - safe_auto_fixes
+      - manual_review_items
+      - clone_readiness
+
+  - id: clone_to_scratch
+    type: gated-apply
+    description: Recreate supported fields/actions/views in scratch only after confirmation.
+    outputs:
+      - target_table_id
+      - parity_score
+
+  - id: compare_readback
+    type: diff
+    outputs:
+      - diff_summary
+      - evidence_backed_limitations
+
+firstRunGate:
+  inspect:
+    - redaction_completeness
+    - settings_errors
+    - action_output_coverage
+    - clone_parity_score
+  passCriteria:
+    - "Redacted manifest contains no secret-looking values."
+    - "Unsupported settings are listed explicitly."
+    - "Clone is never promoted over production automatically."
+
+outputs:
+  readyArtifacts:
+    - redacted_manifest
+    - verification_report
+    - repair_plan
+    - parity_report
+  qaViews:
+    - not_applicable
+
+knownFailureModes:
+  - Existing action formulas can contain API keys or webhook URLs.
+  - Some action settings are server-normalized and cannot be forced through API patches.
+  - Connected account references are not portable between workspaces.
+  - Write responses do not prove clone parity; fresh readback is required.

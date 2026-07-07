@@ -1,0 +1,63 @@
+claySpecVersion: 1
+workspaceId: "${CLAY_WORKSPACE_ID}"
+workbookId: "${CLAY_WORKBOOK_ID}"
+table:
+  name: campaign-activation-status-sample
+  type: spreadsheet
+view:
+  name: Campaign Activation QA
+  type: grid
+fields:
+  - name: Email
+    type: email
+    dataType: email
+  - name: First Name
+    type: text
+    dataType: text
+  - name: Last Name
+    type: text
+    dataType: text
+  - name: Company Name
+    type: text
+    dataType: text
+  - name: Existing Lead Status
+    type: text
+    dataType: text
+  - name: Verification Status
+    type: text
+    dataType: text
+  - name: Required Fields Present
+    type: formula
+    dataType: text
+    formula: "{{Email}} && {{First Name}} && {{Last Name}} && {{Company Name}} ? 'Yes' : 'No'"
+  - name: Campaign Activation Gate AI
+    type: action
+    actionKey: use-ai
+    actionPackageId: 67ba01e9-1898-4e7d-afe7-7ebe24819a57
+    actionVersion: 1
+    dataType: json
+    runCondition: "{{Required Fields Present}} === 'Yes'"
+    inputs:
+      useCase: '"claygent"'
+      model: '"clay-argon"'
+      temperature: '"Low"'
+      prompt: >
+        "Decide if this lead can be added to a campaign. Email: "+({{Email}} || "")+".
+        Name: "+({{First Name}} || "")+" "+({{Last Name}} || "")+". Company: "+({{Company Name}} || "")+".
+        Existing status: "+({{Existing Lead Status}} || "none")+". Verification: "+({{Verification Status}} || "none")+".
+        Return JSON fields send_decision, campaign_lane, personalization_angle, risk_flag,
+        exclusion_reason, reasoning. Hard-block suppressed, bounced, invalid, or prior negative rows."
+    outputs:
+      - { name: send_decision, type: text, path: send_decision }
+      - { name: campaign_lane, type: text, path: campaign_lane }
+      - { name: personalization_angle, type: text, path: personalization_angle }
+      - { name: risk_flag, type: text, path: risk_flag }
+      - { name: exclusion_reason, type: text, path: exclusion_reason }
+      - { name: reasoning, type: text, path: reasoning }
+rows:
+  - Email: jane@example.com
+    First Name: Jane
+    Last Name: Example
+    Company Name: Example Co
+    Existing Lead Status: none
+    Verification Status: valid

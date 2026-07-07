@@ -1,0 +1,43 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: instantly-v2-add-lead-to-campaign
+promotionStatus: reviewed
+proofStatus: blocked_destructive_external_mutation
+strictBattleTested: false
+field:
+  name: Instantly V2 Add Lead To Campaign
+  type: action
+  actionKey: instantly-v2-add-lead-to-campaign
+  actionPackageId: 70cda03a-a576-4a6c-b3b3-55e241f828b5
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: ${CLAY_INSTANTLY_V2_ADD_LEAD_TO_CAMPAIGN_AUTH_ACCOUNT_ID}
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    email: ${INSTANTLY_V2_ADD_LEAD_TO_CAMPAIGN_EMAIL}
+    campaign_id: ${INSTANTLY_V2_ADD_LEAD_TO_CAMPAIGN_CAMPAIGN_ID}
+  optionalInputs:
+    campaign: ${INSTANTLY_V2_ADD_LEAD_TO_CAMPAIGN_CAMPAIGN:-}
+    company_name: ${INSTANTLY_V2_ADD_LEAD_TO_CAMPAIGN_COMPANY_NAME:-}
+    custom_variables: ${INSTANTLY_V2_ADD_LEAD_TO_CAMPAIGN_CUSTOM_VARIABLES:-}
+    first_name: ${INSTANTLY_V2_ADD_LEAD_TO_CAMPAIGN_FIRST_NAME:-}
+    last_name: ${INSTANTLY_V2_ADD_LEAD_TO_CAMPAIGN_LAST_NAME:-}
+    personalization: ${INSTANTLY_V2_ADD_LEAD_TO_CAMPAIGN_PERSONALIZATION:-}
+    phone: ${INSTANTLY_V2_ADD_LEAD_TO_CAMPAIGN_PHONE:-}
+    skip_if_in_workspace: ${INSTANTLY_V2_ADD_LEAD_TO_CAMPAIGN_SKIP_IF_IN_WORKSPACE:-}
+    website: ${INSTANTLY_V2_ADD_LEAD_TO_CAMPAIGN_WEBSITE:-}
+  extractedOutputPaths: []
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: null
+  viewId: null
+  fieldId: null
+  sourceId: null
+  rowLimit: 0
+  artifacts: []
+blockedReason: This action mutates Instantly campaign/workspace state by adding
+  a lead to a campaign. No approved sandbox Instantly campaign and lead-add
+  mutation scope exists, and production campaign mutation is
+  explicitly out of scope. Requires explicit per-command HITL approval with
+  sandbox campaign identifiers before any live proof run.

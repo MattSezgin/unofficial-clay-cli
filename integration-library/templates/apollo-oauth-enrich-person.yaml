@@ -1,0 +1,39 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: apollo-oauth-enrich-person
+promotionStatus: reviewed
+proofStatus: blocked_external_dependency
+strictBattleTested: false
+field:
+  name: Apollo Oauth Enrich Person
+  type: action
+  actionKey: apollo-oauth-enrich-person
+  actionPackageId: 778df10d-f68b-461a-8eb7-56047737f5eb
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: ${CLAY_APOLLO_OAUTH_ENRICH_PERSON_AUTH_ACCOUNT_ID}
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    first_name: ${APOLLO_OAUTH_ENRICH_PERSON_FIRST_NAME}
+    last_name: ${APOLLO_OAUTH_ENRICH_PERSON_LAST_NAME}
+    domain: ${APOLLO_OAUTH_ENRICH_PERSON_DOMAIN}
+  optionalInputs:
+    email: ${APOLLO_OAUTH_ENRICH_PERSON_EMAIL:-}
+    id: ${APOLLO_OAUTH_ENRICH_PERSON_ID:-}
+    name: ${APOLLO_OAUTH_ENRICH_PERSON_NAME:-}
+    organization_name: ${APOLLO_OAUTH_ENRICH_PERSON_ORGANIZATION_NAME:-}
+  extractedOutputPaths:
+    - Linkedin Url - Person
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: <example-id>
+  viewId: <example-id>
+  fieldId: <example-id>
+  sourceId: null
+  rowLimit: 10
+  artifacts: []
+blockedReason: Bounded sandbox proof with the only discovered safe
+  same-workspace Apollo OAuth account returned ERROR_INVALID_CREDENTIALS:10
+  (Invalid account response), with no parent fullValue. No alternate safe Apollo
+  auth account was available, so strict proof is blocked rather than guessed.

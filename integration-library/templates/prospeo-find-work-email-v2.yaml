@@ -1,0 +1,36 @@
+integrationTemplateVersion: 2
+generatedFrom: integration-library/registry.yaml
+actionKey: prospeo-find-work-email-v2
+promotionStatus: reviewed
+proofStatus: blocked_missing_safe_test_data
+strictBattleTested: false
+field:
+  name: Prospeo Find Work Email V2
+  type: action
+  actionKey: prospeo-find-work-email-v2
+  actionPackageId: 48a31bbb-63e6-4461-8a62-d88bb2cd6b0f
+  actionVersion: 1
+  dataType: json
+  authPlaceholder: ${CLAY_PROSPEO_FIND_WORK_EMAIL_V2_AUTH_ACCOUNT_ID}
+  runConditionGuidance: Use field-ID references and cap proof runs at <=10 rows.
+  inputs:
+    full_name: ${PROSPEO_FIND_WORK_EMAIL_V2_FULL_NAME}
+    company_domain: ${PROSPEO_FIND_WORK_EMAIL_V2_COMPANY_DOMAIN}
+  optionalInputs:
+    include_catch_all: ${PROSPEO_FIND_WORK_EMAIL_V2_INCLUDE_CATCH_ALL:-}
+  extractedOutputPaths:
+    - Email (2)
+    - Prospeo Email
+proof:
+  workspaceId: <workspace-id>
+  workbookId: <example-id>
+  tableId: <example-id>
+  viewId: <example-id>
+  fieldId: <example-id>
+  sourceId: null
+  rowLimit: 10
+  artifacts: []
+blockedReason: Both bounded sandbox Prospeo probes (include_catch_all false and
+  true) returned SUCCESS_NO_DATA:10 with null parent fullValue and no extracted
+  email/status values. No runtime error, but no strict found-output proof exists
+  for promotion.

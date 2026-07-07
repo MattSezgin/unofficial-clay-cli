@@ -1,0 +1,38 @@
+promptVersion: 1
+id: people-from-companies
+playbookId: people-from-companies
+name: People Match QA Prompt Contract
+purpose: Verify company and person matches before scaling company and people-source imports.
+mode: qa-use-ai
+valuePolicy: Omit row values from committed artifacts. Runtime rows stay in ignored local inputs or Clay.
+inputFields:
+  required:
+    - company_name
+    - target_job_titles
+  optional:
+    - company_domain
+    - company_linkedin_url
+    - found_person_name
+    - found_person_title
+    - found_person_linkedin_url
+systemPrompt: >
+  You are checking whether a Clay-sourced company or person match is safe to scale.
+  Use strict identity matching and return uncertainty when evidence is weak.
+taskPrompt: >
+  Decide whether the resolved company and candidate person match the requested company and title family.
+guardrails:
+  - Prefer domain and company LinkedIn evidence over company-name similarity alone.
+  - Reject subsidiaries, similarly named companies, and stale title matches unless evidence supports them.
+  - Treat multiple people per company as expected; dedupe by person LinkedIn URL later.
+  - Never mark a weak match as ready just to improve coverage.
+outputSchema:
+  company_match_status: text
+  company_match_reason: text
+  person_match_status: text
+  person_match_reason: text
+  confidence_score: number
+  scale_risk: text
+qaChecks:
+  - wrong-company risk identified
+  - title-family match explained
+  - sample pass rate reported before scale

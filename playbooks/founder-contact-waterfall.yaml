@@ -1,0 +1,190 @@
+playbookVersion: 1
+id: founder-contact-waterfall
+name: Founder Contact Waterfall
+status: draft
+purpose: >
+  Build a founder/contact workflow for startup lists: connect founders to
+  company records, resolve or verify LinkedIn profiles, enrich people and
+  companies, then run a multi-provider work-email waterfall with validation and
+  campaign QA.
+variables:
+  workspaceId: ${CLAY_WORKSPACE_ID}
+  testFolderId: ${CLAY_TEST_FOLDER_ID}
+  workbookId: ${CLAY_WORKBOOK_ID}
+  aiModel: ${CLAY_AI_MODEL:-clay-argon}
+inputs:
+  requiredColumns:
+    - founder_full_name
+    - company_name
+    - company_domain
+  optionalColumns:
+    - first_name
+    - last_name
+    - founder_linkedin_url
+    - company_linkedin_url
+    - title
+    - batch_source
+    - country
+sampleRows:
+  max: 10
+  recommended: 10
+  reason: Founder identity matching and email waterfall quality must be checked
+    before provider spend scales.
+safety:
+  requiresChatConfirmation:
+    - person-enrichment-run
+    - email-provider-run
+    - validation-run
+    - add-to-campaign
+    - scale-beyond-sample
+  creditConsumingSteps:
+    - linkedin_profile_finder
+    - person_enrichment
+    - company_enrichment
+    - email_waterfall
+    - validation_waterfall
+  readOnlySteps:
+    - lookup_company_context
+    - status_readback
+    - output_value_qa
+workflow:
+  - id: normalize_founder_identity
+    type: formula
+    description: Split full name where needed and normalize company/domain values.
+    outputs:
+      - first_name_clean
+      - last_name_clean
+      - full_name_clean
+      - domain_normalized
+      - company_name_normalized
+  - id: lookup_company_context
+    type: table-lookup
+    description: Join founder row to the company table for firmographics and company
+      LinkedIn URL.
+    runCondition: "{{domain_normalized}} !== '' || {{company_name_normalized}} !== ''"
+    outputs:
+      - matched_company_record
+      - matched_company_linkedin_url
+      - matched_company_stage
+      - matched_company_description
+  - id: resolve_linkedin_profile
+    type: ai-action
+    outputFormat: JSONSchema
+    description: Find or validate the founder LinkedIn profile with strict identity
+      matching.
+    runCondition: "{{full_name_clean}} !== '' && ({{domain_normalized}} !== '' ||
+      {{company_name_normalized}} !== '')"
+    promptInputs:
+      - full_name_clean
+      - company_name_normalized
+      - domain_normalized
+      - founder_linkedin_url
+      - matched_company_linkedin_url
+    outputs:
+      - linkedin_url
+      - identity_match_status
+      - matched_current_company
+      - matched_title
+      - confidence
+      - reasoning
+  - id: enrich_person
+    type: provider-action
+    description: Enrich the resolved founder profile.
+    runCondition: "{{linkedin_url}} !== '' && {{identity_match_status}} !== 'not_found'"
+    outputs:
+      - enriched_title
+      - enriched_location
+      - enriched_company
+      - enriched_profile_status
+  - id: enrich_company
+    type: provider-action
+    description: Enrich the company for domain, size, industry, and LinkedIn confirmation.
+    runCondition: "{{domain_normalized}} !== '' || {{matched_company_linkedin_url}} !== ''"
+    outputs:
+      - enriched_company_domain
+      - enriched_company_size
+      - enriched_company_industry
+      - enriched_company_status
+  - id: primary_email_lookup
+    type: provider-action
+    description: First work-email lookup provider.
+    runCondition: "{{first_name_clean}} !== '' && {{last_name_clean}} !== '' &&
+      {{domain_normalized}} !== ''"
+    outputs:
+      - primary_email
+      - primary_provider_status
+  - id: validate_primary_email
+    type: provider-action
+    description: Validate primary email before accepting it.
+    runCondition: "{{primary_email}} !== ''"
+    outputs:
+      - primary_validation_status
+      - primary_validation_reason
+  - id: fallback_email_lookup
+    type: provider-action
+    description: Run fallback providers only when primary is missing or unusable.
+    runCondition: "{{primary_validation_status}} !== 'valid'"
+    outputs:
+      - fallback_email
+      - fallback_provider
+      - fallback_provider_status
+  - id: validate_fallback_email
+    type: provider-action
+    description: Validate fallback email and choose best sendable address.
+    runCondition: "{{fallback_email}} !== ''"
+    outputs:
+      - fallback_validation_status
+      - best_verified_email
+      - email_provider_used
+  - id: icp_analysis
+    type: ai-action
+    outputFormat: JSONSchema
+    description: Score founder/account fit after enrichment and email QA.
+    runCondition: "{{matched_company_description}} !== '' ||
+      {{enriched_company_industry}} !== ''"
+    outputs:
+      - icp_segment
+      - founder_relevance
+      - campaign_readiness
+      - recommended_angle
+      - risk_flag
+      - reasoning
+firstRunGate:
+  inspect:
+    - identity_match_status_distribution
+    - provider_success_by_stage
+    - validation_status_counts
+    - wrong_company_or_past_role_examples
+    - not_found_reason_quality
+  passCriteria:
+    - No accepted LinkedIn URL belongs to the wrong person or company.
+    - Fallback providers run only when upstream email is missing or invalid.
+    - Best verified email is blank when validation is invalid or unavailable.
+outputs:
+  readyColumns:
+    - full_name_clean
+    - company_name_normalized
+    - domain_normalized
+    - linkedin_url
+    - identity_match_status
+    - best_verified_email
+    - email_provider_used
+    - icp_segment
+    - campaign_readiness
+    - recommended_angle
+    - risk_flag
+  qaViews:
+    - founder_ready_to_launch
+    - linkedin_identity_review
+    - email_waterfall_errors
+    - no_email_found
+    - weak_icp_or_risky
+knownFailureModes:
+  - Founder names are often shared by multiple people; verify current company
+    before accepting a profile.
+  - Startup domains can redirect or change after acquisition; company lookup may
+    need parent/subsidiary review.
+  - Provider success status does not guarantee sendability; always validate and
+    read back actual email values.
+  - JSON Schema config should be followed by value-level QA because models may
+    violate enum casing or confidence rules.
