@@ -12,9 +12,12 @@ working session and a validated runtime profile.
 ## The session file - read this first
 
 - Session lives in **`.clay-session`**, a JSON file: `{"cookie": "<claysession value>", "savedAt": "<ISO date>"}`.
-- CRITICAL: it lives **one directory above** the clay-cli package (`../.clay-session`
-  relative to the package root), not inside it - a credential outside the working tree can never be committed. `.env` goes in the REPO ROOT (`cp .env.example .env`); one directory above also works. Create both
-  one level above wherever you cloned this repo.
+- CRITICAL: it lives **one directory above** the repo (`../.clay-session` relative to
+  the repo root), not inside it - a credential outside the working tree can never be
+  committed, even if .gitignore rules break. You never create it by hand in the normal
+  flow; the login writes it there automatically.
+- `.env` is different: it goes in the **repo root** (`cp .env.example .env`). One
+  directory above also works if you prefer keeping all credentials outside the tree.
 - TTL is **23 hours**. Older sessions are treated as absent and a new login/cookie is
   required.
 - On a 401 the session is **not deleted** - it is renamed to `.clay-session.invalid` so
