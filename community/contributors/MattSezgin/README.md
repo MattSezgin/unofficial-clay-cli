@@ -16,7 +16,7 @@
 
 | Workflow | Category | Votes |
 |----------|----------|-------|
-| [**Work Email Waterfall**](../../templates/work-email-waterfall/) | `enrichment` | 0 |
+| [**Work Email Waterfall**](../../templates/work-email-waterfall/) | `enrichment` | [0](https://github.com/MattSezgin/unofficial-clay-cli/discussions/1) |
 
 ---
 
